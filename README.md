@@ -1,27 +1,39 @@
-# ANN & Deep Learning – Borgelt Klausur Masterplattform
+# ANN & Deep Learning – Prüfungsvorbereitung
 
-Interaktive Prüfungsvorbereitung für die Borgelt-Klausur zu künstlichen neuronalen Netzen: TLU, RBF, Funktionsapproximation, LVQ/SOM, Hopfield und MCQ.
+[Lernplattform öffnen](https://nic764fib.github.io/NN/)
 
-## Öffentlicher Link
+Deutschsprachige Lernplattform zur bereitgestellten Borgelt-Vorlesung und zur Aufgabenübersicht vom 10. Juli 2024. Schwerpunkt: Regression und Klassifikation; Arbeitsplan bis 28. September 2026.
 
-🌐 **Online-Version:** [https://nic764fib.github.io/NN/](https://nic764fib.github.io/NN/)
+## Lernen und üben
 
-Keine Installation, kein Backend, keine Anmeldung – direkt im Browser öffnen und lernen.
+- Regression: Fehlerquadrate, Normalgleichungen, Polynome, mehrere Eingaben, Logit und Gradientenschritte.
+- Klassifikation: Entscheidungsgrenzen, Wahrscheinlichkeiten, Likelihood, BCE und Softmax.
+- TLU, MLP/RBF-Approximation, Backpropagation, LVQ/SOM, Hopfield und CNN mit Erklärungen, Rechenwegen und interaktiven Darstellungen.
+- Modellwahl, Optimierer sowie ergänzende Folientheorie zu Autoencodern, EM, Boltzmann-, rekurrenten und Neuro-Fuzzy-Netzen.
+- 15 Aufgabenarten mit reproduzierbaren Zahlenvarianten, gestuften Hinweisen, Zahlenkontrolle und vollständigen Lösungen.
+- 90 MC-Trainingsaussagen in 18 Themenblöcken, mit Begründungen und Folienverweisen; 33 Lernkarten zur eigenen Wiedergabe.
+- Drei Klausurmodi: Zahlen der Aufgabenübersicht 2024, neue Zahlen derselben Aufgabenfamilien oder ein Durchlauf mit Regression/Klassifikation. Fünf Rechenaufgaben plus 30 MC-Aussagen, 120 Minuten, Wiederaufnahme nach Neuladen.
+- Notizen und Lernstand im eigenen Browser; Export und Import als JSON.
 
-## Features & Module
+Die Rechenaufgaben werden anhand von Teilkriterien selbst bewertet; MC wird automatisch ausgewertet. Die Aufteilung von je 14 Punkten pro Rechenaufgabe ist ein Trainingsschema. MC-Formulierungen sind rekonstruierte beziehungsweise eigene Trainingsfragen. Keine Bestehens- oder Notengarantie.
 
-- **01: Grundlagen & TLU (14 P):** 3-Layer Perzeptron für Polygone, Halbebenen, Normalenform & Delta-Regel per Hand
-- **02: MLP & Backpropagation (14 P):** Kollaps-Beweis, relative Stufen $\Delta y_i$, 1-Schritt Backprop per Hand
-- **03: RBF-Netzwerke (14 P):** Fliege / Bowtie Konstruktion, Minkowski-Metriken ($L_1, L_2, L_\infty$), lineare Ausgabe, c-Means
-- **04: LVQ & SOM (14 P):** Vektor-Updates (Attraktion/Repulsion) & Gauß-Gitter topologische Abbildung
-- **05: Hopfield & Boltzmann (14 P):** Vollständiger 8-Zustandsgraph, Netzeingaben, Lyapunov-Energie $E$ & Attraktoren
-- **06: CNNs & Deep Learning (Varianten):** Diskrete 2D-Faltung & Pooling per Hand, ReLUs, Fuzzy-Regler (COG/MOM), Optimierer
-- **07: MCQ Exam Trainer (30 P):** 6 Blöcke à 5 Aussagen mit Minuspunkte-Regel (+1/-1, min. 0 pro Block)
-- **08: Sätze abfragen:** Flashcard-Trainer für alle Borgelt-Kernformeln
-- **09: 120-Minuten Klausur:** Realistische Prüfungssimulation mit Stoppuhr und 100-Punkte-Bewertung
-- **10: Klausur-Spickzettel:** Alle Rechenrezepte komprimiert zusammengefasst
+## Quellen
 
-## Nahtlose Navigation
+Fachliche Grundlage sind `nn(1).pdf` (512 Folien) und `ANN_10_07_2024.pdf` (vierseitige Aufgabenübersicht), die für die Überarbeitung lokal bereitgestellt wurden. Folienverweise beziehen sich auf diese Fassung. Die Quelldokumente werden nicht neu im Repository veröffentlicht. Eine [öffentliche Fassung beim Autor](https://borgelt.net/slides/nn.pdf) kann abweichend nummeriert sein.
 
-- **Unterer Pager:** Am Ende jedes Abschnitts ermöglicht der „Weiter →“-Button den nahtlosen Übergang zum nächsten Thema – ganz ohne Zurückscrollen.
-- **Lokale Speicherung:** Eigene Notizen und Lernstände werden sicher im `localStorage` des Browsers gespeichert.
+[Arbeitsauftrag](ARBEITSAUFTRAG.md) · [Prüfbericht](VERIFICATION.md)
+
+## Lokal öffnen und prüfen
+
+Statische Website ohne Build-Schritt oder Backend. Zum lokalen Testen im Projektordner:
+
+```sh
+python -m http.server 8765
+node tests/verify.js
+```
+
+Dann `http://localhost:8765` öffnen. Für die optionale Prüfung sämtlicher TeX-Formeln `KATEX_PATH` auf eine lokale KaTeX-0.16.9-JavaScript-Datei setzen. Die Website lädt KaTeX einschließlich Schriften von jsDelivr; dafür wird Internet benötigt.
+
+Inhalte liegen in `course.js`, `theory-extra.js`, `original-exam.js` und `question-bank.js`. `corrections.js` ersetzt gezielt die überarbeiteten Abschnitte und Alteinträge beim Start. `practice.js` enthält die gemeinsamen Berechnungen für Trainer und Klausur. Die Datei `app.js` behält Routing, Speicherung und bestehende Simulatoren bei.
+
+Die bestehende Veröffentlichung erfolgt über GitHub Pages. Die mitexportierte `.openai/hosting.json` wird dafür nicht verwendet.

@@ -1,0 +1,48 @@
+/* Additional course material uses the existing light and dark theme. */
+.learning-intro { max-width: 75ch; font-size: 1.05rem; }
+.learning-goals { border-left: 3px solid var(--accent); padding: 1rem 1.4rem; background: var(--soft); margin: 1.5rem 0; }
+.learning-goals h2 { margin-top: 0; font-size: 1.15rem; }
+.lesson { max-width: 88ch; }
+.lesson h2 { margin-top: 2rem; }
+.lesson p, .lesson li { font-size: 1rem; }
+.lesson .source { font-size: .875rem; color: var(--muted); margin: .75rem 0 1.5rem; }
+.lesson details { margin: 1rem 0; border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.2rem; background: var(--paper); }
+.lesson summary { cursor: pointer; font-weight: 600; }
+.lesson details[open] summary { margin-bottom: 1rem; }
+.lesson table { width: 100%; border-collapse: collapse; margin: 1rem 0; }
+.lesson th, .lesson td { padding: .6rem .8rem; border-bottom: 1px solid var(--line); text-align: left; }
+.lesson .table-scroll { overflow-x: auto; }
+.lesson .mistake { border-left: 3px solid var(--warn); padding: .8rem 1.2rem; margin: 1rem 0; background: var(--paper); }
+.practice-card { border: 1px solid var(--line); border-radius: 10px; padding: 1.4rem; margin: 1.2rem 0; background: var(--paper); }
+.practice-card h3 { margin-top: 0; }
+.quiz-statement { border: 0; padding: 1rem 0; margin: 0; border-bottom: 1px solid var(--line); min-width: 0; }
+.quiz-statement legend { float: left; width: 100%; margin-bottom: .5rem; }
+.quiz-statement .actions { clear: both; }
+.exam-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+.exam-bar strong { font-variant-numeric: tabular-nums; font-size: 1.4rem; }
+.lesson { min-width: 0; }
+select { max-width: 100%; }
+.two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.two-col > * { min-width: 0; }
+.main, .content, .module-section { min-width: 0; }
+.lesson > table { display: block; overflow-x: auto; }
+.lesson p, .lesson li { overflow-wrap: anywhere; }
+.practice-card label { display: block; margin: .8rem 0; }
+.practice-card input[type=number], .practice-card input[type=text] { width: min(100%, 15rem); padding: .5rem; border: 1px solid var(--line); border-radius: 5px; background: var(--bg); }
+.practice-feedback { padding: .8rem 0; min-height: 2.5rem; }
+.practice-feedback.correct { color: var(--good); }
+.practice-feedback.incorrect { color: var(--danger); }
+.study-roadmap { list-style: none; padding: 0; counter-reset: study; }
+.study-roadmap li { padding: 1rem 0; border-bottom: 1px solid var(--line); display: grid; grid-template-columns: 6rem 1fr; gap: 1rem; }
+.study-roadmap strong { font-size: .95rem; }
+.readiness-list label { display: flex; gap: .75rem; align-items: baseline; padding: .5rem 0; }
+.readiness-list input { flex-shrink: 0; }
+.exam-warning { padding: .8rem 1rem; border-left: 3px solid var(--warn); }
+.source-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.source-grid article { padding: 1rem; border: 1px solid var(--line); border-radius: 8px; }
+.katex-display { overflow-x: auto; overflow-y: hidden; padding: .35rem 0; }
+button:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.skip-link { position: fixed; top: -5rem; left: 1rem; background: var(--paper); padding: .6rem 1rem; z-index: 100; }
+.skip-link:focus { top: 1rem; }
+@media(max-width:700px) { body { overflow-x: clip; } .two-col, .source-grid { grid-template-columns: minmax(0,1fr); } .study-roadmap li { grid-template-columns: 1fr; gap:.25rem; } .practice-card { padding: 1rem; } .lesson table { font-size: .9rem; } }
+@media print { .lesson details { break-inside: avoid; } .practice-card { break-inside: avoid; } .skip-link { display:none; } }

@@ -1,9 +1,4 @@
-/**
- * Borgelt ANN & Deep Learning Interactive Exam Master Platform
- * Univ. Salzburg - Prof. Dr. Christian Borgelt
- * Ultra-Responsive, Mathematically Precise Exam Application
- * Design System, Layout & UX Architecture modeled 1:1 after Analysis 2B
- */
+/* Interactive study platform for the supplied Borgelt lecture and 2024 tasks. */
 
 // -------------------------------------------------------------
 // State Management & Local Storage (Analysis 2B Architecture)
@@ -15,7 +10,7 @@ let state = {
   notes: {},
   scores: {},
   mcqAnswers: {},
-  last: 'task1'
+  last: 'regression'
 };
 let storageOK = true;
 
@@ -28,6 +23,8 @@ try {
     if (saved.scores && typeof saved.scores === 'object') state.scores = saved.scores;
     if (saved.mcqAnswers && typeof saved.mcqAnswers === 'object') state.mcqAnswers = saved.mcqAnswers;
     if (saved.last) state.last = saved.last;
+    if (saved.exam) state.exam = saved.exam;
+    if (Array.isArray(saved.examHistory)) state.examHistory = saved.examHistory;
   }
 } catch {
   storageOK = false;
@@ -140,7 +137,7 @@ const theoryEntries = [
     moduleTitle: 'Task 2: RBF Bowtie',
     kind: 'Wichtige Definition',
     title: 'RBF Ausgangsneuron: Lineare Aktivierung',
-    text: 'Die Aktivierungsfunktion der Ausgangsneuronen in einem RBF-Netzwerk ist stets eine lineare Funktion: $f_{\\text{act}}(\\text{net}_u, \\theta_u) = \\text{net}_u - \\theta_u$. Die Ausgangsfunktion ist die Identität $f_{\\text{out}}(a) = a$. (Achtung: Einen Schwellenwert anzunehmen, ist der häufigste Klausurfehler!)',
+    text: 'Die Aktivierungsfunktion der Ausgangsneuronen in einem RBF-Netzwerk ist stets eine lineare Funktion: $f_{\\text{act}}(\\text{net}_u, \\theta_u) = \\text{net}_u - \\theta_u$. Die Ausgangsfunktion ist die Identität $f_{\\text{out}}(a) = a$.',
     source: 'Borgelt Vorlesung · Folie 290',
     checks: [
       'Ausgangsaktivierung ist LINEAR, KEINE Sprung- oder Sigmoidfunktion',
@@ -157,7 +154,7 @@ const theoryEntries = [
     text: 'Eine beliebige stetige Funktion $f(x)$ wird auf $[a, b]$ durch ein 3-Schicht-MLP mit Schwellenwerten $\\theta_i = x_i$ und relativen Stufenhöhen $\\Delta y_i = y_i - y_{i-1}$ approximiert: $y = y_0 + \\sum_{i=1}^k \\Delta y_i \\cdot \\Theta(x - x_i)$ mit $y_0 = f(x_0)$.',
     source: 'Borgelt Vorlesung · Folie 100',
     checks: [
-      'Startwert y₀ = f(a) wird als Bias/Schwellenwert am Ausgangsneuron addiert',
+      'Startwert f(a) ist der Bias; die Ausgangsschwelle ist −f(a)',
       'Gewichte zum Ausgang sind relative Differenzen Δy_i = y_i - y_{i-1}',
       'Ermöglicht unabhängige Segmentjustierung ohne Kaskadeneffekte'
     ]
@@ -336,6 +333,8 @@ const theoryEntries = [
 // DOMContentLoaded Initialization
 // -------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
+  installCorrections();
+  installCourse();
   initTheme();
   initRoutingAndNavigation();
   initSubtabs();
@@ -346,9 +345,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initTask4LVQ_SOM();
   initTask5Hopfield();
   initDeepLearningCNN();
-  initTask6MCQ();
+  initTheoryQuiz();
   initRecallEngine();
-  initExamTraining();
+  initStudyExam();
   initStudyStateAndTools();
   renderMath();
 });
@@ -557,7 +556,7 @@ function initRoutingAndNavigation() {
     }
 
     // Update state last visited module
-    if (targetTab.startsWith('task')) {
+    if (targetTab.startsWith('task') || courseModules.some(m => m.id === targetTab)) {
       state.last = targetTab;
       saveState();
     }
@@ -595,7 +594,8 @@ function initRoutingAndNavigation() {
       if (tabBar) {
         const buttons = tabBar.querySelectorAll('button[data-subtab], a[data-subtab]');
         const contents = moduleSection.querySelectorAll('.subtab-content');
-        const activeSubtab = targetSubtab || defaultSubtabs[targetTab] || 'all';
+        const requested = targetSubtab || defaultSubtabs[targetTab] || 'all';
+        const activeSubtab = requested === 'all' || (moduleSubtabs[targetTab] || []).some(s => s.id === requested) ? requested : defaultSubtabs[targetTab];
         const subtabs = moduleSubtabs[targetTab];
         const lastSubtabId = subtabs ? subtabs[subtabs.length - 1].id : null;
         const isLastSubtab = (activeSubtab === lastSubtabId);
@@ -683,29 +683,16 @@ function initRoutingAndNavigation() {
       let targetTab = link.getAttribute('data-tab');
       let targetSubtab = link.getAttribute('data-subtab') || null;
 
-      if (!targetTab) {
-        const parentNav = link.closest('.tabs[data-task]');
-        if (parentNav) {
-          targetTab = parentNav.getAttribute('data-task');
-        } else {
-          const parentSection = link.closest('.module-section');
-          if (parentSection && parentSection.id.startsWith('module-')) {
-            targetTab = parentSection.id.replace('module-', '');
-          }
-        }
+      const href=link.getAttribute('href')||'';
+      if(!targetTab&&href.startsWith('#/')) {
+        const parts=href.slice(2).split('/').filter(Boolean);
+        targetTab=parts[0]||'overview';
+        targetSubtab=targetSubtab||parts[1]||null;
       }
-
-      if (!targetTab) {
-        const href = link.getAttribute('href') || '';
-        const parts = href.replace(/^#\/?/, '').split('/').filter(Boolean);
-        if (parts.length > 0) {
-          targetTab = parts[0];
-          if (!targetSubtab && parts[1]) {
-            targetSubtab = parts[1];
-          }
-        } else if (href === '#/' || href === '#' || href === '#/overview') {
-          targetTab = 'overview';
-        }
+      if(!targetTab) {
+        const parentNav=link.closest('.tabs[data-task]');
+        const parentSection=link.closest('.module-section');
+        targetTab=parentNav?.getAttribute('data-task')||parentSection?.id.replace('module-','');
       }
 
       if (targetTab) {
@@ -723,20 +710,7 @@ function initRoutingAndNavigation() {
 // 2. Subtabs within Tasks (Underline Style & Hash Sync)
 // -------------------------------------------------------------
 function initSubtabs() {
-  const tabBars = document.querySelectorAll('.tabs[data-task]');
-
-  tabBars.forEach(bar => {
-    const taskId = bar.getAttribute('data-task');
-    const buttons = bar.querySelectorAll('button[data-subtab], a[data-subtab]');
-
-    buttons.forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetSubtab = btn.getAttribute('data-subtab');
-        navigateTo(taskId, targetSubtab, true);
-      });
-    });
-  });
+  // Subtab clicks are handled once by the delegated routing listener.
 }
 
 // -------------------------------------------------------------
@@ -745,7 +719,8 @@ function initSubtabs() {
 function initTheme() {
   const btn = document.getElementById('themeToggleBtn');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const savedTheme = localStorage.getItem('ann_theme') || (prefersDark ? 'dark' : 'light');
+  let savedTheme = prefersDark ? 'dark' : 'light';
+  try { savedTheme = localStorage.getItem('ann_theme') || savedTheme; } catch {}
 
   document.documentElement.setAttribute('data-theme', savedTheme);
   if (btn) btn.textContent = savedTheme === 'dark' ? 'Light' : 'Dark';
@@ -755,7 +730,7 @@ function initTheme() {
       const current = document.documentElement.getAttribute('data-theme');
       const next = current === 'dark' ? 'light' : 'dark';
       document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('ann_theme', next);
+      try { localStorage.setItem('ann_theme', next); } catch {}
       btn.textContent = next === 'dark' ? 'Light' : 'Dark';
 
       redrawTLU();
@@ -837,6 +812,8 @@ function initStudyStateAndTools() {
         if (t.scores && typeof t.scores === 'object') state.scores = t.scores;
         if (t.mcqAnswers && typeof t.mcqAnswers === 'object') state.mcqAnswers = t.mcqAnswers;
         if (t.last) state.last = t.last;
+        state.exam = t.exam || null;
+        if (Array.isArray(t.examHistory)) state.examHistory = t.examHistory;
 
         saveState();
 
@@ -856,6 +833,7 @@ function initStudyStateAndTools() {
           importStatus.textContent = 'Lernstand erfolgreich importiert!';
           importStatus.style.color = 'var(--good)';
         }
+        window.location.reload();
       } catch (err) {
         if (importStatus) {
           importStatus.textContent = `Fehler beim Import: ${err.message}`;
@@ -870,7 +848,7 @@ function initStudyStateAndTools() {
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
       if (confirm('Möchtest du deinen gesamten Lernstand wirklich zurücksetzen? Alle Notizen, Testergebnisse und Häkchen werden gelöscht.')) {
-        state = { known: {}, done: {}, notes: {}, scores: {}, mcqAnswers: {}, last: 'task1' };
+        state = { known: {}, done: {}, notes: {}, scores: {}, mcqAnswers: {}, last: 'regression' };
         saveState();
 
         document.querySelectorAll('[data-known]').forEach(cb => { cb.checked = false; });
@@ -881,6 +859,7 @@ function initStudyStateAndTools() {
           importStatus.textContent = 'Lernstand wurde zurückgesetzt.';
           importStatus.style.color = 'var(--muted)';
         }
+        window.location.reload();
       }
     });
   }
@@ -890,7 +869,7 @@ function initStudyStateAndTools() {
 
 // Update Topbar and Overview Progress (Analysis 2B Style)
 function updateOverviewProgress() {
-  const taskIds = ['task1', 'task3', 'task2', 'task4', 'task5', 'deeplearning', 'task6', 'abfragen', 'klausur', 'cheatsheet'];
+  const taskIds = [...courseModules.map(m => m.id), 'task1', 'task3', 'task2', 'task4', 'task5', 'deeplearning', 'task6', 'abfragen', 'klausur', 'cheatsheet'];
   const solvedCount = taskIds.filter(id => state.known[id]).length;
   const totalCount = taskIds.length;
   const percent = Math.round((solvedCount / totalCount) * 100);
@@ -930,7 +909,7 @@ function updateOverviewProgress() {
       'klausur': 'Modul 09: 120-Minuten Klausurtraining',
       'cheatsheet': 'Modul 10: Klausur-Spickzettel'
     };
-    resumeTitle.textContent = `Weiterlernen: ${taskNameMap[firstUnsolved] || 'Modul 1: TLU Polygon'}`;
+    resumeTitle.textContent = `Weiterlernen: ${moduleTitles[firstUnsolved] || taskNameMap[firstUnsolved] || 'Regression'}`;
   }
   if (resumeBtn) {
     resumeBtn.setAttribute('href', `#/${firstUnsolved}`);
@@ -945,7 +924,7 @@ function updateOverviewProgress() {
         badge.textContent = '✓ Gemeistert';
         badge.className = 'badge good';
       } else {
-        let defaultBadge = '14 P';
+        let defaultBadge = courseModules.some(m => m.id === id) ? 'Grundlage' : 'Training';
         if (id === 'task6') defaultBadge = '30 P';
         else if (id === 'deeplearning') defaultBadge = 'Varianten';
         else if (id === 'abfragen') defaultBadge = 'Formeln';
@@ -1472,7 +1451,7 @@ function initTask3FuncApprox() {
     ctx.stroke();
 
     // 2. Compute Neural Approximation
-    const k = Math.max(6, nodeCount - 2);
+    const k = currentModel==='rbf-tri' ? nodeCount-3 : nodeCount-2;
     const dx = 8.0 / k;
     const knots = [];
     for (let i = 0; i <= k; i++) {
@@ -1497,43 +1476,13 @@ function initTask3FuncApprox() {
         ctx.lineTo(cx2, cy);
       }
       ctx.lineTo(toCanvasX(4.0), toCanvasY(f(4.0)));
-    } else if (currentModel === 'mlp-linear' || currentModel === 'rbf-tri') {
+    } else if (currentModel === 'rbf-tri') {
       for (let i = 0; i <= k; i++) {
         const x = knots[i];
         const yVal = f(x);
         const cx = toCanvasX(x);
         const cy = toCanvasY(yVal);
         if (i === 0) ctx.moveTo(cx, cy);
-        else ctx.lineTo(cx, cy);
-      }
-    } else if (currentModel === 'rbf-rect') {
-      for (let i = 0; i < k; i++) {
-        const c = 0.5 * (knots[i] + knots[i + 1]);
-        const yVal = f(c);
-        const cx1 = toCanvasX(knots[i]);
-        const cx2 = toCanvasX(knots[i + 1]);
-        const cy = toCanvasY(yVal);
-
-        if (i === 0) ctx.moveTo(cx1, cy);
-        else ctx.lineTo(cx1, cy);
-        ctx.lineTo(cx2, cy);
-      }
-    } else if (currentModel === 'rbf-gauss') {
-      const sigma = dx * 0.75;
-      for (let x = -4.0; x <= 4.0; x += 0.05) {
-        let approxY = 0;
-        let normSum = 0;
-        for (let i = 0; i <= k; i++) {
-          const c = knots[i];
-          const g = Math.exp(-Math.pow(x - c, 2) / (2 * sigma * sigma));
-          approxY += f(c) * g;
-          normSum += g;
-        }
-        approxY = approxY / (normSum || 1);
-
-        const cx = toCanvasX(x);
-        const cy = toCanvasY(approxY);
-        if (x === -4.0) ctx.moveTo(cx, cy);
         else ctx.lineTo(cx, cy);
       }
     }
@@ -1613,47 +1562,17 @@ function initTask4LVQ_SOM() {
     });
   });
 
-  if (stepBtn) {
-    stepBtn.addEventListener('click', () => {
-      if (currentMode === 'lvq') {
-        if (stepIndex === 0) {
-          rCirc = { x: 3, y: 5, name: 'r_circ' };
-          stepIndex = 1;
-          if (statusDiv) {
-            statusDiv.innerHTML = `
-              <strong>Schritt 1 abgeschlossen (Punkt $p=(1,6)$ [Klasse $\\circ$] vorgestellt):</strong><br>
-              &bull; $d^2(p, r_\\circ) = (1-5)^2 + (6-4)^2 = 16 + 4 = \\mathbf{20}$<br>
-              &bull; $d^2(p, r_\\bullet) = (1-7)^2 + (6-5)^2 = 36 + 1 = \\mathbf{37}$<br>
-              &bull; <strong>Winner:</strong> $r_\\circ$ (Abstand 20 < 37).<br>
-              &bull; <strong>Update (Attraktion):</strong> $\\vec{r}_\\circ^{(1)} = (5,4) + 0.5((1,6) - (5,4)) = (5,4) + (-2, 1) = \\mathbf{(3, 5)}$. $r_\\bullet$ bleibt $(7, 5)$.
-            `;
-          }
-        } else if (stepIndex === 1) {
-          rBull = { x: 8, y: 3, name: 'r_bull' };
-          stepIndex = 2;
-          if (statusDiv) {
-            statusDiv.innerHTML = `
-              <strong>Schritt 2 abgeschlossen (Punkt $q=(9,1)$ [Klasse $\\bullet$] vorgestellt):</strong><br>
-              &bull; $d^2(q, r_\\circ) = (9-3)^2 + (1-5)^2 = 36 + 16 = \\mathbf{52}$ (mit aktualisiertem $r_\\circ=(3,5)$!)<br>
-              &bull; $d^2(q, r_\\bullet) = (9-7)^2 + (1-5)^2 = 4 + 16 = \\mathbf{20}$<br>
-              &bull; <strong>Winner:</strong> $r_\\bullet$ (Abstand 20 < 52).<br>
-              &bull; <strong>Update (Attraktion):</strong> $\\vec{r}_\\bullet^{(1)} = (7,5) + 0.5((9,1) - (7,5)) = (7,5) + (1, -2) = \\mathbf{(8, 3)}$.<br>
-              &bull; <strong>Endergebnis Epoche 1:</strong> $\\Delta \\vec{r}_\\circ = \\mathbf{(-2, 1)^\\top} \\implies \\vec{r}_\\circ = \\mathbf{(3, 5)^\\top}$, $\\Delta \\vec{r}_\\bullet = \\mathbf{(1, -2)^\\top} \\implies \\vec{r}_\\bullet = \\mathbf{(8, 3)^\\top}$.
-            `;
-          }
-        } else {
-          if (statusDiv) {
-            statusDiv.innerHTML = `
-              <strong>Epoche 1 abgeschlossen!</strong> Beide Punkte wurden verarbeitet.<br>
-              Klicke auf <strong>Reset</strong>, um die Berechnung von vorne zu starten.
-            `;
-          }
-        }
-        renderMath(statusDiv);
-        render();
-      }
-    });
-  }
+  const classMode=document.getElementById('lvqClassMode');
+  if(classMode)classMode.addEventListener('change',()=>resetBtn.click());
+  if (stepBtn) stepBtn.addEventListener('click',()=>{
+    if(currentMode!=='lvq'||stepIndex>=2)return;
+    const x=stepIndex===0?{x:1,y:6}:{x:9,y:1},supervised=classMode.value==='supervised';
+    const old=[{...rCirc},{...rBull}],ds=old.map(r=>(r.x-x.x)**2+(r.y-x.y)**2),win=ds[0]<=ds[1]?0:1;
+    const next=old.map((r,k)=>{if(!supervised&&k!==win)return r;const sign=supervised&&k!==stepIndex?-1:1;return {...r,x:r.x+sign*.5*(x.x-r.x),y:r.y+sign*.5*(x.y-r.y)};});
+    [rCirc,rBull]=next;
+    statusDiv.innerHTML=`<strong>Punkt ${stepIndex===0?'p (1,6), Klasse ○':'q (9,1), Klasse ●'}</strong><p>Quadrierte Abstände vor dem Update: ${ds[0]} (○), ${ds[1]} (●). Nächster: ${win===0?'○':'●'}.</p><p>${supervised?'Beide Prototypen werden aktualisiert: richtige Klasse anziehen, falsche Klasse abstoßen (Folie 340).':'Nur der nächste Prototyp wird angezogen (Folie 336).'}</p><p>Danach: r○ = (${rCirc.x}, ${rCirc.y}); r● = (${rBull.x}, ${rBull.y}).</p>`;
+    stepIndex++;if(stepIndex===2)statusDiv.insertAdjacentHTML('beforeend','<p>Epoche abgeschlossen. Reset stellt beide Ausgangsprototypen wieder her.</p>');render();
+  });
 
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
@@ -1684,8 +1603,8 @@ function initTask4LVQ_SOM() {
   }
   if (somApplyBtn) {
     somApplyBtn.addEventListener('click', () => {
-      somX.x = parseFloat(somInputX.value) || 28;
-      somX.y = parseFloat(somInputY.value) || 20;
+      somX.x = Math.max(0,Math.min(40,Number(somInputX.value)||0));
+      somX.y = Math.max(0,Math.min(30,Number(somInputY.value)||0));
       updateSOMStatus();
       render();
     });
@@ -1709,8 +1628,8 @@ function initTask4LVQ_SOM() {
   canvas.addEventListener('click', (e) => {
     if (currentMode === 'som') {
       const rect = canvas.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = e.clientY - rect.top;
+      const clickX = (e.clientX - rect.left)*canvas.width/rect.width;
+      const clickY = (e.clientY - rect.top)*canvas.height/rect.height;
       const mathX = Math.round(((clickX - 45) / 440) * 40);
       const mathY = Math.round(((340 - clickY) / 300) * 30);
       if (mathX >= 0 && mathX <= 40 && mathY >= 0 && mathY <= 30) {
@@ -1743,8 +1662,8 @@ function initTask4LVQ_SOM() {
         <strong>Interaktive SOM-Berechnung (Task 4b):</strong><br>
         &bull; <strong>Eingabevektor:</strong> $\\vec{x} = (${somX.x}, ${somX.y})$ &bull; <strong>Gefundener Winner $u^*$:</strong> $(${winX}, ${winY})$<br>
         &bull; <strong>Winner-Verschiebung ($d=0, f_{\\text{nb}}=1$):</strong> $\\Delta \\vec{r}_{u^*} = ${somEta} \\cdot 1 \\cdot ((${somX.x}, ${somX.y}) - (${winX}, ${winY})) = \\mathbf{(${deltaWinX}, ${deltaWinY})} \\implies \\vec{r}_{u^*}^{(\\text{new})} = \\mathbf{(${newWinX}, ${newWinY})}$<br>
-        &bull; <strong>4 direkte Nachbarn ($d=1, f_{\\text{nb}}(1, ${somSigma}) = e^{-1/(2 \\cdot ${somSigma}^2)} = ${f1.toFixed(4)}$):</strong><br>
-        Jeder Nachbar wird mit Faktor $\\eta \\cdot f_{\\text{nb}} = ${factorD1}$ in Richtung $\\vec{x}$ gezogen. Klicke auf das Gitter, um andere Punkte zu testen!
+        &bull; <strong>Direkte Nachbarn (am Rand entsprechend weniger) ($d=1, f_{\\text{nb}}(1, ${somSigma}) = e^{-1/(2 \\cdot ${somSigma}^2)} = ${f1.toFixed(4)}$):</strong><br>
+        Jeder Nachbar wird mit Faktor $\\eta \\cdot f_{\\text{nb}} = ${factorD1}$ in Richtung $\\vec{x}$ gezogen. Alle 63 Neuronen werden mit ihrem jeweiligen Gitterabstand berücksichtigt. Die Pfeile zeigen einen Schritt aus dem ursprünglichen Gitter; wiederholtes Anwenden kumuliert keine Epochen.
       `;
       renderMath(statusDiv);
     }
@@ -1762,7 +1681,7 @@ function initTask4LVQ_SOM() {
     const textColor = isDark ? '#9da7b3' : '#64748b';
 
     if (currentMode === 'lvq') {
-      const maxX = 10, maxY = 7;
+      const maxX = 12, maxY = 8;
 
       ctx.strokeStyle = gridColor;
       ctx.lineWidth = 1;
@@ -1898,8 +1817,8 @@ function initTask4LVQ_SOM() {
       const winX = winI * 5;
       const winY = winJ * 5;
 
-      for (let di = -2; di <= 2; di++) {
-        for (let dj = -2; dj <= 2; dj++) {
+      for (let di = -winI; di <= 8-winI; di++) {
+        for (let dj = -winJ; dj <= 6-winJ; dj++) {
           const ni = winI + di;
           const nj = winJ + dj;
           if (ni >= 0 && ni <= 8 && nj >= 0 && nj <= 6) {
@@ -1907,7 +1826,7 @@ function initTask4LVQ_SOM() {
             const nodeY = nj * 5;
             const dGrid = Math.sqrt(di * di + dj * dj);
             const fNb = Math.exp(- (dGrid * dGrid) / (2 * somSigma * somSigma));
-            if (fNb > 0.05) {
+            if (fNb > 0) {
               const deltaX = somEta * fNb * (somX.x - nodeX);
               const deltaY = somEta * fNb * (somX.y - nodeY);
 
@@ -2287,7 +2206,7 @@ function initDeepLearningCNN() {
 
   if (!inputTable || !kernelTable || !outputTable || !poolTable) return;
 
-  // Folie 264 original matrices
+  // Own numerical example using the operation from slides 264–266.
   const rawImage = [
     [8, 3, 18, 30, 25],
     [1, 4, 14, 23, 26],
@@ -2553,233 +2472,9 @@ function initDeepLearningCNN() {
   }
 }
 
-function initTask6MCQ() {
-  const container = document.getElementById('mcqContainer');
-  if (!container) return;
-
-  const evalAllBtn = document.getElementById('mcqEvalAllBtn');
-  const resetAllBtn = document.getElementById('mcqResetAllBtn');
-  const modeBtns = document.querySelectorAll('#mcqModeToggle .toggle-btn');
-  const summaryCard = document.getElementById('mcqScoreSummaryCard');
-  const totalScoreEl = document.getElementById('mcqTotalScore');
-  const scorePercentEl = document.getElementById('mcqScorePercent');
-
-  let currentMode = 'trainer';
-
-  modeBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      modeBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentMode = btn.getAttribute('data-mcqmode');
-      renderMCQBlocks();
-    });
-  });
-
-  const userAnswers = state.mcqAnswers || {};
-
-  function renderMCQBlocks() {
-    container.innerHTML = '';
-
-    mcqData.forEach(block => {
-      const card = document.createElement('div');
-      card.className = 'mcq-subtask-card';
-      card.id = `subtask-card-${block.subtaskId}`;
-
-      let rowsHtml = '';
-      block.statements.forEach(stmt => {
-        const currentAns = userAnswers[stmt.id] || null;
-        rowsHtml += `
-          <div class="mcq-statement-row" id="row-${stmt.id}">
-            <div class="mcq-buttons">
-              <button class="mcq-btn btn-true ${currentAns === 'true' ? 'selected-true' : ''}" data-stmt="${stmt.id}" data-val="true">W</button>
-              <button class="mcq-btn btn-false ${currentAns === 'false' ? 'selected-false' : ''}" data-stmt="${stmt.id}" data-val="false">F</button>
-            </div>
-            <div class="mcq-statement-content">
-              <div class="mcq-statement-text">${stmt.text}</div>
-              <div class="mcq-feedback" id="feedback-${stmt.id}"></div>
-            </div>
-          </div>
-        `;
-      });
-
-      card.innerHTML = `
-        <div class="mcq-subtask-header">
-          <div>
-            <div class="mcq-subtask-title">${block.title}</div>
-            <div class="small muted" style="margin-top:2px;">${block.description}</div>
-          </div>
-          <div class="mcq-subtask-score" id="score-${block.subtaskId}">Punkte: 0 / 5</div>
-        </div>
-        ${rowsHtml}
-      `;
-
-      container.appendChild(card);
-    });
-
-    // Attach click handlers
-    container.querySelectorAll('.mcq-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const stmtId = btn.getAttribute('data-stmt');
-        const val = btn.getAttribute('data-val');
-        const row = document.getElementById(`row-${stmtId}`);
-        const trueBtn = row.querySelector('.btn-true');
-        const falseBtn = row.querySelector('.btn-false');
-
-        if (userAnswers[stmtId] === val) {
-          delete userAnswers[stmtId];
-          trueBtn.className = 'mcq-btn btn-true';
-          falseBtn.className = 'mcq-btn btn-false';
-        } else {
-          userAnswers[stmtId] = val;
-          trueBtn.className = 'mcq-btn btn-true' + (val === 'true' ? ' selected-true' : '');
-          falseBtn.className = 'mcq-btn btn-false' + (val === 'false' ? ' selected-false' : '');
-        }
-
-        state.mcqAnswers = userAnswers;
-        saveState();
-
-        if (currentMode === 'trainer') {
-          evaluateSingleStatement(stmtId);
-          updateBlockScores();
-        }
-      });
-    });
-
-    // If answers exist and in trainer mode, evaluate
-    if (Object.keys(userAnswers).length > 0 && currentMode === 'trainer') {
-      Object.keys(userAnswers).forEach(stmtId => {
-        evaluateSingleStatement(stmtId);
-      });
-      updateBlockScores();
-    }
-
-    renderMath(container);
-  }
-
-  function evaluateSingleStatement(stmtId) {
-    let stmtObj = null;
-    mcqData.forEach(b => {
-      b.statements.forEach(s => {
-        if (s.id === stmtId) stmtObj = s;
-      });
-    });
-    if (!stmtObj) return;
-
-    const row = document.getElementById(`row-${stmtId}`);
-    if (!row) return;
-
-    const trueBtn = row.querySelector('.btn-true');
-    const falseBtn = row.querySelector('.btn-false');
-    const feedback = document.getElementById(`feedback-${stmtId}`);
-    const userAns = userAnswers[stmtId];
-
-    trueBtn.classList.remove('correct-eval', 'wrong-eval', 'outline-correct');
-    falseBtn.classList.remove('correct-eval', 'wrong-eval', 'outline-correct');
-
-    if (!userAns) {
-      feedback.className = 'mcq-feedback';
-      feedback.style.display = 'none';
-      return;
-    }
-
-    const isUserCorrect = (userAns === 'true' && stmtObj.correct) || (userAns === 'false' && !stmtObj.correct);
-
-    if (isUserCorrect) {
-      if (userAns === 'true') trueBtn.classList.add('correct-eval');
-      else falseBtn.classList.add('correct-eval');
-    } else {
-      if (userAns === 'true') {
-        trueBtn.classList.add('wrong-eval');
-        falseBtn.classList.add('outline-correct');
-      } else {
-        falseBtn.classList.add('wrong-eval');
-        trueBtn.classList.add('outline-correct');
-      }
-    }
-
-    feedback.className = `mcq-feedback show ${isUserCorrect ? 'correct' : 'incorrect'}`;
-    feedback.innerHTML = `
-      <strong>${isUserCorrect ? '✓ Richtig (+1 Punkt)' : '✗ Falsch (-1 Punkt)'}</strong> &bull; Richtige Antwort: <strong>${stmtObj.correct ? 'WAHR' : 'FALSCH'}</strong> (${stmtObj.slide})<br>
-      ${stmtObj.expl}
-    `;
-    renderMath(feedback);
-  }
-
-  function updateBlockScores() {
-    let grandTotal = 0;
-
-    mcqData.forEach(b => {
-      let blockPoints = 0;
-      b.statements.forEach(s => {
-        const userAns = userAnswers[s.id];
-        if (userAns === 'true') {
-          blockPoints += s.correct ? 1 : -1;
-        } else if (userAns === 'false') {
-          blockPoints += !s.correct ? 1 : -1;
-        }
-      });
-
-      const finalBlockScore = Math.max(0, blockPoints);
-      grandTotal += finalBlockScore;
-
-      const scoreEl = document.getElementById(`score-${b.subtaskId}`);
-      if (scoreEl) {
-        scoreEl.textContent = `Punkte: ${finalBlockScore} / 5 ${blockPoints < 0 ? '(Gedeckelt auf 0)' : ''}`;
-        scoreEl.style.color = finalBlockScore >= 4 ? 'var(--good)' : (finalBlockScore === 0 ? 'var(--danger)' : 'var(--ink)');
-      }
-    });
-
-    if (summaryCard) summaryCard.style.display = 'block';
-    if (totalScoreEl) totalScoreEl.textContent = grandTotal;
-    const percent = Math.round((grandTotal / 30) * 100);
-    if (scorePercentEl) scorePercentEl.textContent = `${percent}%`;
-
-    const gradeFeedback = document.getElementById('mcqGradeFeedback');
-    if (gradeFeedback) {
-      if (grandTotal >= 26) {
-        gradeFeedback.textContent = 'Hervorragend! Top-Ergebnis in Task 6 (Note 1 garantiert).';
-        gradeFeedback.style.color = 'var(--good)';
-      } else if (grandTotal >= 18) {
-        gradeFeedback.textContent = 'Gute Leistung! Achte darauf, unsichere Fragen leerzulassen (0 Pkt statt -1 Pkt).';
-        gradeFeedback.style.color = 'var(--warn)';
-      } else {
-        gradeFeedback.textContent = 'Wiederhole unsichere Themen im Trainer-Modus und präge dir die Folien-Begründungen ein.';
-        gradeFeedback.style.color = 'var(--danger)';
-      }
-    }
-  }
-
-  if (evalAllBtn) {
-    evalAllBtn.addEventListener('click', () => {
-      mcqData.forEach(b => {
-        b.statements.forEach(s => {
-          evaluateSingleStatement(s.id);
-        });
-      });
-      updateBlockScores();
-    });
-  }
-
-  if (resetAllBtn) {
-    resetAllBtn.addEventListener('click', () => {
-      Object.keys(userAnswers).forEach(k => delete userAnswers[k]);
-      state.mcqAnswers = {};
-      saveState();
-      if (summaryCard) summaryCard.style.display = 'none';
-      renderMCQBlocks();
-    });
-  }
-
-  renderMCQBlocks();
-}
-
-// -------------------------------------------------------------
-// 11. Feature 1: Sätze & Formeln abfragen (1:1 Analysis 2B)
-// -------------------------------------------------------------
-let recallIndex = 0;
 let recallModule = 'all';
 let recallFilter = 'all';
-
+let recallIndex = 0;
 function initRecallEngine() {
   const host = document.getElementById('recall-card-host');
   const modSelect = document.getElementById('recall-module-select');
@@ -2828,10 +2523,10 @@ function initRecallEngine() {
         <h2 style="margin-top:0;">${t.title}</h2>
         <p class="small muted">Formuliere ${t.kind} einschließlich aller mathematischen Voraussetzungen und Parameter aus dem Gedächtnis:</p>
         
-        <textarea id="recall-note" data-note="recall-${t.id}" placeholder="Deine Formulierung, Formeln, Voraussetzungen …">${state.notes['recall-' + t.id] || ''}</textarea>
+        <textarea id="recall-note" data-note="recall-${t.id}" placeholder="Deine Formulierung, Formeln, Voraussetzungen …">${safeText(state.notes['recall-' + t.id] || '')}</textarea>
 
         <div class="actions">
-          <button class="primary" id="reveal-recall-card">Mit Borgelt-Original vergleichen</button>
+          <button class="primary" id="reveal-recall-card">Mit Erklärung und Quelle vergleichen</button>
           <button id="skip-recall-card">Überspringen →</button>
         </div>
 
@@ -2937,221 +2632,3 @@ function initRecallEngine() {
 // -------------------------------------------------------------
 // 12. Feature 2: 120-Minuten Klausurtraining (1:1 Analysis 2B)
 // -------------------------------------------------------------
-let examTimer = null;
-let examRemainingSeconds = 120 * 60; // 120 minutes = 7200s
-let examRunning = false;
-let examRevealed = false;
-
-function initExamTraining() {
-  const clockEl = document.getElementById('exam-clock');
-  const actionBtn = document.getElementById('examActionBtn');
-  const statusText = document.getElementById('examStatusText');
-  const container = document.getElementById('examTasksContainer');
-  const scorePanel = document.getElementById('examTotalScorePanel');
-  const scoreText = document.getElementById('examTotalScoreText');
-  if (!container || !actionBtn) return;
-
-  const examTasks = [
-    {
-      id: 'task1',
-      title: 'Aufgabe 1: Threshold Logic Units (TLU)',
-      points: 14,
-      prompt: 'Konstruiere ein 3-schichtiges Perzeptron, das das Innere der gegebenen Fläche mit den Eckpunkten $(1,4)$, $(4,4)$, $(3,1)$, $(3,3)$ auf $+1$ und das Äußere auf $0$ abbildet.',
-      solutionHtml: `
-        <p><strong>Zerlegung:</strong> Schnittlinie bei $x_1 = 3$ in Dreiecke $T_1((1,4), (3,4), (3,3))$ und $T_2((3,4), (4,4), (3,1))$.</p>
-        <p><strong>Layer 1 (Halbebenen):</strong><br>
-        $L_1: -x_2 \\ge -4$, $L_2: x_1 + 2x_2 \\ge 9$, $L_3: -3x_1 + x_2 \\ge -8$, $L_4: -x_1 \\ge -3$, $L_5: x_1 \\ge 3$.</p>
-        <p><strong>Layer 2 (Konjunktionen):</strong> $C_1 = L_1 \\wedge L_2 \\wedge L_4$ mit $\\theta=3$. $C_2 = L_1 \\wedge L_3 \\wedge L_5$ mit $\\theta=3$.</p>
-        <p><strong>Layer 3 (Disjunktion):</strong> $Y = C_1 \\vee C_2$ mit $\\vec{w}=(1,1)^\\top, \\theta=1$.</p>
-      `
-    },
-    {
-      id: 'task2',
-      title: 'Aufgabe 2: Radial Basis Functions (RBF Bowtie)',
-      points: 14,
-      prompt: 'Konstruiere ein RBF-Netzwerk, das für den schattierten Bereich (Fliegen-Form mit Knoten $(2,2), (2,3), (3,2)$ und $(2,2), (1,2), (2,1)$) den Wert $1$ und außerhalb $\\le 0$ liefert. Verwende Distanzfunktionen aus der Minkowski-Familie.',
-      solutionHtml: `
-        <p><strong>Hidden-Neuronen:</strong><br>
-        &bull; $v_1$ (Grundraute): Zentrum $(2,2)$, Metrik $L_1$, Radius $\\sigma=1$, Gewicht $w_1 = +1$.<br>
-        &bull; $v_2$ (Abzug Oben): Zentrum $(1.5, 2.5)$, Metrik $L_\\infty$, Radius $\\sigma=0.5$, Gewicht $w_2 = -1$.<br>
-        &bull; $v_3$ (Abzug Unten): Zentrum $(2.5, 1.5)$, Metrik $L_\\infty$, Radius $\\sigma=0.5$, Gewicht $w_3 = -1$.</p>
-        <p><strong>Ausgangsneuron:</strong> Linear $f_{\\text{act}}(\\text{net}, \\theta) = \\text{net} - 0$. $y = 1 \\cdot v_1 - 1 \\cdot v_2 - 1 \\cdot v_3$.</p>
-      `
-    },
-    {
-      id: 'task3',
-      title: 'Aufgabe 3: Funktionsapproximation',
-      points: 14,
-      prompt: 'Approximiere $y = x^2 + 2x + 2$ auf $[-4, 4]$ mit $8 \\le n \\le 12$ Knoten mittels: (a) 3-Layer Perceptron, (b) RBF-Netzwerk. (c) Nenne mindestens 2 Möglichkeiten zur Verbesserung.',
-      solutionHtml: `
-        <p><strong>(a) MLP (10 Knoten):</strong> 8 Hidden-Neuronen bei $\\theta_i = x_i \\in \\{-3, -2, -1, 0, 1, 2, 3, 4\\}$, Gewichte zum Ausgang sind $\\Delta y_i = (-5, -3, -1, +1, +3, +5, +7, +9)^\\top$, Startwert $y_0 = f(-4) = 10$.</p>
-        <p><strong>(b) RBFN (10 Knoten):</strong> 8 Zentren $c_i \\in \\{-3.5, \\dots, 3.5\\}$, $\\sigma = 0.5$, Gewichte $w_i = f(c_i) = (7.25, 3.25, 1.25, 1.25, 3.25, 7.25, 13.25, 21.25)^\\top$.</p>
-        <p><strong>(c) Verbesserung:</strong> (1) Mehr Knoten (feinere Schritte), (2) Semi-lineare Rampen oder Sigmoide, (3) Gauß-RBFs, (4) Gradientenabstieg.</p>
-      `
-    },
-    {
-      id: 'task4',
-      title: 'Aufgabe 4: LVQ & SOM',
-      points: 14,
-      prompt: 'Berechne für zwei Klassen, zwei Datenpunkte $p = (1,6)$ und $q = (9,1)$ sowie Codebuch-Vektoren $r_\\circ = (5,4)$ und $r_\\bullet = (7,5)$ bei Lernrate $\\eta = 0.5$ die Anpassung für eine Epoche. (b) SOM-Update für $x = (28,20)$, Winner $(30,20)$, $\\sigma_u = 2$.',
-      solutionHtml: `
-        <p><strong>(a) LVQ:</strong> Punkt $p$: Winner ist $r_\\circ$ (Distanz $20 < 37$). Attraktion $\\vec{r}_\\circ^{(1)} = (5,4) + 0.5(-4, 2) = \\mathbf{(3, 5)^\\top}$.<br>
-        Punkt $q$: Winner ist $r_\\bullet$ (Distanz $20 < 52$). Attraktion $\\vec{r}_\\bullet^{(1)} = (7,5) + 0.5(2, -4) = \\mathbf{(8, 3)^\\top}$.</p>
-        <p><strong>(b) SOM:</strong> Winner: $\\Delta \\vec{r} = 0.5 \\cdot 1 \\cdot (-2, 0) = \\mathbf{(-1, 0)^\\top} \\implies \\vec{r}_{u^*} = \\mathbf{(29, 20)^\\top}$.<br>
-        Nachbarn ($d=1$): $f_{\\text{nb}} = e^{-1/8} \\approx 0.8825 \\implies \\Delta \\vec{r} \\approx 0.4412 \\cdot (x - r)$.</p>
-      `
-    },
-    {
-      id: 'task5',
-      title: 'Aufgabe 5: Hopfield-Netzwerke',
-      points: 14,
-      prompt: 'Gegeben: $w_{12} = -2, w_{23} = -2, w_{13} = 0$, $\\theta = (-1, -2, -1)^\\top$. Zeichne den vollständigen Zustandsgraphen für alle 8 Zustände.',
-      solutionHtml: `
-        <p><strong>Formeln:</strong> $\\text{net}_1 = -2s_2$, $\\text{net}_2 = -2s_1 - 2s_3$, $\\text{net}_3 = -2s_2$. $E = -(-2s_1 s_2 - 2s_2 s_3) - (s_1 + 2s_2 + s_3)$.</p>
-        <p><strong>Stabile Attraktoren (E = -4):</strong> Zustände $\\mathbf{-+-}$ und $\\mathbf{+-+}$. Alle Übergänge zeigen strikt in Richtung niedrigerer Energie!</p>
-      `
-    },
-    {
-      id: 'task6',
-      title: 'Aufgabe 6: Multiple Choice (6 Blöcke)',
-      points: 30,
-      prompt: '30 Multiple-Choice-Aussagen zu allen Vorlesungsthemen (+1 Richtig, -1 Falsch, min. 0 pro Block).',
-      solutionHtml: `
-        <p>Löse die 30 Aussagen direkt im <a href="#/task6" data-tab="task6">Task 6 MCQ-Trainer</a> im Prüfungsmodus. Trage anschließend deine erreichte Punktzahl hier ein.</p>
-      `
-    }
-  ];
-
-  function formatTime(sec) {
-    const m = Math.floor(sec / 60);
-    const s = sec % 60;
-    return `${m}:${String(s).padStart(2, '0')}`;
-  }
-
-  function renderExamView() {
-    container.innerHTML = '';
-
-    examTasks.forEach((t, i) => {
-      const card = document.createElement('article');
-      card.className = 'panel exercise';
-      card.innerHTML = `
-        <div class="exercise-title" style="display:flex; justify-content:space-between; align-items:flex-start;">
-          <div>
-            <div class="label">Klausuraufgabe ${i + 1} · ${t.points} Punkte</div>
-            <h3>${t.title}</h3>
-          </div>
-          <span class="badge">${t.points} P</span>
-        </div>
-        <p>${t.prompt}</p>
-
-        <label class="small muted" for="exam-ans-${t.id}">Eigener Lösungsweg · alternativ auf Papier rechnen:</label>
-        <textarea id="exam-ans-${t.id}" data-note="exam-${t.id}" placeholder="Lösungsschritte, Formeln, Berechnungen …">${state.notes['exam-' + t.id] || ''}</textarea>
-
-        <div class="exam-solution-box" style="display:${examRevealed ? 'block' : 'none'}; margin-top:16px;">
-          <details open class="rule">
-            <summary>Musterlösung</summary>
-            ${t.solutionHtml}
-          </details>
-
-          <div style="margin-top:16px; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
-            <label class="small">
-              <strong>Selbsteinschätzung Punkte (0 – ${t.points}):</strong>
-              <input type="number" data-score="${i}" min="0" max="${t.points}" step="0.5" value="${state.scores[i] || 0}" style="width:70px; margin-left:8px;">
-            </label>
-            <span class="muted small">/ ${t.points} P</span>
-          </div>
-        </div>
-      `;
-
-      container.appendChild(card);
-    });
-
-    renderMath(container);
-
-    // Bind notes
-    container.querySelectorAll('[data-note]').forEach(ta => {
-      ta.addEventListener('input', () => {
-        state.notes[ta.getAttribute('data-note')] = ta.value;
-        saveState();
-      });
-    });
-
-    // Bind scores
-    container.querySelectorAll('[data-score]').forEach(inp => {
-      inp.addEventListener('input', () => {
-        const idx = inp.getAttribute('data-score');
-        const max = examTasks[idx].points;
-        state.scores[idx] = Math.min(max, Math.max(0, parseFloat(inp.value) || 0));
-        saveState();
-        updateTotalScore();
-      });
-    });
-
-    updateTotalScore();
-  }
-
-  function updateTotalScore() {
-    let total = 0;
-    examTasks.forEach((_, i) => {
-      total += parseFloat(state.scores[i] || 0);
-    });
-
-    if (scorePanel && examRevealed) {
-      scorePanel.style.display = 'block';
-      if (scoreText) scoreText.textContent = `${total} / 100 Punkte · Selbst eingeschätzt`;
-    }
-  }
-
-  actionBtn.addEventListener('click', () => {
-    if (!examRunning && !examRevealed) {
-      // Start Exam
-      examRunning = true;
-      examRevealed = false;
-      examRemainingSeconds = 120 * 60;
-      actionBtn.textContent = 'Beenden und Lösungen öffnen';
-      actionBtn.className = 'button-link';
-      statusText.textContent = 'Prüfung läuft (120 Min)';
-      statusText.style.color = 'var(--warn)';
-
-      if (examTimer) clearInterval(examTimer);
-      examTimer = setInterval(() => {
-        examRemainingSeconds--;
-        if (examRemainingSeconds <= 0) {
-          clearInterval(examTimer);
-          finishExam();
-        }
-        if (clockEl) clockEl.textContent = formatTime(examRemainingSeconds);
-      }, 1000);
-
-      renderExamView();
-    } else if (examRunning && !examRevealed) {
-      // Finish Exam
-      finishExam();
-    } else {
-      // Restart Exam
-      examRunning = false;
-      examRevealed = false;
-      examRemainingSeconds = 120 * 60;
-      if (clockEl) clockEl.textContent = '120:00';
-      actionBtn.textContent = 'Bearbeitung starten';
-      actionBtn.className = 'primary';
-      statusText.textContent = 'Prüfungsmodus: Bereit';
-      statusText.style.color = 'var(--ink)';
-      if (scorePanel) scorePanel.style.display = 'none';
-      renderExamView();
-    }
-  });
-
-  function finishExam() {
-    if (examTimer) clearInterval(examTimer);
-    examRunning = false;
-    examRevealed = true;
-    actionBtn.textContent = 'Neue Bearbeitung starten';
-    actionBtn.className = 'primary';
-    statusText.textContent = 'Prüfung beendet · Auswertung';
-    statusText.style.color = 'var(--good)';
-    renderExamView();
-  }
-
-  renderExamView();
-}
