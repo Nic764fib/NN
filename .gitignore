@@ -1,0 +1,8 @@
+NN.zip
+*.pdf
+extracted_*.txt
+lecture_text.txt
+ann_exam.txt
+exam_full.txt
+nn_toc.txt
+.system_generated/
