@@ -603,8 +603,13 @@ function initRoutingAndNavigation() {
         buttons.forEach(btn => {
           if (btn.getAttribute('data-subtab') === activeSubtab) {
             btn.classList.add('active');
+            btn.setAttribute('aria-current', 'page');
+            try {
+              btn.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
+            } catch {}
           } else {
             btn.classList.remove('active');
+            btn.removeAttribute('aria-current');
           }
         });
 
@@ -669,6 +674,7 @@ function initRoutingAndNavigation() {
   }
 
   window.addEventListener('hashchange', handleHash);
+  window.addEventListener('popstate', handleHash);
 
   // Attach click listeners to all navigational links & buttons
   document.addEventListener('click', (e) => {
@@ -676,6 +682,18 @@ function initRoutingAndNavigation() {
     if (link) {
       let targetTab = link.getAttribute('data-tab');
       let targetSubtab = link.getAttribute('data-subtab') || null;
+
+      if (!targetTab) {
+        const parentNav = link.closest('.tabs[data-task]');
+        if (parentNav) {
+          targetTab = parentNav.getAttribute('data-task');
+        } else {
+          const parentSection = link.closest('.module-section');
+          if (parentSection && parentSection.id.startsWith('module-')) {
+            targetTab = parentSection.id.replace('module-', '');
+          }
+        }
+      }
 
       if (!targetTab) {
         const href = link.getAttribute('href') || '';

@@ -330,14 +330,18 @@ p {
 
 .tabs {
   display: flex;
-  gap: 27px;
+  gap: 22px;
   border-bottom: 1px solid var(--line);
-  margin: 30px 0 29px;
+  margin: 28px 0 26px;
   overflow-x: auto;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  padding-bottom: 1px;
 }
 
 .tabs a, .tabs button {
-  padding: 0 0 14px;
+  padding: 0 4px 14px;
   color: var(--muted);
   white-space: nowrap;
   font-size: 14px;
@@ -348,6 +352,7 @@ p {
   text-decoration: none;
   font-weight: 500;
   border-radius: 0;
+  flex-shrink: 0;
   transition: color 0.15s ease, border-color 0.15s ease;
 }
 
