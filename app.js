@@ -395,8 +395,8 @@ const moduleSubtabs = {
     { id: 'theorie', title: 'Borgelt-Theorie' },
     { id: 'vis', title: 'Interaktive Grafik' },
     { id: 'recipe', title: 'Schritt-für-Schritt Anleitung' },
-    { id: 'variation', title: 'Prüfungsvariation A: Delta-Regel' },
-    { id: 'solution', title: 'Musterlösung' }
+    { id: 'solution', title: 'Musterlösung' },
+    { id: 'variation', title: 'Prüfungsvariation A: Delta-Regel' }
   ],
   'task3': [
     { id: 'intuition', title: 'Intuition & Anschauung' },
@@ -461,6 +461,8 @@ function renderFocusPagers() {
     if (!section) return;
     const subtabs = moduleSubtabs[taskId];
     const total = subtabs.length;
+    const prevMod = modulePrevMap[taskId] || { tab: 'overview', title: 'Lernplan & Strategie' };
+    const nextMod = moduleNextMap[taskId] || { tab: 'overview', title: 'Lernplan & Strategie' };
 
     subtabs.forEach((st, idx) => {
       const contentEl = section.querySelector(`.subtab-content[data-section="${st.id}"]`);
@@ -477,7 +479,6 @@ function renderFocusPagers() {
         prevAttrs = `data-tab="${taskId}" data-subtab="${subtabs[idx - 1].id}"`;
         prevLabel = `← Zurück: ${subtabs[idx - 1].title}`;
       } else {
-        const prevMod = modulePrevMap[taskId];
         prevHref = `#/${prevMod.tab}`;
         prevAttrs = `data-tab="${prevMod.tab}"`;
         prevLabel = `← Zurück: ${prevMod.title}`;
@@ -491,7 +492,6 @@ function renderFocusPagers() {
         nextAttrs = `data-tab="${taskId}" data-subtab="${subtabs[idx + 1].id}"`;
         nextLabel = `Weiter: ${subtabs[idx + 1].title} →`;
       } else {
-        const nextMod = moduleNextMap[taskId];
         nextHref = `#/${nextMod.tab}`;
         nextAttrs = `data-tab="${nextMod.tab}"`;
         nextLabel = `Weiter zu ${nextMod.title} →`;
@@ -505,8 +505,36 @@ function renderFocusPagers() {
         <a href="${nextHref}" ${nextAttrs} class="button-link primary">${nextLabel}</a>
       `;
 
-      contentEl.appendChild(pager);
+      if (idx < total - 1) {
+        contentEl.appendChild(pager);
+      } else {
+        const footerEl = section.querySelector('.module-footer-pager');
+        if (footerEl) {
+          footerEl.innerHTML = '';
+          footerEl.appendChild(pager);
+        } else {
+          contentEl.appendChild(pager);
+        }
+      }
     });
+
+    let allPager = section.querySelector('.all-completion-pager');
+    if (!allPager) {
+      allPager = document.createElement('div');
+      allPager.className = 'focus-pager all-completion-pager';
+      allPager.style.display = 'none';
+      allPager.innerHTML = `
+        <a href="#/${prevMod.tab}" data-tab="${prevMod.tab}" class="button-link">← Zurück: ${prevMod.title}</a>
+        <span class="meta">Alle ${total} Ansichten abgeschlossen</span>
+        <a href="#/${nextMod.tab}" data-tab="${nextMod.tab}" class="button-link primary">Weiter zu ${nextMod.title} →</a>
+      `;
+      const footerEl = section.querySelector('.module-footer-pager');
+      if (footerEl && footerEl.parentNode) {
+        footerEl.parentNode.insertBefore(allPager, footerEl.nextSibling);
+      } else {
+        section.appendChild(allPager);
+      }
+    }
   });
 }
 
@@ -568,6 +596,9 @@ function initRoutingAndNavigation() {
         const buttons = tabBar.querySelectorAll('button[data-subtab], a[data-subtab]');
         const contents = moduleSection.querySelectorAll('.subtab-content');
         const activeSubtab = targetSubtab || defaultSubtabs[targetTab] || 'all';
+        const subtabs = moduleSubtabs[targetTab];
+        const lastSubtabId = subtabs ? subtabs[subtabs.length - 1].id : null;
+        const isLastSubtab = (activeSubtab === lastSubtabId);
 
         buttons.forEach(btn => {
           if (btn.getAttribute('data-subtab') === activeSubtab) {
@@ -577,12 +608,24 @@ function initRoutingAndNavigation() {
           }
         });
 
+        const notesPanel = moduleSection.querySelector('.notes-panel');
+        const footerPager = moduleSection.querySelector('.module-footer-pager');
+        const allPager = moduleSection.querySelector('.all-completion-pager');
+
         if (activeSubtab === 'all') {
           contents.forEach(c => c.style.display = 'block');
+          moduleSection.classList.add('all-mode');
+          if (notesPanel) notesPanel.style.display = 'block';
+          if (footerPager) footerPager.style.display = 'none';
+          if (allPager) allPager.style.display = 'flex';
         } else {
+          moduleSection.classList.remove('all-mode');
           contents.forEach(c => {
             c.style.display = (c.getAttribute('data-section') === activeSubtab) ? 'block' : 'none';
           });
+          if (notesPanel) notesPanel.style.display = isLastSubtab ? 'block' : 'none';
+          if (footerPager) footerPager.style.display = isLastSubtab ? 'flex' : 'none';
+          if (allPager) allPager.style.display = 'none';
         }
       }
     }
@@ -666,46 +709,13 @@ function initSubtabs() {
 
   tabBars.forEach(bar => {
     const taskId = bar.getAttribute('data-task');
-    const moduleSection = document.getElementById(`module-${taskId}`);
-    if (!moduleSection) return;
-
     const buttons = bar.querySelectorAll('button[data-subtab], a[data-subtab]');
-    const contents = moduleSection.querySelectorAll('.subtab-content');
 
     buttons.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
-        buttons.forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-
         const targetSubtab = btn.getAttribute('data-subtab');
-
-        if (targetSubtab === 'all') {
-          contents.forEach(c => c.style.display = 'block');
-          history.pushState(null, '', `#/${taskId}/all`);
-        } else {
-          contents.forEach(c => {
-            c.style.display = (c.getAttribute('data-section') === targetSubtab) ? 'block' : 'none';
-          });
-          history.pushState(null, '', `#/${taskId}/${targetSubtab}`);
-        }
-
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
-        const mainEl = document.getElementById('main');
-        if (mainEl) mainEl.scrollTop = 0;
-
-        renderMath(moduleSection);
-
-        // If visualizer is visible, trigger redraw
-        if (targetSubtab === 'vis' || targetSubtab === 'all' || targetSubtab === 'cnn') {
-          if (taskId === 'task1') redrawTLU();
-          if (taskId === 'task2') redrawRBF();
-          if (taskId === 'task3') redrawFuncApprox();
-          if (taskId === 'task4') redrawLVQ();
-          if (taskId === 'task5') redrawHopfield();
-        }
+        navigateTo(taskId, targetSubtab, true);
       });
     });
   });

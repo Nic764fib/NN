@@ -717,14 +717,6 @@ textarea {
   padding-top: 20px;
 }
 
-.focus-pager {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin: 22px 0 35px;
-}
-
 /* ==========================================================================
    Tables & Collapsibles
    ========================================================================== */
@@ -1486,5 +1478,15 @@ summary:hover {
   .focus-pager .meta {
     order: -1;
   }
+}
+
+.all-mode .subtab-content .focus-pager {
+  display: none !important;
+}
+
+.notes-panel {
+  margin-top: 28px;
+  border-top: 2px solid var(--line);
+  padding-top: 22px;
 }
 
