@@ -26,6 +26,19 @@
 
 ## Browserprüfung
 
+### Ergänzung: angeleitete Experimente
+
+- `node tests/labs.test.js`: 6.782 erfolgreiche Prüfungen. Regressions-, BCE-, quadratische und Backpropagation-Ableitungen gegen numerische Differenzen; TLU-Polygon gegen unabhängigen Ray-Casting-Test; RBF-Zielgebiet über ein Punktraster; Dreiecksinterpolation für alle angebotenen Neuronenzahlen.
+- Originalwerte für LVQ und SOM reproduziert; Eingabedaten werden beim Update nicht mutiert. Alle asynchronen Hopfield-Einzelübergänge für beide angebotenen Gewichtsvarianten haben nichtsteigende Energie. Der synchrone Originalzyklus und echte Zustandswechsel bei gleicher Energie wurden geprüft.
+- c-Means-Zuordnung, Schwerpunktbildung, Fehlerabnahme und Beibehaltung leerer Cluster geprüft.
+- Alle zwölf Experimente im Browser bedient: Parameteränderungen, Beispielknöpfe, beide Fehlerschritte, Updates, Rückwärtsschritte, Reset und alle zwölf Verständnisfragen. Die Original-LVQ-Endwerte und der Hopfield-Zyklus stimmen auch in der Oberfläche.
+- Backpropagation zeigt nach Übernahme die tatsächlich aktualisierten Gewichte und Biaswerte; eine Änderung der Lernrate bewahrt diesen Parameterzustand.
+- Alle 49 vorhandenen Kapitel-Unteransichten erneut geöffnet: sichtbar und ohne KaTeX- oder Konsolenfehler. Direktsprung von der Startseite zum SOM-Experiment einschließlich Tastaturfokus geprüft.
+- Alle zwölf Experimente bei 390 Pixeln Fensterbreite kontrolliert. Regler, Zahlenbeschriftungen und SVG-Schriftgrößen für schmale Ansichten angepasst; Rechentabellen bleiben innerhalb eigener Scrollbereiche. Helles und dunkles Design visuell geprüft.
+- Die bestehende Prüfung mit 750 Aufgabenvarianten, 90 MC-Aussagen und 7.940 TeX-Ausdrücken ist weiterhin erfolgreich.
+
+### Bestehende Funktionen (Prüfung vor der Ergänzung)
+
 - Alle 59 Kapitelansichten über die tatsächliche Navigation geöffnet: keine Laufzeit- oder KaTeX-Fehler.
 - Regressionseingaben werden bewertet; LVQ-Simulator mit Klassen erreicht nach zwei Punkten die oben angegebenen Werte.
 - Klausur gestartet, Notiz und MC-Antwort eingegeben, Seite neu geladen: Bearbeitungsstand bleibt erhalten; vor Abgabe sind keine Musterlösungen sichtbar.

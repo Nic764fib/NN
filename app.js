@@ -335,6 +335,7 @@ const theoryEntries = [
 document.addEventListener('DOMContentLoaded', () => {
   installCorrections();
   installCourse();
+  installLearningLabs();
   initTheme();
   initRoutingAndNavigation();
   initSubtabs();
