@@ -6,3 +6,5 @@ ann_exam.txt
 exam_full.txt
 nn_toc.txt
 .system_generated/
+.study-sources/
+.sites-runtime/

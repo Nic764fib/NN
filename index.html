@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#fafbfc">
-  <title>ANN &amp; Deep Learning | Borgelt Klausur Masterplattform</title>
+  <title>ANN &amp; Deep Learning | Borgelt Prüfungsvorbereitung</title>
   <meta name="description" content="Interaktive Prüfungsvorbereitung für die Borgelt-Klausur zu künstlichen neuronalen Netzen: TLU, RBF, Funktionsapproximation, LVQ/SOM, Hopfield und MCQ.">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='8' fill='%23244cdb'/%3E%3Ctext x='20' y='28' text-anchor='middle' fill='white' font-size='22' font-family='sans-serif' font-weight='bold'%3ENN%3C/text%3E%3C/svg%3E">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="learning.css">
   <!-- KaTeX for fast, crisp mathematical typography -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
@@ -33,27 +34,27 @@
         <a class="nav-item" href="#/task1" data-tab="task1">
           <span class="num">01</span>
           <span>Grundlagen &amp; TLU</span>
-          <span class="badge">14 P</span>
+          <span class="badge">Training</span>
         </a>
         <a class="nav-item" href="#/task3" data-tab="task3">
           <span class="num">02</span>
           <span>MLP &amp; Backprop</span>
-          <span class="badge">14 P</span>
+          <span class="badge">Training</span>
         </a>
         <a class="nav-item" href="#/task2" data-tab="task2">
           <span class="num">03</span>
           <span>RBF-Netzwerke</span>
-          <span class="badge">14 P</span>
+          <span class="badge">Training</span>
         </a>
         <a class="nav-item" href="#/task4" data-tab="task4">
           <span class="num">04</span>
           <span>LVQ &amp; SOM</span>
-          <span class="badge">14 P</span>
+          <span class="badge">Training</span>
         </a>
         <a class="nav-item" href="#/task5" data-tab="task5">
           <span class="num">05</span>
           <span>Hopfield &amp; Boltzmann</span>
-          <span class="badge">14 P</span>
+          <span class="badge">Training</span>
         </a>
         <a class="nav-item" href="#/deeplearning" data-tab="deeplearning">
           <span class="num">06</span>
@@ -88,7 +89,7 @@
 
       <div class="sidebar-bottom">
         <div><strong>Klausurtermin: 28. September</strong></div>
-        <div class="meta" style="margin-top:4px;">120 Min · 100 Punkte · Keine Hilfsmittel</div>
+        <div class="meta" style="margin-top:4px;">120 Min · 100 Punkte</div>
         <div id="storage-status" class="rule">Fortschritt wird in diesem Browser gespeichert.</div>
       </div>
     </aside>
@@ -114,7 +115,7 @@
           <div class="eyebrow">Lernplan &amp; Prüfungsarchitektur</div>
           <h1>ANN &amp; Deep Learning</h1>
           <p class="lead">
-            Borgelt-Klausur Masterplattform: 5 wiederkehrende Rechen- und Grafikaufgaben (70 P) + Multiple-Choice Intensivtrainer (30 P). Präzise Borgelt-Mathematik, interaktive Visualisierungen und praxiserprobte Schritt-für-Schritt Anleitungen.
+            Regression und Klassifikation verstehen, Aufgaben aus der Übersicht 2024 selbst rechnen und mit neuen Varianten überprüfen.
           </p>
 
           <div class="two-col">
@@ -128,8 +129,8 @@
 
             <section class="panel">
               <div class="label">Bis zum 28. September</div>
-              <h3>Ohne Hilfsmittel · 120 Minuten</h3>
-              <p class="small">5 Rechenaufgaben (je ca. 14 P) + 30 MC-Aussagen (30 P mit Minuspunkte-Regel). Zeichnungen auf Papier ausführen. Lösungen erst nach eigenem Versuch prüfen.</p>
+              <h3>120 Minuten üben</h3>
+              <p class="small">5 Rechenaufgaben (im Training je 14 P) + 30 MC-Aussagen (30 P mit Minuspunkte-Regel). Zeichnungen auf Papier ausführen. Lösungen erst nach eigenem Versuch prüfen.</p>
               <div class="actions">
                 <a href="#/abfragen" class="button-link" data-tab="abfragen">Formeln abfragen →</a>
                 <a href="#/klausur" class="button-link primary" data-tab="klausur">120-Minuten Training →</a>
@@ -144,9 +145,9 @@
               <div>
                 <h3>Modul 1: Grundlagen &amp; Threshold Logic Units (TLU)</h3>
                 <p>3-Layer Perzeptron für nicht-konvexe Polygone · Halbebenen, Normalenform &amp; Delta-Regel per Hand</p>
-                <span class="meta">14 Punkte · Interaktives SVG · Folien 17, 21, 27, 44–49</span>
+                <span class="meta">14 Trainingspunkte · Interaktives SVG · Folien 17, 21, 27, 44–49</span>
               </div>
-              <span class="badge" id="badge-status-task1">14 P</span>
+              <span class="badge" id="badge-status-task1">Training</span>
             </a>
 
             <a class="module-row" href="#/task3" data-tab="task3">
@@ -154,9 +155,9 @@
               <div>
                 <h3>Modul 2: Multi-Layer Perceptrons (MLP) &amp; Backpropagation</h3>
                 <p>Kollaps-Beweis linearer Netze · Funktionsapprox. mit relativen Stufen $\Delta y_i$ &amp; 1-Schritt Backprop per Hand</p>
-                <span class="meta">14 Punkte · Interaktiver Plot · Folien 93, 100–103, 183</span>
+                <span class="meta">14 Trainingspunkte · Interaktiver Plot · Folien 93, 100–103, 183</span>
               </div>
-              <span class="badge" id="badge-status-task3">14 P</span>
+              <span class="badge" id="badge-status-task3">Training</span>
             </a>
 
             <a class="module-row" href="#/task2" data-tab="task2">
@@ -164,9 +165,9 @@
               <div>
                 <h3>Modul 3: Radial Basis Function Networks (RBFN)</h3>
                 <p>Fliege / Bowtie Konstruktion · Minkowski-Metriken ($L_1, L_2, L_\infty$), lineare Ausgabe &amp; c-Means per Hand</p>
-                <span class="meta">14 Punkte · Interaktiver Canvas · Folien 288–291, 310–314</span>
+                <span class="meta">14 Trainingspunkte · Interaktiver Canvas · Folien 288–291, 310–314</span>
               </div>
-              <span class="badge" id="badge-status-task2">14 P</span>
+              <span class="badge" id="badge-status-task2">Training</span>
             </a>
 
             <a class="module-row" href="#/task4" data-tab="task4">
@@ -174,9 +175,9 @@
               <div>
                 <h3>Modul 4: Vektorquantisierung (LVQ) &amp; SOM</h3>
                 <p>Numerische Vektor-Updates: Attraktion/Repulsion (Fall I &amp; II) &amp; Gauß-Gitter topologische Abbildung</p>
-                <span class="meta">14 Punkte · Numerischer Simulator · Folien 336, 364</span>
+                <span class="meta">14 Trainingspunkte · Numerischer Simulator · Folien 336, 364</span>
               </div>
-              <span class="badge" id="badge-status-task4">14 P</span>
+              <span class="badge" id="badge-status-task4">Training</span>
             </a>
 
             <a class="module-row" href="#/task5" data-tab="task5">
@@ -184,9 +185,9 @@
               <div>
                 <h3>Modul 5: Hopfield-Netzwerke &amp; Boltzmann-Maschinen</h3>
                 <p>Vollständiger 8-Zustandsgraph, Netzeingaben, Lyapunov-Energiefunktion $E$ ($\Delta E \le 0$) und Attraktoren</p>
-                <span class="meta">14 Punkte · Interaktiver Graph · Folien 380–388</span>
+                <span class="meta">14 Trainingspunkte · Interaktiver Graph · Folien 380–388</span>
               </div>
-              <span class="badge" id="badge-status-task5">14 P</span>
+              <span class="badge" id="badge-status-task5">Training</span>
             </a>
 
             <a class="module-row" href="#/deeplearning" data-tab="deeplearning">
@@ -203,8 +204,8 @@
               <span class="num">07</span>
               <div>
                 <h3>Modul 7: Multiple Choice Exam Trainer</h3>
-                <p>6 Blöcke à 5 Aussagen mit Minuspunkten (+1 / -1, min. 0 pro Block) &amp; exakten Foliennachweisen</p>
-                <span class="meta">30 Punkte · Prüfungs- &amp; Lernmodus · Gesamte Vorlesung</span>
+                <p>90 Trainingsaussagen in Themenblöcken; je Durchlauf 30 gemischte oder 5 gezielte Aussagen</p>
+                <span class="meta">30 Punkte · Kernfragen, Themenblöcke und gemischte Durchläufe</span>
               </div>
               <span class="badge" id="badge-status-task6">30 P</span>
             </a>
@@ -214,7 +215,7 @@
               <div>
                 <h3>Sätze &amp; Definitionen abfragen</h3>
                 <p>Flashcard-Trainer: Formuliere alle Kernformeln &amp; Voraussetzungen aus dem Gedächtnis</p>
-                <span class="meta">Gedächtnistraining · 12 Borgelt-Kernformeln · Selbsteinschätzung</span>
+                <span class="meta">Gedächtnistraining · 33 Lernkarten · Selbsteinschätzung</span>
               </div>
               <span class="badge" id="badge-status-abfragen">Formeln</span>
             </a>
@@ -260,7 +261,7 @@
                     <td><strong>Task 1</strong></td>
                     <td>Threshold Logic Units (TLU)</td>
                     <td>Grafisch / Perceptron-Netz</td>
-                    <td>ca. 14 P</td>
+                    <td>14 P (Training)</td>
                     <td>Halbebenen-Zerlegung &amp; Prüfungsvariation A: Delta-Regel per Hand (Online &amp; Batch)</td>
                     <td><a href="#/task1" data-tab="task1" class="button-link small">Öffnen →</a></td>
                   </tr>
@@ -268,7 +269,7 @@
                     <td><strong>Task 2</strong></td>
                     <td>Radial Basis Functions (RBF)</td>
                     <td>Konstruktion / Parameter</td>
-                    <td>ca. 14 P</td>
+                    <td>14 P (Training)</td>
                     <td>Minkowski-Metriken ($L_1, L_\infty$), lineare Ausgabe &amp; Prüfungsvariation C: c-Means Clustering</td>
                     <td><a href="#/task2" data-tab="task2" class="button-link small">Öffnen →</a></td>
                   </tr>
@@ -276,7 +277,7 @@
                     <td><strong>Task 3</strong></td>
                     <td>Funktionsapproximation &amp; MLP</td>
                     <td>Netzwerk-Entwurf (MLP &amp; RBF)</td>
-                    <td>ca. 14 P</td>
+                    <td>14 P (Training)</td>
                     <td>Relative Stufen $\Delta y_i$, Rampen &amp; Prüfungsvariation B: 1-Schritt Backprop per Hand</td>
                     <td><a href="#/task3" data-tab="task3" class="button-link small">Öffnen →</a></td>
                   </tr>
@@ -284,7 +285,7 @@
                     <td><strong>Task 4</strong></td>
                     <td>LVQ &amp; Self-Organizing Maps (SOM)</td>
                     <td>Numerische Vektor-Updates</td>
-                    <td>ca. 14 P</td>
+                    <td>14 P (Training)</td>
                     <td>Attraktions-/Repulsionsregeln (Fall I &amp; II) &amp; Gauß-Nachbarschaft auf dem Gitter</td>
                     <td><a href="#/task4" data-tab="task4" class="button-link small">Öffnen →</a></td>
                   </tr>
@@ -292,7 +293,7 @@
                     <td><strong>Task 5</strong></td>
                     <td>Hopfield-Netzwerke</td>
                     <td>Zustandsgraph &amp; Energie</td>
-                    <td>ca. 14 P</td>
+                    <td>14 P (Training)</td>
                     <td>Asynchrone Updates, Lyapunov-Energiefunktion $E$ ($\Delta E \le 0$), Attraktoren</td>
                     <td><a href="#/task5" data-tab="task5" class="button-link small">Öffnen →</a></td>
                   </tr>
@@ -326,12 +327,12 @@
         <!-- MODULE 1: TASK 1 - THRESHOLD LOGIC UNITS (TLU)          -->
         <!-- ======================================================= -->
         <section id="module-task1" class="module-section" style="display:none;">
-          <div class="eyebrow">Modul 01 · 14 Punkte · Originalklausur 10.07.2024 + Prüfungsvariationen</div>
+          <div class="eyebrow">Modul 01 · 14 Trainingspunkte · Aufgabenübersicht 10.07.2024 + Prüfungsvariationen</div>
           <h1>Threshold Logic Units: 3-Layer Perceptron für Polygone</h1>
           <p class="lead">
             Konstruiere ein 3-schichtiges Perzeptron, das das Innere der gegebenen Fläche mit den Eckpunkten $(1,4)$, $(4,4)$, $(3,1)$, $(3,3)$ auf $+1$ und das Äußere auf $0$ abbildet.
           </p>
-          <p class="meta">Quelle: Klausur 10.07.2024, Aufgabe 1 · Folien 17, 21, 27 · Keine Hilfsmittel</p>
+          <p class="meta">Quelle: Klausur 10.07.2024, Aufgabe 1 · Folien 17, 21, 27</p>
 
           <!-- Navigation Subtabs -->
           <nav class="tabs" data-task="task1" aria-label="Task 1 Ansichten">
@@ -413,7 +414,7 @@
 
           <div class="subtab-content" data-section="theorie">
             <div class="panel theorem">
-              <div class="label">Borgelt-Originaldefinition: Threshold Logic Unit (TLU) · Folie 17 &amp; 21</div>
+              <div class="label">Definition nach den Folien: Threshold Logic Unit (TLU) · Folie 17 &amp; 21</div>
               <h3>Hyperebenen-Trennung &amp; Schwellenwert</h3>
               <p>
                 Ein TLU berechnet mit Eingaben $\vec{x} \in \mathbb{R}^n$, Gewichten $\vec{w} \in \mathbb{R}^n$ und Schwellenwert $\theta \in \mathbb{R}$:
@@ -535,41 +536,7 @@
           </div>
 
           <!-- Musterlösung -->
-          <div class="subtab-content" data-section="solution">
-            <div class="panel solution">
-              <div class="label">Musterlösung für die Klausur · Volle Punktzahl (ca. 14 Punkte)</div>
-              <h3>1. Netzwerkarchitektur</h3>
-              <p>3-Layer Perceptron mit 2 Eingängen $(x_1, x_2)$, 5 Neuronen in Hidden Layer 1, 2 Neuronen in Hidden Layer 2, 1 Ausgangsneuron $y$.</p>
-
-              <h3 style="margin-top:16px;">2. Parameter Layer 1 (Halbebenen)</h3>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>Neuron</th><th>Bedeutung / Kante</th><th>$w_{i1}$</th><th>$w_{i2}$</th><th>$\theta_i$</th><th>Bedingung ($w_1 x_1 + w_2 x_2 \ge \theta$)</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>$L_1$</td><td>Obere Horizontale</td><td>0</td><td>-1</td><td>-4</td><td>$-x_2 \ge -4 \iff x_2 \le 4$</td></tr>
-                    <tr><td>$L_2$</td><td>Hypotenuse $T_1$ (durch $(1,4)$ &amp; $(3,3)$)</td><td>1</td><td>2</td><td>9</td><td>$x_1 + 2x_2 \ge 9$</td></tr>
-                    <tr><td>$L_3$</td><td>Rechte Kante $T_2$ (durch $(3,1)$ &amp; $(4,4)$)</td><td>-3</td><td>1</td><td>-8</td><td>$-3x_1 + x_2 \ge -8 \iff 3x_1 - x_2 \le 8$</td></tr>
-                    <tr><td>$L_4$</td><td>Vertikale Trennlinie (für $T_1$)</td><td>-1</td><td>0</td><td>-3</td><td>$-x_1 \ge -3 \iff x_1 \le 3$</td></tr>
-                    <tr><td>$L_5$</td><td>Vertikale Trennlinie (für $T_2$)</td><td>1</td><td>0</td><td>3</td><td>$x_1 \ge 3$</td></tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <h3 style="margin-top:16px;">3. Parameter Layer 2 (Konjunktionen / Dreiecke)</h3>
-              <ul>
-                <li>$C_1$ (Dreieck $T_1$): Gewichte von $(L_1, L_2, L_4) = (1, 1, 1)$, alle anderen $0$. Schwellenwert $\theta_{C1} = 3$.</li>
-                <li>$C_2$ (Dreieck $T_2$): Gewichte von $(L_1, L_3, L_5) = (1, 1, 1)$, alle anderen $0$. Schwellenwert $\theta_{C2} = 3$.</li>
-              </ul>
-
-              <h3 style="margin-top:16px;">4. Parameter Layer 3 (Disjunktion / Vereinigung)</h3>
-              <ul>
-                <li>$Y$ (Vereinigung $T_1 \cup T_2$): Gewichte von $(C_1, C_2) = (1, 1)$, Schwellenwert $\theta_Y = 1$.</li>
-                <li>Ausgabe: $y = 1$ für Punkte im Inneren des Polygons, $y = 0$ außerhalb.</li>
-              </ul>
-            </div>
-          </div>
+          <div class="subtab-content" data-section="solution"><!-- Content maintained in corrections.js. --></div>
 
           <!-- Prüfungsvariation A: Delta-Regel per Hand -->
           <div class="subtab-content" data-section="variation">
@@ -583,7 +550,7 @@
               <div class="calc-box">
                 <div class="calc-header">
                   <span class="calc-tag">Formelsammlung</span>
-                  <span>Borgelt-Originalformeln: Delta-Regel (Folie 41)</span>
+                  <span>Formeln nach den Folien: Delta-Regel (Folie 41)</span>
                 </div>
                 <div class="calc-step-row"><strong>Fehler:</strong> $e = o - y \in \{-1, 0, +1\}$</div>
                 <div class="calc-step-row"><strong>Schwellenwert-Anpassung:</strong> $\Delta \theta = -\eta (o - y)$</div>
@@ -661,12 +628,12 @@
         <!-- MODULE 02: TASK 3 - MULTI-LAYER PERCEPTRONS & BACKPROP   -->
         <!-- ======================================================= -->
         <section id="module-task3" class="module-section" style="display:none;">
-          <div class="eyebrow">Modul 02 · 14 Punkte · Originalklausur 10.07.2024 + Prüfungsvariationen</div>
+          <div class="eyebrow">Modul 02 · 14 Trainingspunkte · Aufgabenübersicht 10.07.2024 + Prüfungsvariationen</div>
           <h1>Multi-Layer Perceptrons: Funktionsapproximation &amp; Backpropagation</h1>
           <p class="lead">
             Approximiere die Parabel $y = x^2 + 2x + 2$ im Intervall $[-4, 4]$ mit $8 \le n \le 12$ Knoten mittels 3-Layer Perceptron (Methode relativer Stufen) und führe Einzelschritte des Backpropagation-Algorithmus per Hand durch.
           </p>
-          <p class="meta">Quelle: Klausur 10.07.2024, Aufgabe 3 · Folien 93, 100–103, 183 · Keine Hilfsmittel</p>
+          <p class="meta">Quelle: Klausur 10.07.2024, Aufgabe 3 · Folien 93, 100–103, 183</p>
 
           <nav class="tabs" data-task="task3" aria-label="Task 3 Ansichten">
             <button class="active" data-tab="task3" data-subtab="intuition">Intuition &amp; Anschauung</button>
@@ -717,7 +684,7 @@
 
           <div class="subtab-content" data-section="theorie">
             <div class="panel theorem">
-              <div class="label">Borgelt-Originalkonstruktion: Relative Stufenhöhen &amp; Rampen · Folie 100–103</div>
+              <div class="label">Konstruktion nach den Folien: Relative Stufenhöhen &amp; Rampen · Folie 100–103</div>
               <h3>Universelle Approximation &amp; Formelapparat</h3>
               <p><strong>MLP mit relativen Stufenhöhen (Folie 100):</strong></p>
               $$y = y_0 + \sum_{i=1}^k \Delta y_i \cdot \Theta(x - x_i), \quad \text{mit } \Delta y_i = y_i - y_{i-1}, \quad y_0 = f(x_0)$$
@@ -727,7 +694,7 @@
                 <summary>Beim Formulieren prüfen</summary>
                 <p class="small">• $y_0$ ist der Funktionswert am linken Intervallrand $f(a)$ und fungiert als Schwellenwert/Bias am Ausgangsneuron.</p>
                 <p class="small">• Relative Stufen $\Delta y_i = y_i - y_{i-1}$ verhindern das Nachjustieren aller Folgegewichte bei lokaler Änderung.</p>
-                <p class="small">• Universeller Approximationssatz (Hornik 1989 / Leshno 1993): Ein 3-Schicht-MLP kann jede stetige Funktion auf einer kompakten Menge mit beliebiger Genauigkeit bezüglich des maximalen Fehlers approximieren.</p>
+                <p class="small">• Universeller Approximationssatz (Folie 104): Mit stetiger, beschränkter, nichtkonstanter Hidden-Aktivierung, genügend Hidden-Neuronen und linearem Ausgang kann ein MLP jede stetige Funktion auf einer kompakten Menge beliebig genau im maximalen Fehler approximieren. Dies garantiert kein erfolgreiches Training.</p>
               </details>
             </div>
           </div>
@@ -741,10 +708,7 @@
                   <span style="font-weight:600;">Netzwerk-Typ:</span>
                   <div class="toggle-group" id="funcModelToggle">
                     <button class="toggle-btn active" data-model="mlp-step">MLP (Stufen)</button>
-                    <button class="toggle-btn" data-model="mlp-linear">MLP (Rampen)</button>
-                    <button class="toggle-btn" data-model="rbf-rect">RBFN (Rechtecke)</button>
                     <button class="toggle-btn" data-model="rbf-tri">RBFN (Dreiecke)</button>
-                    <button class="toggle-btn" data-model="rbf-gauss">RBFN (Gauß)</button>
                   </div>
                 </div>
                 <div class="vis-controls-group">
@@ -767,36 +731,7 @@
           </div>
 
           <!-- Stützstellen-Tabelle -->
-          <div class="subtab-content" data-section="table">
-            <div class="panel">
-              <div class="label">Stützstellen &amp; Schrittweiten für $[-4, 4]$ ($k = 8$ Intervalle, $\Delta x = 1$)</div>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Index $i$</th>
-                      <th>$x_i$</th>
-                      <th>$y_i = x_i^2 + 2x_i + 2$</th>
-                      <th>$\Delta y_i = y_i - y_{i-1}$ (MLP)</th>
-                      <th>RBF Zentrum $c_i$</th>
-                      <th>RBF Gewicht $w_i = f(c_i)$</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr><td>0</td><td>-4</td><td>$(-4)^2 + 2(-4) + 2 = 10$</td><td>Startwert $y_0 = 10$</td><td>-</td><td>-</td></tr>
-                    <tr><td>1</td><td>-3</td><td>$(-3)^2 + 2(-3) + 2 = 5$</td><td>$5 - 10 = \mathbf{-5}$</td><td>-3.5</td><td>$(-3.5)^2 + 2(-3.5) + 2 = 7.25$</td></tr>
-                    <tr><td>2</td><td>-2</td><td>$(-2)^2 + 2(-2) + 2 = 2$</td><td>$2 - 5 = \mathbf{-3}$</td><td>-2.5</td><td>$(-2.5)^2 + 2(-2.5) + 2 = 3.25$</td></tr>
-                    <tr><td>3</td><td>-1</td><td>$(-1)^2 + 2(-1) + 2 = 1$</td><td>$1 - 2 = \mathbf{-1}$</td><td>-1.5</td><td>$(-1.5)^2 + 2(-1.5) + 2 = 1.25$</td></tr>
-                    <tr><td>4</td><td>0</td><td>$0^2 + 2(0) + 2 = 2$</td><td>$2 - 1 = \mathbf{+1}$</td><td>-0.5</td><td>$(-0.5)^2 + 2(-0.5) + 2 = 1.25$</td></tr>
-                    <tr><td>5</td><td>1</td><td>$1^2 + 2(1) + 2 = 5$</td><td>$5 - 2 = \mathbf{+3}$</td><td>0.5</td><td>$(0.5)^2 + 2(0.5) + 2 = 3.25$</td></tr>
-                    <tr><td>6</td><td>2</td><td>$2^2 + 2(2) + 2 = 10$</td><td>$10 - 5 = \mathbf{+5}$</td><td>1.5</td><td>$(1.5)^2 + 2(1.5) + 2 = 7.25$</td></tr>
-                    <tr><td>7</td><td>3</td><td>$3^2 + 2(3) + 2 = 17$</td><td>$17 - 10 = \mathbf{+7}$</td><td>2.5</td><td>$(2.5)^2 + 2(2.5) + 2 = 13.25$</td></tr>
-                    <tr><td>8</td><td>4</td><td>$4^2 + 2(4) + 2 = 26$</td><td>$26 - 17 = \mathbf{+9}$</td><td>3.5</td><td>$(3.5)^2 + 2(3.5) + 2 = 21.25$</td></tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <div class="subtab-content" data-section="table"><!-- Content maintained in corrections.js. --></div>
 
           <!-- Schritt-für-Schritt Anleitung -->
           <div class="subtab-content" data-section="recipe">
@@ -827,44 +762,7 @@
           </div>
 
           <!-- Musterlösung -->
-          <div class="subtab-content" data-section="solution">
-            <div class="panel solution">
-              <div class="label">Musterlösung für die Klausur · Volle Punktzahl (ca. 14 Punkte)</div>
-              <h3>Teil a: 3-Layer Perceptron ($n = 10$ Knoten gesamt, $8 \le n \le 12$)</h3>
-              <ul>
-                <li><strong>Architektur:</strong> 1 Eingangsneuron $x$, 8 Hidden-Neuronen $u_1, \dots, u_8$, 1 Ausgangsneuron $y$ (Gesamtknotenzahl: $1 + 8 + 1 = 10$).</li>
-                <li><strong>Eingang zu Hidden:</strong> Alle Gewichte $w_{ix} = 1$.</li>
-                <li><strong>Schwellenwerte Hidden:</strong> $\theta_i = x_i \in \{-3, -2, -1, 0, 1, 2, 3, 4\}$. Aktivierungsfunktion ist die Sprungfunktion $\Theta(\text{net} - \theta)$.</li>
-                <li><strong>Hidden zu Ausgang:</strong> Gewichte sind die relativen Stufenhöhen $\Delta y_i = y_i - y_{i-1}$:<br>
-                  $\vec{w}_{\text{out}} = (-5, -3, -1, +1, +3, +5, +7, +9)^\top$.
-                </li>
-                <li><strong>Ausgangsneuron:</strong> Linear mit Schwellenwert bzw. Bias $-\theta_{\text{out}} = y_0 = 10$ (entspricht $f(x_0) = f(-4)$).</li>
-              </ul>
-
-              <h3 style="margin-top:16px;">Teil b: Radial Basis Function Network ($n = 10$ Knoten gesamt)</h3>
-              <ul>
-                <li><strong>Architektur:</strong> 1 Eingangsneuron $x$, 8 Hidden-Neuronen $v_1, \dots, v_8$, 1 Ausgangsneuron $y$.</li>
-                <li><strong>Zentren &amp; Radien:</strong> Zentren auf die Mitten der 8 Intervalle legen:<br>
-                  $c_i \in \{-3.5, -2.5, -1.5, -0.5, 0.5, 1.5, 2.5, 3.5\}$, Radius $\sigma = 0.5$, Distanz $d(x, c_i) = |x - c_i|$.
-                </li>
-                <li><strong>Aktivierungsfunktion:</strong> Rechteckfunktion $f_{\text{act}}(\text{net}, \sigma) = 1$ falls $\text{net} \le \sigma$, sonst $0$.</li>
-                <li><strong>Hidden zu Ausgang:</strong> Gewichte entsprechen den Funktionswerten an den Zentren $w_i = f(c_i)$:<br>
-                  $\vec{w} = (7.25, 3.25, 1.25, 1.25, 3.25, 7.25, 13.25, 21.25)^\top$.
-                </li>
-                <li><strong>Ausgangsneuron:</strong> Lineare Aktivierung mit $\theta = 0$.</li>
-              </ul>
-
-              <h3 style="margin-top:16px;">Teil c: Mindestens 2 Möglichkeiten zur Verbesserung der Approximation</h3>
-              <div class="steps">
-                <ol>
-                  <li><strong>Erhöhung der Knotenanzahl (feinere Diskretisierung):</strong> Durch eine größere Anzahl an Intervallen ($\Delta x \to 0$) sinkt der Approximationsfehler gegen 0 (Universeller Approximationssatz, Folie 99).</li>
-                  <li><strong>Verwendung semi-linearer oder glatter Aktivierungsfunktionen (Folie 102–103):</strong> Statt starrer Stufenfunktionen werden beim MLP semi-lineare Rampenfunktionen (piecewise linear) oder glatte Sigmoide (z. B. Logistische Funktion, Tangens hyperbolicus) eingesetzt.</li>
-                  <li><strong>Gaußsche oder Dreiecks-Aktivierungsfunktionen im RBFN (Folie 296–297):</strong> Dreiecksfunktionen erzeugen stückweise lineare Interpolation; Gaußfunktionen $e^{-\frac{d^2}{2\sigma^2}}$ liefern eine beliebig oft differenzierbare, glatte Approximation.</li>
-                  <li><strong>Optimierung der Parameter durch Fehlerrückführung (Backpropagation / Training):</strong> Statt heuristischer Festlegung von Stützstellen werden Zentren, Breiten und Gewichte über Gradientenabstieg optimiert.</li>
-                </ol>
-              </div>
-            </div>
-          </div>
+          <div class="subtab-content" data-section="solution"><!-- Content maintained in corrections.js. --></div>
 
           <!-- Prüfungsvariation B: Einzelschritt Backpropagation per Hand -->
           <div class="subtab-content" data-section="variation">
@@ -878,7 +776,7 @@
               <div class="calc-box">
                 <div class="calc-header">
                   <span class="calc-tag">Klausur-Anleitung</span>
-                  <span>Borgelt-Originalregeln: 1-Schritt Backpropagation (Folie 183)</span>
+                  <span>Regeln nach den Folien: 1-Schritt Backpropagation (Folie 183)</span>
                 </div>
                 <ol class="calc-steps">
                   <li>
@@ -961,12 +859,12 @@
         <!-- MODULE 03: TASK 2 - RADIAL BASIS FUNCTIONS (RBF)         -->
         <!-- ======================================================= -->
         <section id="module-task2" class="module-section" style="display:none;">
-          <div class="eyebrow">Modul 03 · 14 Punkte · Originalklausur 10.07.2024 + Prüfungsvariationen</div>
+          <div class="eyebrow">Modul 03 · 14 Trainingspunkte · Aufgabenübersicht 10.07.2024 + Prüfungsvariationen</div>
           <h1>Radial Basis Functions: Fliege / Bowtie &amp; c-Means Clustering</h1>
           <p class="lead">
             Konstruiere ein RBF-Netzwerk für die 2D-Fliege (Bowtie) mit Minkowski-Metriken ($L_1, L_2, L_\infty$) und linearer Ausgabe, approximiere Funktionen mit RBFs (Klausuraufgabe 3b) und führe c-Means Clustering per Hand durch.
           </p>
-          <p class="meta">Quelle: Klausur 10.07.2024, Aufgabe 2 &amp; 3b · Folien 288–291, 310–314 · Keine Hilfsmittel</p>
+          <p class="meta">Quelle: Klausur 10.07.2024, Aufgabe 2 &amp; 3b · Folien 288–291, 310–314</p>
 
           <nav class="tabs" data-task="task2" aria-label="Task 2 Ansichten">
             <button class="active" data-tab="task2" data-subtab="intuition">Intuition &amp; Anschauung</button>
@@ -1004,7 +902,7 @@
                 <div class="calc-step-row">
                   $$f_{\text{act}}(\text{net}_{\text{out}}, \theta) = \text{net}_{\text{out}} - \theta, \quad \theta = 0, \quad f_{\text{out}}(a) = a$$
                 </div>
-                <p>Das Ausgangsneuron berechnet lediglich die Linearkombination der Hidden-Neuronen: $y = \sum_{i} w_i \cdot \text{out}_i$. Wer hier einen Schwellenwertschalter einbaut, verliert in der Klausur Punkte!</p>
+                <p>Das Ausgangsneuron berechnet lediglich die Linearkombination der Hidden-Neuronen: $y = \sum_{i} w_i \cdot \text{out}_i$. Ein zusätzlicher Schwellenwertschalter wäre ein anderes Modell.</p>
               </div>
 
               <h4 style="margin-top:18px;">4. Bowtie-Konstruktion durch Differenzbildung (Fliegen-Form)</h4>
@@ -1018,7 +916,7 @@
 
           <div class="subtab-content" data-section="theorie">
             <div class="panel theorem">
-              <div class="label">Borgelt-Originaldefinition: RBF-Netzwerk &amp; Minkowski-Familie · Folie 288–291</div>
+              <div class="label">Definition nach den Folien: RBF-Netzwerk &amp; Minkowski-Familie · Folie 288–291</div>
               <h3>Metriken, Aktivierungsfunktionen &amp; Lineare Ausgabe</h3>
               <p><strong>Minkowski-Distanzfamilie:</strong></p>
               $$d_k(\vec{x}, \vec{y}) = \left(\sum_{i=1}^n |x_i - y_i|^k\right)^{\frac{1}{k}}, \quad d_\infty(\vec{x}, \vec{y}) = \max_{i=1}^n |x_i - y_i|$$
@@ -1030,7 +928,7 @@
                 <summary>Beim Formulieren prüfen</summary>
                 <p class="small">• Radiale Basisfunktion misst Distanz $d(\vec{x}, \vec{c}_u)$ zum Zentrum $\vec{c}_u$.</p>
                 <p class="small">• Ausgangsfunktion ist die Identität $f_{\text{out}}(a) = a$.</p>
-                <p class="small">• Ausgangsaktivierung ist strikt linear (Folie 290: Häufigster Klausurfehler!).</p>
+                <p class="small">• Ausgangsaktivierung ist strikt linear (Folie 290: Lineare Ausgabe).</p>
               </details>
             </div>
           </div>
@@ -1107,104 +1005,7 @@
           </div>
 
           <!-- Musterlösung -->
-          <div class="subtab-content" data-section="solution">
-            <div class="panel solution">
-              <div class="label">Musterlösung für die Klausur · Volle Punktzahl (ca. 14 Punkte)</div>
-              <h3>Teil a: Fliege / Bowtie mit Minkowski-Metriken</h3>
-              <p>RBF-Netzwerk mit 2 Eingangsneuronen $(x_1, x_2)$, 3 Hidden-Neuronen $(v_1, v_2, v_3)$ und 1 linearen Ausgangsneuron $y$.</p>
-
-              <h4 style="margin-top:16px;">Parameter der Hidden-Neuronen:</h4>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Neuron</th>
-                      <th>Zentrum $\vec{c}_i$</th>
-                      <th>Distanzfunktion $d$</th>
-                      <th>Radius $\sigma_i$</th>
-                      <th>Aktivierungsfkt. $f_{\text{act}}$</th>
-                      <th>Gewicht $w_i$</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>$v_1$ (Grundraute)</td>
-                      <td>$(2, 2)^\top$</td>
-                      <td>$L_1$ (Manhattan)</td>
-                      <td>$1.0$</td>
-                      <td>Rechteck ($1$ falls $d \le \sigma$, sonst $0$)</td>
-                      <td>$+1$</td>
-                    </tr>
-                    <tr>
-                      <td>$v_2$ (Abzug Oben-Links)</td>
-                      <td>$(1.5, 2.5)^\top$</td>
-                      <td>$L_\infty$ (Maximum)</td>
-                      <td>$0.5$</td>
-                      <td>Rechteck ($1$ falls $d \le \sigma$, sonst $0$)</td>
-                      <td>$-1$</td>
-                    </tr>
-                    <tr>
-                      <td>$v_3$ (Abzug Unten-Rechts)</td>
-                      <td>$(2.5, 1.5)^\top$</td>
-                      <td>$L_\infty$ (Maximum)</td>
-                      <td>$0.5$</td>
-                      <td>Rechteck ($1$ falls $d \le \sigma$, sonst $0$)</td>
-                      <td>$-1$</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-
-              <h4 style="margin-top:16px;">Ausgangsneuron:</h4>
-              <ul>
-                <li>Netzeingabe: $\text{net}_{\text{out}} = 1 \cdot \text{out}_{v1} - 1 \cdot \text{out}_{v2} - 1 \cdot \text{out}_{v3}$</li>
-                <li>Aktivierungsfunktion: Linear $f_{\text{act}}(\text{net}, \theta) = \text{net} - \theta$ mit Schwellenwert $\theta = 0$.</li>
-                <li>Ausgangsfunktion: Identität $f_{\text{out}}(\text{act}) = \text{act}$.</li>
-              </ul>
-
-              <h3 style="margin-top:24px; padding-top:16px; border-top:1px solid var(--border);">Teil b: RBF-Funktionsapproximation von $y = x^2 + 2x + 2$ (Klausuraufgabe 3b)</h3>
-              <p>
-                <strong>Aufgabenstellung:</strong> Approximiere die Funktion $y = x^2 + 2x + 2$ auf $[-4, 4]$ mit einem RBF-Netzwerk mit $8 \le n \le 12$ Neuronen (Folie 288–290).
-              </p>
-              <div class="calc-box">
-                <div class="calc-header">
-                  <span class="calc-tag">Klausur-Lösung</span>
-                  <span>Lösungsansatz mit $n = 9$ RBF-Neuronen: Approximation von $y = x^2 + 2x + 2$</span>
-                </div>
-                <ol class="calc-steps">
-                  <li>
-                    <strong>Zentrenwahl:</strong> Wähle äquidistante Zentren $c_i \in \{-4, -3, -2, -1, 0, 1, 2, 3, 4\}$ mit Abstand $\Delta x = 1$.
-                  </li>
-                  <li>
-                    <strong>Basisfunktionen:</strong> Rechteck- oder Gauß-Funktionen $f_{\text{act}}(d, \sigma)$ mit Radius $\sigma = 0.5$ (disjunkt) bzw. $\sigma = 1.0$ (überlappend).
-                  </li>
-                  <li>
-                    <strong>Gewichte zum linearen Ausgangsneuron:</strong> Da RBF-Neuronen lokale Basisfunktionen sind, entsprechen die Gewichte $w_i$ direkt den <strong>absoluten Funktionswerten $f(c_i)$</strong> (im Gegensatz zu den relativen Stufen $\Delta y_i$ beim MLP!):
-                    $$w_i = f(c_i) = c_i^2 + 2c_i + 2$$
-                  </li>
-                  <li>
-                    <strong>Ausgangsneuron:</strong> $y = \sum_{i=1}^9 w_i \cdot \text{out}_i$, Schwellenwert $\theta = 0$.
-                  </li>
-                </ol>
-                <div class="table-wrap" style="margin-top:14px;">
-                  <table>
-                    <thead><tr><th>$i$</th><th>$c_i$</th><th>$f(c_i) = c_i^2 + 2c_i + 2$</th><th>Gewicht $w_i$</th></tr></thead>
-                    <tbody>
-                      <tr><td>1</td><td>-4</td><td>$(-4)^2 + 2(-4) + 2 = 16 - 8 + 2 = \mathbf{10}$</td><td>$w_1 = 10$</td></tr>
-                      <tr><td>2</td><td>-3</td><td>$(-3)^2 + 2(-3) + 2 = 9 - 6 + 2 = \mathbf{5}$</td><td>$w_2 = 5$</td></tr>
-                      <tr><td>3</td><td>-2</td><td>$(-2)^2 + 2(-2) + 2 = 4 - 4 + 2 = \mathbf{2}$</td><td>$w_3 = 2$</td></tr>
-                      <tr><td>4</td><td>-1</td><td>$(-1)^2 + 2(-1) + 2 = 1 - 2 + 2 = \mathbf{1}$</td><td>$w_4 = 1$</td></tr>
-                      <tr><td>5</td><td>0</td><td>$0^2 + 2(0) + 2 = \mathbf{2}$</td><td>$w_5 = 2$</td></tr>
-                      <tr><td>6</td><td>1</td><td>$1^2 + 2(1) + 2 = \mathbf{5}$</td><td>$w_6 = 5$</td></tr>
-                      <tr><td>7</td><td>2</td><td>$2^2 + 2(2) + 2 = \mathbf{10}$</td><td>$w_7 = 10$</td></tr>
-                      <tr><td>8</td><td>3</td><td>$3^2 + 2(3) + 2 = \mathbf{17}$</td><td>$w_8 = 17$</td></tr>
-                      <tr><td>9</td><td>4</td><td>$4^2 + 2(4) + 2 = \mathbf{26}$</td><td>$w_9 = 26$</td></tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
+          <div class="subtab-content" data-section="solution"><!-- Content maintained in corrections.js. --></div>
 
           <!-- Prüfungsvariation C: c-Means Clustering per Hand -->
           <div class="subtab-content" data-section="variation">
@@ -1306,12 +1107,12 @@
         <!-- MODULE 4: TASK 4 - LVQ & SELF-ORGANIZING MAPS (SOM)     -->
         <!-- ======================================================= -->
         <section id="module-task4" class="module-section" style="display:none;">
-          <div class="eyebrow">Modul 04 · 14 Punkte · Originalklausur 10.07.2024</div>
+          <div class="eyebrow">Modul 04 · 14 Trainingspunkte · Aufgabenübersicht 10.07.2024</div>
           <h1>Learning Vector Quantization (LVQ) &amp; Self-Organizing Maps (SOM)</h1>
           <p class="lead">
             Berechne für zwei Klassen, zwei Datenpunkte $p = (1,6)$ und $q = (9,1)$ sowie Codebuch-Vektoren $r_\circ = (5,4)$ und $r_\bullet = (7,5)$ bei Lernrate $\eta = 0.5$ die Anpassung für eine Epoche. (b) Berechne das SOM-Update für $x = (28,20)$, Winner $(30,20)$, $\sigma_u = 2$.
           </p>
-          <p class="meta">Quelle: Klausur 10.07.2024, Aufgabe 4 · Folien 336, 338–344, 364 · Keine Hilfsmittel</p>
+          <p class="meta">Quelle: Klausur 10.07.2024, Aufgabe 4 · Folien 336, 338–344, 364</p>
 
           <nav class="tabs" data-task="task4" aria-label="Task 4 Ansichten">
             <button class="active" data-tab="task4" data-subtab="intuition">Intuition &amp; Anschauung</button>
@@ -1322,59 +1123,9 @@
             <button data-tab="task4" data-subtab="all">Alle Ansichten</button>
           </nav>
 
-          <div class="subtab-content" data-section="intuition">
-            <div class="panel aha">
-              <div class="label">Grundlagen: Vektorquantisierung &amp; Topologische Karten</div>
-              <h4>1. Was ist Vektorquantisierung? (Prototypen &amp; Voronoi-Zellen)</h4>
-              <p>
-                Vektorquantisierung ist ein Verfahren zur Datenkompression und Mustererkennung. Anstatt Millionen einzelner Datenpunkte zu speichern, platzieren wir eine kleine Anzahl von Referenzvektoren (<strong>Codebuchvektoren / Prototypen</strong> $\vec{r}_i$). Jeder Codebuchvektor repräsentiert eine <strong>Voronoi-Zelle</strong> im Eingaberaum (die Menge aller Punkte, die diesem Vektor am nächsten liegen).
-              </p>
+          <div class="subtab-content" data-section="intuition"><!-- Content maintained in corrections.js. --></div>
 
-              <h4 style="margin-top:18px;">2. Unüberwacht (Fall I) vs. Überwacht (Fall II): Attraktion &amp; Repulsion</h4>
-              <p>
-                In der Klausur wird stets zwischen zwei Fällen unterschieden:
-                <br>&bull; <strong>Fall I (Unüberwacht / Standard VQ):</strong> Klassenlabels werden ignoriert. Der Gewinner $\vec{r}^*$ (der Prototyp mit dem kleinsten quadratischen Abstand $d^2(\vec{x}, \vec{r})$) wird in Richtung des Datenpunktes gezogen (<strong>Attraktion</strong>: $\Delta \vec{r} = +\eta (\vec{x} - \vec{r})$).
-                <br>&bull; <strong>Fall II (Überwacht / LVQ 1 nach Kohonen):</strong> Jeder Prototyp trägt ein Klassenlabel.
-                <br>&nbsp;&nbsp;&ndash; <em>Klassen stimmen überein</em> ($\text{Klasse}(\vec{x}) = \text{Klasse}(\vec{r}^*)$): <strong>Attraktion</strong> ($\Delta \vec{r} = +\eta (\vec{x} - \vec{r})$).
-                <br>&nbsp;&nbsp;&ndash; <em>Klassen unterscheiden sich</em> ($\text{Klasse}(\vec{x}) \ne \text{Klasse}(\vec{r}^*)$): <strong>Repulsion</strong> (Abstoßung: $\Delta \vec{r} = -\eta (\vec{x} - \vec{r})$).
-              </p>
-
-              <h4 style="margin-top:18px;">3. Erweiterte LVQ-Varianten (Folie 338–344)</h4>
-              <ul>
-                <li><strong>LVQ 2:</strong> Es werden die <em>zwei</em> nächsten Vektoren $\vec{r}_i, \vec{r}_j$ betrachtet. Liegt $\vec{x}$ in einem "Fenster" um die Trennebene ($\min(\frac{d_i}{d_j}, \frac{d_j}{d_i}) > \frac{1-w}{1+w}$) und gehört einer zur richtigen, der andere zur falschen Klasse, wird der richtige angezogen und der falsche abgestoßen.</li>
-                <li><strong>LVQ 2.1:</strong> Wie LVQ 2, aber $\vec{r}_i, \vec{r}_j$ müssen nicht zwingend die beiden absolut nächsten Vektoren sein.</li>
-                <li><strong>LVQ 3:</strong> Erweitert LVQ 2 um den Fall, dass beide nächsten Vektoren bereits die korrekte Klasse besitzen: In diesem Fall werden beide mit verringerter Lernrate $\epsilon \eta$ angezogen.</li>
-              </ul>
-
-              <h4 style="margin-top:18px;">4. SOM (Self-Organizing Maps): Topologieerhaltende Karten (Folie 350–368)</h4>
-              <p>
-                Bei SOM sind die Neuronen in einem Gitter (meist 1D-Kette oder 2D-Rechteck/Hexagonal) angeordnet. Bei Präsentation eines Musters $\vec{x}$ passt sich nicht nur der Gewinner $u^*$ an, sondern auch seine <strong>Gitter-Nachbarn</strong>!
-                <br>
-                <strong>Wichtigster Klausurhinweis:</strong> Der Abstand $d_{\text{neurons}}(u, u^*)$ in der Gaußfunktion $e^{-\frac{d^2}{2\sigma^2}}$ wird im <em>Neuronengitter</em> gemessen, <strong>nicht</strong> im Datenraum!
-              </p>
-            </div>
-          </div>
-
-          <div class="subtab-content" data-section="theorie">
-            <div class="panel theorem">
-              <div class="label">Borgelt-Originalregeln: LVQ &amp; SOM Updates · Folie 336 &amp; 364</div>
-              <h3>Attraktion, Repulsion &amp; Gaußsche Nachbarschaftsfunktion</h3>
-              <p><strong>LVQ-Regeln (Folie 336):</strong></p>
-              $$\text{Attraktion (gleiche Klasse): } \vec{r}^{(\text{new})} = \vec{r}^{(\text{old})} + \eta (\vec{x} - \vec{r}^{(\text{old})})$$
-              $$\text{Repulsion (ungleiche Klasse): } \vec{r}^{(\text{new})} = \vec{r}^{(\text{old})} - \eta (\vec{x} - \vec{r}^{(\text{old})})$$
-              <p style="margin-top:8px;"><strong>SOM-Regel (Folie 364):</strong></p>
-              $$\vec{r}_u^{(\text{new})} = \vec{r}_u^{(\text{old})} + \eta \cdot f_{\text{nb}}(d_{\text{neurons}}(u, u^*), \sigma) \cdot (\vec{x} - \vec{r}_u^{(\text{old})})$$
-              <p class="small muted">
-                mit $f_{\text{nb}}(d, \sigma) = e^{-\frac{d^2}{2\sigma^2}}$, wobei $d_{\text{neurons}}$ im diskreten Neuronengitter gemessen wird ($d=0$ für $u^*$, $d=1$ für direkte Nachbarn).
-              </p>
-              <details class="rule">
-                <summary>Beim Formulieren prüfen</summary>
-                <p class="small">• Nur der Gewinnervektor $r^*$ wird bei Standard-LVQ aktualisiert.</p>
-                <p class="small">• Vorzeichen bei Vektorsubtraktion: $\vec{x} - \vec{r}$, nicht umgekehrt!</p>
-                <p class="small">• Für nachfolgende Datenpunkte derselben Epoche gilt stets der bereits aktualisierte Vektor.</p>
-              </details>
-            </div>
-          </div>
+          <div class="subtab-content" data-section="theorie"><!-- Content maintained in corrections.js. --></div>
 
           <!-- Interactive Visualizer -->
           <div class="subtab-content" data-section="vis">
@@ -1389,6 +1140,7 @@
                   </div>
                 </div>
                 <div class="vis-controls-group" id="lvqControls">
+<label for="lvqClassMode">Lernregel</label><select id="lvqClassMode"><option value="unsupervised">Ohne Klassen · Winner</option><option value="supervised">Mit Klassen · zwei Prototypen</option></select>
                   <button id="lvqStepBtn">Nächster Schritt (Punkt vorstellen)</button>
                   <button id="lvqResetBtn">Reset</button>
                 </div>
@@ -1418,78 +1170,10 @@
           </div>
 
           <!-- Schritt-für-Schritt Anleitung -->
-          <div class="subtab-content" data-section="recipe">
-            <div class="panel recipe">
-              <div class="label">Schritt-für-Schritt Anleitung: Numerische Vektor-Updates</div>
-              <h3>Berechnungsablauf: LVQ- &amp; SOM-Updates</h3>
-              <div class="steps">
-                <ol>
-                  <li>
-                    <strong>Schritt 1: Distanz zu ALLEN Codebuchvektoren berechnen (Quadrierte Euklidische Distanz)</strong><br>
-                    Rechne für den aktuellen Punkt $\vec{x}$ die Abstände $d^2 = (x_1 - r_1)^2 + (x_2 - r_2)^2$ zu allen Codebüchern aus. Die Wurzel muss nicht gezogen werden, da Quadrate die Reihenfolge erhalten! Der kleinste Wert gewinnt ($u^*$).
-                  </li>
-                  <li>
-                    <strong>Schritt 2: Bei LVQ die Regel auswählen (Attraktion vs. Repulsion)</strong><br>
-                    &bull; Ohne Klasseninfo: Immer <strong>Attraktion</strong>.<br>
-                    &bull; Mit Klasseninfo: Prüfe $\text{Klasse}(x) == \text{Klasse}(r^*)$. Bei Gleichheit <strong>Attraktion</strong> ($+$), bei Ungleichheit <strong>Repulsion</strong> ($-$).
-                  </li>
-                  <li>
-                    <strong>Schritt 3: Vektorverschiebung $\Delta \vec{r}$ berechnen &amp; addieren</strong><br>
-                    Berechne die Differenz $(\vec{x} - \vec{r})$ exakt. Multipliziere mit $\eta$ (hier $0.5$). Addiere/subtrahiere auf den alten Vektor. <strong>Achtung:</strong> Für den nächsten Datenpunkt der Epoche gilt der <em>aktualisierte</em> Vektor!
-                  </li>
-                </ol>
-              </div>
-            </div>
-          </div>
+          <div class="subtab-content" data-section="recipe"><!-- Content maintained in corrections.js. --></div>
 
           <!-- Musterlösung -->
-          <div class="subtab-content" data-section="solution">
-            <div class="panel solution">
-              <div class="label">Musterlösung für die Klausur · Volle Punktzahl (ca. 14 Punkte)</div>
-              <h3>Teil a: Learning Vector Quantization (LVQ)</h3>
-              <p>Gegeben: $p = (1, 6)$ [Klasse $\circ$], $q = (9, 1)$ [Klasse $\bullet$]. Start-Codebücher: $r_\circ = (5, 4)$, $r_\bullet = (7, 5)$. $\eta = 0.5$. Reihenfolge: $p$, dann $q$.</p>
-
-              <div class="callout" style="margin-top:10px;">
-                <strong>1. Datenpunkt $p = (1, 6)$ verarbeiten:</strong><br>
-                &bull; Distanz zu $r_\circ$: $d^2(p, r_\circ) = (1 - 5)^2 + (6 - 4)^2 = (-4)^2 + 2^2 = 16 + 4 = \mathbf{20}$<br>
-                &bull; Distanz zu $r_\bullet$: $d^2(p, r_\bullet) = (1 - 7)^2 + (6 - 5)^2 = (-6)^2 + 1^2 = 36 + 1 = \mathbf{37}$<br>
-                &bull; Gewinner ist $r_\circ$ (da $20 &lt; 37$).
-                <br><br>
-                <strong>Update für Fall I (Klasse ignoriert) &amp; Fall II (Klasse beachtet: beide $\circ \implies$ Attraktion):</strong><br>
-                $$\vec{r}_\circ^{(1)} = \vec{r}_\circ^{(0)} + \eta (p - \vec{r}_\circ^{(0)}) = \begin{pmatrix} 5 \\ 4 \end{pmatrix} + 0.5 \begin{pmatrix} 1 - 5 \\ 6 - 4 \end{pmatrix} = \begin{pmatrix} 5 \\ 4 \end{pmatrix} + \begin{pmatrix} -2 \\ 1 \end{pmatrix} = \mathbf{\begin{pmatrix} 3 \\ 5 \end{pmatrix}}$$
-                $\vec{r}_\bullet$ bleibt unverändert bei $(7, 5)^\top$.
-              </div>
-
-              <div class="callout" style="margin-top:12px;">
-                <strong>2. Datenpunkt $q = (9, 1)$ verarbeiten (mit aktualisiertem $r_\circ = (3, 5)$):</strong><br>
-                &bull; Distanz zu $r_\circ$: $d^2(q, r_\circ) = (9 - 3)^2 + (1 - 5)^2 = 6^2 + (-4)^2 = 36 + 16 = \mathbf{52}$<br>
-                &bull; Distanz zu $r_\bullet$: $d^2(q, r_\bullet) = (9 - 7)^2 + (1 - 5)^2 = 2^2 + (-4)^2 = 4 + 16 = \mathbf{20}$<br>
-                &bull; Gewinner ist $r_\bullet$ (da $20 &lt; 52$).
-                <br><br>
-                <strong>Update für Fall I (Klasse ignoriert) &amp; Fall II (Klasse beachtet: beide $\bullet \implies$ Attraktion):</strong><br>
-                $$\vec{r}_\bullet^{(1)} = \vec{r}_\bullet^{(0)} + \eta (q - \vec{r}_\bullet^{(0)}) = \begin{pmatrix} 7 \\ 5 \end{pmatrix} + 0.5 \begin{pmatrix} 9 - 7 \\ 1 - 5 \end{pmatrix} = \begin{pmatrix} 7 \\ 5 \end{pmatrix} + \begin{pmatrix} 1 \\ -2 \end{pmatrix} = \mathbf{\begin{pmatrix} 8 \\ 3 \end{pmatrix}}$$
-                $\vec{r}_\circ$ bleibt bei $(3, 5)^\top$.
-                <br><br>
-                <strong>Endergebnis Task 4a:</strong><br>
-                Änderung $\Delta \vec{r}_\circ = (-2, 1)^\top \implies \vec{r}_\circ = (3, 5)^\top$<br>
-                Änderung $\Delta \vec{r}_\bullet = (1, -2)^\top \implies \vec{r}_\bullet = (8, 3)^\top$<br>
-                <em>Hinweis zur Begründung: In Fall I gilt die Attraktionsregel definitionsgemäß für unüberwachtes Lernen. In Fall II stimmen bei beiden Punkten die Klassen von Punkt und Gewinner überein ($p$ und $r_\circ$ sind $\circ$; $q$ und $r_\bullet$ sind $\bullet$), weshalb auch hier die Attraktionsregel greift.</em>
-              </div>
-
-              <h3 style="margin-top:16px;">Teil b: Self-Organizing Maps (SOM)</h3>
-              <p>Gegeben: $x = (28, 20)$, Winner $u^* = (30, 20)$, $\eta = 0.5$, Gauß-Aktivierung mit Radius $\sigma_u = 2$.</p>
-              <ul>
-                <li><strong>Winner-Neuron $u^*$ (Gitterabstand $d = 0$):</strong><br>
-                  $f_{\text{nb}}(0, 2) = e^0 = 1$<br>
-                  $$\Delta \vec{r}_{u^*} = 0.5 \cdot 1 \cdot \begin{pmatrix} 28 - 30 \\ 20 - 20 \end{pmatrix} = \mathbf{\begin{pmatrix} -1 \\ 0 \end{pmatrix}} \implies \vec{r}_{u^*}^{(\text{new})} = \mathbf{\begin{pmatrix} 29 \\ 20 \end{pmatrix}}$$
-                </li>
-                <li><strong>4 direkte Gitter-Nachbarn (Gitterabstand $d = 1$):</strong><br>
-                  Nachbarschaftswert: $f_{\text{nb}}(1, 2) = e^{-\frac{1^2}{2 \cdot 2^2}} = e^{-0.125} \approx 0.8825$.<br>
-                  Beispiel Nachbar links bei $(25, 20)$: $\Delta \vec{r} = 0.5 \cdot 0.8825 \cdot ((28, 20) - (25, 20)) \approx \mathbf{(1.32, 0)}$.
-                </li>
-              </ul>
-            </div>
-          </div>
+          <div class="subtab-content" data-section="solution"><!-- Content maintained in corrections.js. --></div>
 
           <!-- Self-Assessment & Notes Panel -->
           <div class="panel notes-panel">
@@ -1511,12 +1195,12 @@
         <!-- MODULE 5: TASK 5 - HOPFIELD NETWORKS & STATE GRAPH     -->
         <!-- ======================================================= -->
         <section id="module-task5" class="module-section" style="display:none;">
-          <div class="eyebrow">Modul 05 · 14 Punkte · Originalklausur 10.07.2024 + Prüfungsvariationen</div>
+          <div class="eyebrow">Modul 05 · 14 Trainingspunkte · Aufgabenübersicht 10.07.2024 + Prüfungsvariationen</div>
           <h1>Hopfield-Netzwerke &amp; Boltzmann-Maschinen: Zustandsgraph &amp; Energie</h1>
           <p class="lead">
             Gegeben sind 3 Neuronen $U_1, U_2, U_3$ mit Gewichten $w_{12} = -2, w_{23} = -2, w_{13} = 0$ und Schwellenwerten $\theta = (-1, -2, -1)^\top$. Zeichne den vollständigen Zustandsgraphen für alle $2^3 = 8$ Zustände unter Berücksichtigung aller asynchronen Nachfolger.
           </p>
-          <p class="meta">Quelle: Klausur 10.07.2024, Aufgabe 5 · Folien 380–388, 390–394 · Keine Hilfsmittel</p>
+          <p class="meta">Quelle: Klausur 10.07.2024, Aufgabe 5 · Folien 380–388, 390–394</p>
 
           <nav class="tabs" data-task="task5" aria-label="Task 5 Ansichten">
             <button class="active" data-tab="task5" data-subtab="intuition">Intuition &amp; Anschauung</button>
@@ -1527,62 +1211,11 @@
             <button data-tab="task5" data-subtab="all">Alle Ansichten</button>
           </nav>
 
-          <div class="subtab-content" data-section="intuition">
-            <div class="panel aha">
-              <div class="label">Grundlagen: Assoziativspeicher &amp; Energielandschaften</div>
-              <h4>1. Was ist ein Hopfield-Netzwerk?</h4>
-              <p>
-                Ein Hopfield-Netzwerk ist ein <strong>vollständig rückgekoppeltes rekurrentes neuronales Netz</strong> mit bipolaren Zuständen $s_i \in \{-1, +1\}$. Es dient als <strong>assoziativer Speicher (Content-Addressable Memory)</strong>: Präsentiert man ein verrauschtes oder unvollständiges Muster, rekonstruiert das Netz selbstständig das gespeicherte Originalmuster.
-              </p>
-
-              <h4 style="margin-top:18px;">2. Warum sind symmetrische Gewichte ($w_{uv} = w_{vu}$) und $w_{uu} = 0$ zwingend?</h4>
-              <p>
-                Nur bei symmetrischen Verbindungen ohne Selbstkopplung existiert eine wohldefinierte Skalarfunktion – die <strong>Ljapunow-Energiefunktion $E$</strong> –, die bei asynchronen Updates monoton fällt. Bei asymmetrischen Gewichten könnten geschlossene Zyklen und chaotische Oszillationen entstehen.
-              </p>
-
-              <h4 style="margin-top:18px;">3. Der mathematische Beweis: Warum $\Delta E \le 0$ Zyklen ausschließt (Folie 388)</h4>
-              <div class="calc-box">
-                <div class="calc-header">
-                  <span class="calc-tag">Mathematischer Beweis</span>
-                  <span>Konvergenz der Ljapunow-Energiefunktion ($\Delta E \le 0$, Folie 388)</span>
-                </div>
-                <p>Wird ein einzelnes Neuron $k$ asynchron aktualisiert ($s_k \to s_k'$), ändert sich die Gesamtenergie um:</p>
-                <div class="calc-step-row">
-                  $$\Delta E = E(s') - E(s) = -(s_k' - s_k) \cdot (\text{net}_k - \theta_k)$$
-                </div>
-                <p>Die Borgelt-Aktivierungsregel lautet: $s_k' = \text{sgn}(\text{net}_k - \theta_k) \in \{-1, +1\}$.</p>
-                <ol class="calc-steps">
-                  <li>
-                    <strong>Fall 1: $(\text{net}_k - \theta_k) \ge 0 \implies s_k' = +1$.</strong><br>
-                    Ändert sich der Zustand, war $s_k = -1$. Somit ist $(s_k' - s_k) = 1 - (-1) = +2 > 0$.<br>
-                    Daher ist $\Delta E = -(+2) \cdot (\text{net}_k - \theta_k) \le 0$.
-                  </li>
-                  <li>
-                    <strong>Fall 2: $(\text{net}_k - \theta_k) < 0 \implies s_k' = -1$.</strong><br>
-                    Ändert sich der Zustand, war $s_k = +1$. Somit ist $(s_k' - s_k) = -1 - 1 = -2 < 0$.<br>
-                    Daher ist $\Delta E = -(-2) \cdot (\text{net}_k - \theta_k) = 2 \cdot (\text{net}_k - \theta_k) < 0$.
-                  </li>
-                  <li>
-                    <strong>Fall 3: Zustand bleibt unverändert ($s_k' = s_k$).</strong><br>
-                    Hier gilt direkt $\Delta E = 0$.
-                  </li>
-                </ol>
-                <p style="margin-top:14px;"><strong>Ergebnis:</strong> Bei jedem echten Zustandswechsel sinkt die Energie strikt ($\Delta E < 0$). Da es in einem System mit $n$ Neuronen nur $2^n$ diskrete Zustände gibt, muss das Netzwerk nach endlich vielen Schritten in einem lokalen Energieminimum terminieren. Zyklen oder Oszillationen sind mathematisch ausgeschlossen.</p>
-              </div>
-
-              <h4 style="margin-top:18px;">4. Hebbsches Lernen, Speicherkapazität &amp; Boltzmann-Maschinen (Folie 390–394)</h4>
-              <ul>
-                <li><strong>Hebbsche Lernregel:</strong> Gewichte zum Speichern von $m$ Mustern $\vec{s}^{(1)}, \dots, \vec{s}^{(m)}$: $w_{uv} = \sum_{p=1}^m s_u^{(p)} s_v^{(p)}$ für $u \ne v$ und $w_{uu} = 0$.</li>
-                <li><strong>Speicherkapazität:</strong> Ein Hopfield-Netz mit $n$ Neuronen kann maximal $m_{\text{max}} \approx 0.14 n$ Muster fehlerfrei speichern. Darüber hinaus treten Überlagerungs- und Scheinzustände (spurious states) auf.</li>
-                <li><strong>Invertierte Muster:</strong> Wenn $\vec{s}$ ein Attraktor ist, ist $-\vec{s}$ wegen der Punktsymmetrie der Energie $E(\vec{s}) = E(-\vec{s})$ (für $\theta=0$) stets ebenfalls ein stabiler Attraktor!</li>
-                <li><strong>Boltzmann-Maschine:</strong> Um aus schlechten lokalen Minima zu entkommen, wird stochastisch nach der Boltzmann-Verteilung aktualisiert: $P(s_k = +1) = \frac{1}{1 + e^{-\Delta E_k / T}}$. Bei hoher Temperatur $T$ springt das System fast zufällig, bei $T \to 0$ (Simulated Annealing) friert es im globalen Minimum ein.</li>
-              </ul>
-            </div>
-          </div>
+          <div class="subtab-content" data-section="intuition"><!-- Content maintained in corrections.js. --></div>
 
           <div class="subtab-content" data-section="theorie">
             <div class="panel theorem">
-              <div class="label">Borgelt-Originaldefinition: Hopfield-Netz &amp; Energiefunktion · Folie 380–388</div>
+              <div class="label">Definition nach den Folien: Hopfield-Netz &amp; Energiefunktion · Folie 380–388</div>
               <h3>Netzeingabe, Asynchrones Update &amp; Ljapunow-Funktion</h3>
               <p><strong>Netzeingabe &amp; Aktivierungsupdate:</strong></p>
               $$\text{net}_u = \sum_{v \in U - \{u\}} w_{uv} \cdot \text{act}_v, \quad \text{act}_u^{(\text{new})} = \begin{cases} +1, & \text{falls } \text{net}_u \ge \theta_u \\ -1, & \text{falls } \text{net}_u < \theta_u \end{cases}$$
@@ -1593,7 +1226,7 @@
                 <summary>Beim Formulieren prüfen</summary>
                 <p class="small">• Symmetrische Gewichte $w_{uv} = w_{vu}$.</p>
                 <p class="small">• Nullen auf der Hauptdiagonale $w_{uu} = 0$ (keine Selbstkopplung).</p>
-                <p class="small">• Bei asynchroner Aktualisierung sinkt die Energie strikt ($\Delta E \le 0$).</p>
+                <p class="small">• Bei asynchroner Aktualisierung steigt die Energie nicht ($\Delta E \le 0$).</p>
                 <p class="small">• Borgelt definiert $\text{net}_u \ge \theta_u \implies +1$ und $< \theta_u \implies -1$.</p>
               </details>
             </div>
@@ -1791,7 +1424,7 @@
           <p class="lead">
             Prüfungsvariationen und moderne Architekturen: Diskrete 2D-Faltung &amp; Pooling per Hand (Folie 253–266), ReLUs &amp; Gradientenprobleme (Folie 189–198), Fuzzy-Regler &amp; Defuzzifizierung (Folie 474–478) sowie Optimierungsverfahren.
           </p>
-          <p class="meta">Quelle: Borgelt Vorlesung · Folien 189–220, 253–266, 474–478 · Keine Hilfsmittel</p>
+          <p class="meta">Quelle: Borgelt Vorlesung · Folien 189–220, 253–266, 474–478</p>
 
           <nav class="tabs" data-task="deeplearning" aria-label="Deep Learning Ansichten">
             <button class="active" data-tab="deeplearning" data-subtab="cnn">Prüfungsvariation D: CNN 2D-Faltung &amp; Pooling</button>
@@ -1905,7 +1538,7 @@
               <div class="label">Klausur-Rechenschritt auf Papier · Folie 264</div>
               <h3>Berechnung der 2D-Faltung per Hand</h3>
               <p>
-                Gegeben ist das $5 \times 5$ Eingabebild $I$ und der $3 \times 3$ Kernel $K$ aus Folie 264:
+                Eigene Zahlenvariante zur Methode aus Folie 264: $5 \times 5$ Eingabebild $I$ und $3 \times 3$ Kernel $K$:
                 $$I = \begin{pmatrix} 8 & 3 & 18 & 30 & 25 \\ 1 & 4 & 14 & 23 & 26 \\ 7 & 0 & 17 & 24 & 22 \\ 9 & 6 & 15 & 31 & 28 \\ 2 & 5 & 16 & 29 & 27 \end{pmatrix}, \quad K = \begin{pmatrix} 0 & 1 & 0 \\ -2 & 2 & -1 \\ 0 & 1 & 0 \end{pmatrix}$$
               </p>
               <div class="calc-box">
@@ -1952,53 +1585,7 @@
           </div>
 
           <!-- 2. Gradientenprobleme & ReLUs -->
-          <div class="subtab-content" data-section="gradient">
-            <div class="panel theorem">
-              <div class="label">Borgelt-Theorie: Gradientenprobleme &amp; Aktivierungsfunktionen · Folie 189–198</div>
-              <h3>Vanishing Gradient Problem &amp; Rectified Linear Units (ReLU)</h3>
-              <p>
-                <strong>Das Vanishing Gradient Problem (Folie 189–192):</strong><br>
-                Bei der logistischen Aktivierungsfunktion $f(x) = \frac{1}{1 + e^{-x}}$ lautet die Ableitung $f'(x) = f(x)(1 - f(x))$. Das Maximum der Ableitung liegt bei $x=0$ mit $f'(0) = 0.25$. Bei einem tiefen Netzwerk mit $L$ Schichten multiplizieren sich die Ableitungen in der Backpropagation-Kette:
-                $$\delta_l \propto \prod_{i=l}^L f_i'(x) \le (0.25)^{L-l+1}$$
-                Für ein 10-Schicht-Netzwerk schrumpft das Fehlersignal auf unter $10^{-6}$! Die Gewichte der vorderen Schichten lernen praktisch überhaupt nicht mehr.
-              </p>
-
-              <h4 style="margin-top:18px;">Rectified Linear Units (ReLU) als Lösung (Folie 193–198)</h4>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>Funktion</th><th>Definition $f(x)$</th><th>Ableitung $f'(x)$</th><th>Vorteile / Nachteile</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>Standard ReLU</strong></td>
-                      <td>$\max(0, x)$</td>
-                      <td>$1$ für $x > 0$, $0$ für $x < 0$</td>
-                      <td>Löst Vanishing Gradient für $x > 0$. Nachteil: <em>Dying ReLU</em> (Neuronen mit $x \le 0$ sterben ab).</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Leaky ReLU</strong></td>
-                      <td>$\max(\alpha x, x)$ mit $\alpha \approx 0.01$</td>
-                      <td>$1$ für $x > 0$, $\alpha$ für $x < 0$</td>
-                      <td>Verhindert Dying ReLUs durch minimale Steigung im negativen Bereich.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Parametric ReLU (PReLU)</strong></td>
-                      <td>$\max(\alpha x, x)$</td>
-                      <td>$\alpha$ wird als Parameter gelernt</td>
-                      <td>Adaptiv, erfordert jedoch zusätzliche lernbare Parameter pro Neuron.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>ELU (Exponential Linear Unit)</strong></td>
-                      <td>$x$ falls $x > 0$, sonst $\alpha(e^x - 1)$</td>
-                      <td>$1$ falls $x > 0$, sonst $f(x) + \alpha$</td>
-                      <td>Glatte Übergänge bei 0, Mittelwert der Aktivierungen näher an 0.</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <div class="subtab-content" data-section="gradient"><!-- Content maintained in corrections.js. --></div>
 
           <!-- 3. Prüfungsvariation E: Fuzzy-Regler & Defuzzifizierung -->
           <div class="subtab-content" data-section="fuzzy">
@@ -2059,46 +1646,7 @@
           </div>
 
           <!-- 4. Optimierer & Momentum -->
-          <div class="subtab-content" data-section="optimizers">
-            <div class="panel theorem">
-              <div class="label">Borgelt-Theorie: Optimierer &amp; Beschleunigungsverfahren · Folie 199–220</div>
-              <h3>Momentum, Quickprop, Rprop &amp; Adam im Vergleich</h3>
-              <div class="table-wrap">
-                <table>
-                  <thead>
-                    <tr><th>Verfahren</th><th>Kerngleichung / Idee</th><th>Eigenschaften &amp; Klausurrelevanz</th></tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><strong>Gradient Descent + Momentum</strong></td>
-                      <td>$\Delta w_t = -\eta \nabla E + \gamma \Delta w_{t-1}$</td>
-                      <td>Dämpft Oszillationen in Schluchten und beschleunigt entlang flacher Plateaus (Folie 201).</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Quickprop (Fahlman 1988)</strong></td>
-                      <td>$\Delta w_t = \frac{\nabla E_t}{\nabla E_{t-1} - \nabla E_t} \Delta w_{t-1}$</td>
-                      <td>Nimmt quadratische Fehlerfunktion an; springt direkt ins Minimum der Parabel (Folie 205).</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Resilient Backprop (Rprop)</strong></td>
-                      <td>$\Delta w_t = -\text{sgn}(\nabla E_t) \cdot \Delta_i^{(t)}$</td>
-                      <td>Nutzt nur das <em>Vorzeichen</em> des Gradienten. Schrittweite $\Delta_i$ wird adaptiv vergrößert ($\times 1.2$) oder verkleinert ($\times 0.5$) (Folie 209).</td>
-                    </tr>
-                    <tr>
-                      <td><strong>RMSProp</strong></td>
-                      <td>$v_t = \beta v_{t-1} + (1-\beta)(\nabla E)^2$, $w_t = w_{t-1} - \frac{\eta}{\sqrt{v_t + \epsilon}} \nabla E$</td>
-                      <td>Skaliert Lernrate durch die gleitende Wurzel quadratischer Gradienten; verhindert Verhungern oder Explodieren.</td>
-                    </tr>
-                    <tr>
-                      <td><strong>Adam (Kingma &amp; Ba 2014)</strong></td>
-                      <td>Kombination aus Momentum (1. Moment) und RMSProp (2. Moment)</td>
-                      <td>Quasi-Standard im Deep Learning mit Bias-Korrektur für die ersten Iterationen.</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
+          <div class="subtab-content" data-section="optimizers"><!-- Content maintained in corrections.js. --></div>
 
           <!-- Self-Assessment & Notes Panel -->
           <div class="panel notes-panel">
@@ -2120,13 +1668,13 @@
         <!-- MODULE 6: TASK 6 - MULTIPLE CHOICE EXAM TRAINER         -->
         <!-- ======================================================= -->
         <section id="module-task6" class="module-section" style="display:none;">
-          <div class="eyebrow">Modul 07 · 30 Punkte · Prüfungstrainer (Originalklausur 10.07.2024)</div>
+          <div class="eyebrow">Modul 07 · 30 Punkte · Prüfungstrainer (Aufgabenübersicht 10.07.2024)</div>
           <h1>Multiple Choice Prüfungstrainer (Task 6)</h1>
           <p class="lead">
             Simulation der echten Borgelt-Klausur: 6 Teilblöcke mit je 5 Aussagen. 
             <strong>Bewertungslogik:</strong> +1 Punkt für richtig, -1 Punkt für falsch, 0 Punkte bei Leerlassen. Minimal 0 Punkte pro Block.
           </p>
-          <p class="meta">6 Blöcke · 30 Aussagen · 30 Punkte gesamt · Keine Hilfsmittel</p>
+          <p class="meta">6 Blöcke · 30 Aussagen · 30 Punkte gesamt</p>
 
           <div class="vis-toolbar">
             <div class="vis-controls-group">
@@ -2182,7 +1730,7 @@
           <div class="eyebrow">Modul 08 · Wiederholen &amp; Festigen</div>
           <h1>Sätze &amp; Definitionen abfragen</h1>
           <p class="lead">
-            Erst aus dem Gedächtnis formulieren. Dann Voraussetzungen, Formeln und Parameter vergleichen. Wie in der echten Klausur: Definitionen und Sätze zuerst!
+            Erst aus dem Gedächtnis formulieren. Dann Voraussetzungen, Formeln und Parameter vergleichen. Nenne bei Sätzen auch die Voraussetzungen.
           </p>
 
           <div class="two-col" style="margin-bottom:24px;">
@@ -2228,7 +1776,7 @@
           <h1>120-Minuten Klausurtraining</h1>
           <p class="lead">
             Vollständige Prüfungssimulation: 5 Rechenaufgaben (70 Punkte) + 30 MC-Aussagen (30 Punkte) = 100 Punkte. 
-            Keine Hilfsmittel. Die Uhr läuft!
+            Arbeite für die Selbstkontrolle zunächst ohne Lösungsvorlage.
           </p>
 
           <div class="table-wrap">
@@ -2324,8 +1872,8 @@
             <div class="label">3. Funktionsapproximation (Task 3)</div>
             <h3>$y = f(x)$ auf $[a, b]$ mit $8 \le n \le 12$ Knoten approximieren</h3>
             <ul>
-              <li><strong>MLP:</strong> Intervall in $k=8$ Abschnitte teilen. Gewichte zum Ausgang sind die relativen Stufenhöhen $\Delta y_i = y_i - y_{i-1}$. Bias/Schwellenwert des Ausgangs ist $y_0 = f(a)$.</li>
-              <li><strong>RBFN:</strong> Zentren $c_i$ auf die Intervallmitten legen, $\sigma = 0.5 \Delta x$. Gewichte zum Ausgang sind $w_i = f(c_i)$.</li>
+              <li><strong>MLP:</strong> Intervall in $k=8$ Abschnitte teilen. Gewichte zum Ausgang sind die relativen Stufenhöhen $\Delta y_i = y_i - y_{i-1}$. Ausgangsbias ist $f(a)$, Ausgangsschwelle ist $-f(a)$.</li>
+              <li><strong>RBFN:</strong> Neun Dreiecks-RBFs bei $c_i=-4,\ldots,4$, Radius 1, Gewichte $w_i=f(c_i)$; linearer Ausgang mit Schwelle 0 (11 Neuronen insgesamt).</li>
               <li><strong>4 Verbesserungsoptionen:</strong> (1) Mehr Knoten / kleinere Intervalle, (2) Semi-lineare Rampen oder Sigmoide statt Stufen, (3) Gauß- oder Dreiecks-RBFs statt Rechtecke, (4) Gradientenabstieg (Training) für Zentren und Gewichte.</li>
             </ul>
             <div style="margin-top:14px;"><a href="#/task3/recipe" data-tab="task3" data-subtab="recipe" class="button-link small">Zum Task 3 Rechenweg →</a></div>
@@ -2334,10 +1882,10 @@
           <div class="panel recipe">
             <div class="label">4. LVQ &amp; SOM Vektor-Updates (Task 4)</div>
             <h3>Numerische Vektor-Updates fehlerfrei ausführen</h3>
-            <p><strong>LVQ:</strong> Finde kleinsten Abstand $d^2(x, r) = (x_1 - r_1)^2 + (x_2 - r_2)^2$. Nur der Gewinner $r^*$ wird angepasst!</p>
+            <p><strong>LVQ:</strong> Finde kleinsten Abstand $d^2(x, r) = (x_1 - r_1)^2 + (x_2 - r_2)^2$. Ohne Klassen lernt nur der Gewinner. Mit Klassen nach Folie 340 werden die zwei nächsten Prototypen betrachtet.</p>
             <ul>
               <li>Unsupervised: $\vec{r}^{(\text{new})} = \vec{r}^{(\text{old})} + \eta (\vec{x} - \vec{r}^{(\text{old})})$ (immer Attraktion).</li>
-              <li>Supervised: Gleiche Klasse $\implies$ Attraktion ($+$). Ungleiche Klasse $\implies$ Repulsion ($-$).</li>
+              <li>Supervised: Bei verschiedenen Prototypklassen und einem passenden Label beide aktualisieren. Gleiche Klasse $\implies$ Attraktion ($+$). Ungleiche Klasse $\implies$ Repulsion ($-$).</li>
               <li><strong>Wichtig:</strong> Für den nächsten Punkt der Epoche den bereits aktualisierten Vektor verwenden!</li>
             </ul>
             <p style="margin-top:8px;"><strong>SOM:</strong> $\vec{r}_u^{(\text{new})} = \vec{r}_u^{(\text{old})} + \eta \cdot e^{-\frac{d_{\text{grid}}^2}{2\sigma^2}} \cdot (\vec{x} - \vec{r}_u^{(\text{old})})$. Gitterabstand des Gewinners $d=0 \implies e^0 = 1$.</p>
@@ -2350,7 +1898,7 @@
             <ul>
               <li><strong>Netzeingabe:</strong> $\text{net}_u = \sum_{v \ne u} w_{uv} s_v$. Update: $+1$ wenn $\text{net}_u \ge \theta_u$, sonst $-1$.</li>
               <li><strong>Energie:</strong> $E = -\frac{1}{2} \sum_{u \ne v} w_{uv} s_u s_v + \sum_u \theta_u s_u$.</li>
-              <li><strong>Konvergenzsatz:</strong> Bei asynchronen Updates sinkt die Energie strikt ($\Delta E \le 0$). Es gibt keine Zyklen!</li>
+              <li><strong>Konvergenzsatz:</strong> Bei asynchronen Updates gilt $\Delta E\le0$. Im Gleichheitsfall kann nur −1 zu +1 wechseln; auf einem Plateau steigt daher die Zahl der +1-Zustände. Siehe Voraussetzungen und Beweis im Hopfield-Kapitel.</li>
               <li><strong>Stabile Zustände:</strong> Ein Zustand ist stabil, wenn kein Neuron seine Aktivierung ändern möchte.</li>
             </ul>
             <div style="margin-top:14px;"><a href="#/task5/recipe" data-tab="task5" data-subtab="recipe" class="button-link small">Zum Task 5 Rechenweg →</a></div>
@@ -2440,6 +1988,14 @@
   </div>
 
   <!-- Main Application Script -->
+  <script src="course.js"></script>
+  <script src="theory-extra.js"></script>
+  <script src="practice.js"></script>
+  <script src="learning.js"></script>
+  <script src="question-bank.js"></script>
+  <script src="original-exam.js"></script>
+  <script src="exam.js"></script>
+  <script src="corrections.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
