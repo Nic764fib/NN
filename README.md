@@ -7,7 +7,7 @@ Praktische Vorbereitung anhand der Aufgabenübersicht vom 10. Juli 2024 und der 
 ## Drei Einstiege
 
 - **Altklausur & Training:** fünf vollständige Originalpakete, je eine Transferaufgabe und sechs kurze Übungen zu häufigen Fehlern. Teilaufgaben sind einzeln wählbar. Hinweise, Rezept und vollständige Lösung erscheinen direkt an der Aufgabe.
-- **Multiple Choice:** 30 Sachverhalte zu den sechs Themenblöcken von 2024, jeweils in zwei Formulierungen; 15 ergänzende Grundlagen. Einzeltraining mit sofortiger Erklärung oder eigenständige Fünfer-/30er-Blöcke.
+- **Multiple Choice:** zuerst alle sieben ausformulierten Aussagen im Wortlaut der Vorlage von 2024, mit gespeichertem Fortschritt. Dazu 30 Sachverhalte in je zwei Trainingsformulierungen und 15 ergänzende Grundlagen. Einzeltraining mit sofortiger Erklärung oder eigenständige Fünfer-/30er-Blöcke. Die übrigen 13 Vorlageneinträge sind nur Stichworte und werden entsprechend gekennzeichnet.
 - **Rechenrezepte:** sieben konkrete Schrittfolgen mit Beispielen. Weitere Folienthemen bleiben als Nachschlagebereich erreichbar.
 
 Ein Gesamtdurchlauf enthält alle fünf Rechenpakete und 30 MC-Aussagen. Es gibt keine Pflichtuhr, Kapitelpflicht oder Freischaltung. Freie Rechnungen und Zeichnungen werden anhand vollständiger Kriterien selbst verglichen; einzelne Zahlen lassen sich zusätzlich prüfen. Lernstände unterscheiden Bearbeitung mit Hilfe, selbstständige Transferaufgaben und spätere Wiederholung.
@@ -34,9 +34,11 @@ Statische Website, kein Build und kein Backend:
 python -m http.server 8766
 node tests/study.test.js
 node tests/study-browser.mjs
+python tests/mcq-source.test.py
+node tests/mcq-original.browser.mjs
 ```
 
-Der Browsertest benötigt `playwright` und Microsoft Edge. Alternativ kann `PLAYWRIGHT_MODULE` eine importierbare Modul-URL nennen. `NN_TEST_URL` überschreibt die lokale Adresse. Screenshots werden in das ignorierte Verzeichnis `tmp/` geschrieben. KaTeX und Schriften kommen von jsDelivr und benötigen Internet.
+Die Browsertests benötigen `playwright` und Microsoft Edge. Alternativ kann `PLAYWRIGHT_MODULE` eine importierbare Modul-URL nennen. `NN_TEST_URL` überschreibt die lokale Adresse. Der Wortlautvergleich benötigt Python mit `pypdf`; ein abweichender Node-Pfad kann als Argument übergeben werden. Screenshots werden in das ignorierte Verzeichnis `tmp/` geschrieben. KaTeX und Schriften kommen von jsDelivr und benötigen Internet.
 
 ## Aktive Dateien
 

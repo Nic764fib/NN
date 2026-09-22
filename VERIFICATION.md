@@ -39,6 +39,12 @@ Desktop- und Mobilansichten wurden zusätzlich anhand von Screenshots visuell ko
 
 Die vollständige Browsersuite wurde auch gegen `https://nic764fib.github.io/NN/` erfolgreich ausgeführt (Anwendungsstand `bbb49e0`). Der Pages-Deploy lief erfolgreich durch. Der Test wartet bei Netzwerklatenz ausdrücklich auf geladene Abbildungen; die erste Live-Prüfung hatte diese Wartebedingung noch nicht berücksichtigt.
 
-## Grenzen
+## Ergänzung: Wortlaut der MC-Vorlage
+
+Die sieben ausformulierten Aussagen und 13 Stichworte auf Seite 4 wurden visuell geprüft und mit `tests/mcq-source.test.py` direkt gegen den Text der bereitgestellten PDF abgeglichen. Schreibweise und Groß-/Kleinschreibung bleiben erhalten; nur Druckzeilenumbrüche werden entfernt. Mehrdeutiges „replaced“ wird im Erklärungstext als Lesart erläutert und im Zitat nicht umgeschrieben.
+
+`tests/mcq-original.browser.mjs` prüft bei Desktop- und Mobilbreite: alle sieben Wortlaute zuerst einmal trotz früherem Lernstand, keine Wiederholung vor vollständiger Abdeckung, Antwortsperre, Wiederaufnahme, Fortschritt 7/7, alle 13 Stichworte, unveränderte 30er-Trainingsblöcke sowie Export und Import. Die neuen Wortlaute liegen getrennt von den bisherigen Formulierungsindizes; gespeicherte Blockantworten behalten deshalb ihre Bedeutung.
+
+## Grenzen der Prüfung
 
 Die Kontrollen belegen die geprüften Inhalte und Funktionen. Die kommende Klausur ist unbekannt; weder vollständige Stoffabdeckung noch eine bestimmte Note folgt daraus. Zeichnungen und freie Begründungen benötigen weiterhin den eigenen Vergleich mit den Kriterien. Die Browserprüfung benutzt getrennte Testprofile und verändert keinen persönlichen Lernstand im normalen Browser.

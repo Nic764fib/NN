@@ -1,4 +1,4 @@
-/* Own/reconstructed questions. The source contains only fragments of the 2024 MC wording. */
+/* Training formulations and separately identified verbatim statements from the supplied 2024 overview. */
 (function(root){
  'use strict';
  const groups=[['a','Netztypen'],['b','TLU und Trennbarkeit'],['c','MLP und RBF'],['d','Training und Optimierer'],['e','Distanzen'],['f','Hopfield']];
@@ -53,10 +53,31 @@
  ['fuzzy','458–497','Ein Fuzzy-Zugehörigkeitsgrad muss eine Wahrscheinlichkeit darstellen.',false,'Er beschreibt Zugehörigkeit zu einem unscharfen Begriff. Das ist nicht zwingend eine Ereigniswahrscheinlichkeit.']
  ];
  extra.forEach(([id,source,text,correct,explanation])=>concepts.push({id,group:'extra',core:false,source:'Folien '+source,forms:[{text,correct,explanation}]}));
- function question(concept,form=0){return {...concept,...concept.forms[form%concept.forms.length],concept:concept.id,id:concept.id+'-'+(form%concept.forms.length),form:form%concept.forms.length};}
- function next(memory,scope='core',current=null){const pool=concepts.filter(c=>scope==='core'?c.core:scope==='extra'?!c.core:c.group===scope),total=Object.values(memory).reduce((s,m)=>s+(m.count||0),0);return [...pool].sort((a,b)=>{
+ // Preserve wording, spelling and capitalization. Only PDF line wrapping is removed.
+ // These are separate from forms[] so saved block answers retain their original question/answer mapping.
+ const originalRows=[
+  ['b2','For 2 Inputs, there are More Linearly Separable Combinations than Lineally Non-Separable Combinations',true],
+  ['b3','In a 2 Class Problem, if the 2 classes are Linearly Separable, there exist atleast one point which is common to both Convex Hulls',false],
+  ['f1','Has Symmetric Weights with 1s on the Diagonal',false],
+  ['f2','No of Hidden Neurons equal to no of Input Neurons',false],
+  ['f3','Updating One Value and Going to a new state, if it’s replaced immediately, it will go back to the previous state due to symmetry',false],
+  ['f4','Bipolar and Unipolar equivalent in compute power',true],
+  ['f5','Updating Nodes asynchronously without skipping will always lead to stability',true]
+ ];
+ originalRows.forEach(([id,text,correct])=>{const c=concepts.find(c=>c.id===id);c.original={text,correct,explanation:c.forms[0].explanation};});
+ concepts.find(c=>c.id==='f3').original.explanation='„Replaced“ ist in der Vorlage ungenau. Bei der hier verwendeten Lesart wird dasselbe Neuron sofort erneut aktualisiert. Ohne Selbstkopplung kommen seine Eingaben weiterhin von den unveränderten anderen Neuronen. Es behält deshalb den gerade berechneten Wert; es springt nicht wegen der Symmetrie zurück.';
+ concepts.find(c=>c.id==='f5').original.explanation='Gemeint ist das Standard-Hopfield-Netz mit festen symmetrischen Gewichten, Null-Diagonale und der angegebenen Schwellenregel. Werden die Neuronen asynchron immer wieder vollständig berücksichtigt, wird ein stabiler Zustand erreicht. Gleichzeitige Updates sind davon nicht erfasst; ein globales Energieminimum ist nicht garantiert.';
+ const originalFragments=[
+  ['a',['Multi-Layer Perceptron','Radial Basis Function Networks','Learning Vector Quantization','Self-Organizing Maps','Hopfield Networks']],
+  ['b',['TLU with n inputs. n-dim hypercube.']],
+  ['c',['MLPs (with linear activation functions) and RBFNs Compute Power comparison']],
+  ['d',['Quick Prop','RMS Prop and Adam']],
+  ['e',['Triangular','Associative','Transitive','Identity']]
+ ];
+ function question(concept,form=0){if(form==='original'&&concept.original)return {...concept,...concept.original,concept:concept.id,id:concept.id+'-original',form:'original',verbatim:true,source:'Aufgabenübersicht 2024 · Seite 4, Task 6 · Wortlaut der Vorlage; Erklärung: '+concept.source};return {...concept,...concept.forms[form%concept.forms.length],concept:concept.id,id:concept.id+'-'+(form%concept.forms.length),form:form%concept.forms.length,verbatim:false};}
+ function next(memory,scope='core',current=null){const pool=concepts.filter(c=>scope==='original'?c.original:scope==='core'?c.core:scope==='extra'?!c.core:c.group===scope),total=Object.values(memory).reduce((s,m)=>s+(m.count||0),0);if(scope==='original'){const unseen=pool.find(c=>!memory[c.id]?.originalSeen&&c.id!==current);if(unseen)return unseen;}return [...pool].sort((a,b)=>{
    const score=c=>{const m=memory[c.id];if(!m)return 100;let s=m.lastCorrect?0:55;if(total-(m.seq||0)<3)s-=80;if(Date.now()-(m.at||0)>86400000)s+=25;if(c.id===current)s-=160;return s-Math.min(20,m.count||0);};return score(b)-score(a);
   })[0];}
- root.NNMC={groups,concepts,question,next};
+ root.NNMC={groups,concepts,question,next,originalFragments};
  if(typeof module!=='undefined'&&module.exports)module.exports=root.NNMC;
 })(typeof globalThis!=='undefined'?globalThis:this);
