@@ -4,21 +4,22 @@
 
 Praktische Vorbereitung anhand der Aufgabenübersicht vom 10. Juli 2024 und der bereitgestellten Vorlesungsfolien von Christian Borgelt.
 
-## Drei Einstiege
+## Vier Einstiege
 
+- **Theorie:** zehn verständliche Kapitel mit 34 Abschnitten, Zahlenbeispielen, erklärten Formeln, Zeichnungen, Inhaltsübersicht und gespeicherter Lesestelle. Direkte Verbindungen zu Aufgaben und Fragen.
 - **Altklausur & Training:** fünf vollständige Originalpakete, je eine Transferaufgabe und sechs kurze Übungen zu häufigen Fehlern. Teilaufgaben sind einzeln wählbar. Hinweise, Rezept und vollständige Lösung erscheinen direkt an der Aufgabe.
-- **Multiple Choice:** zuerst alle sieben ausformulierten Aussagen im Wortlaut der Vorlage von 2024, mit gespeichertem Fortschritt. Dazu 30 Sachverhalte in je zwei Trainingsformulierungen und 15 ergänzende Grundlagen. Einzeltraining mit sofortiger Erklärung oder eigenständige Fünfer-/30er-Blöcke. Die übrigen 13 Vorlageneinträge sind nur Stichworte und werden entsprechend gekennzeichnet.
+- **Multiple Choice:** vollständiger Lesekatalog, Einzelaussagen, Wahr/Falsch-Blöcke und eigene Auswahlfragen. Alle sieben Originalaussagen bleiben unverändert; ihre Gruppierung ist ebenfalls erhalten (TLU: zwei überlieferte Aussagen; Hopfield: fünf). 75 bisherige Trainingsformulierungen bleiben bestehen. Hinzu kommen zehn Anwendungsblöcke und vier Auswahlaufgaben mit zusammen 52 neuen Aussagen/Optionen. Jede falsche Aussage hat eine Erklärung und eine korrigierte Fassung. Zurück/Weiter, eigener Versuchsverlauf und Wiederaufnahme; Lesen erzeugt keine Leistungsbewertung.
 - **Rechenrezepte:** sieben konkrete Schrittfolgen mit Beispielen. Weitere Folienthemen bleiben als Nachschlagebereich erreichbar.
 
 Ein Gesamtdurchlauf enthält alle fünf Rechenpakete und 30 MC-Aussagen. Es gibt keine Pflichtuhr, Kapitelpflicht oder Freischaltung. Freie Rechnungen und Zeichnungen werden anhand vollständiger Kriterien selbst verglichen; einzelne Zahlen lassen sich zusätzlich prüfen. Lernstände unterscheiden Bearbeitung mit Hilfe, selbstständige Transferaufgaben und spätere Wiederholung.
 
 ## Quellen und fachliche Entscheidungen
 
-Die Aufgabenübersicht und die eigenen PDF-Ausarbeitungen liegen in `materials/`. Die Ausarbeitungen sind keine offiziellen Musterlösungen. Die vollständigen Vorlesungsfolien wurden lokal geprüft; die [öffentliche Fassung beim Autor](https://borgelt.net/slides/nn.pdf) kann anders nummeriert sein. MC-Aussagen sind eigene oder rekonstruierte Trainingsformulierungen, keine behaupteten Originalfragen.
+Die Aufgabenübersicht und die eigenen PDF-Ausarbeitungen liegen in `materials/`. Die Ausarbeitungen sind keine offiziellen Musterlösungen. Die vollständigen Vorlesungsfolien wurden lokal geprüft; die [öffentliche Fassung beim Autor](https://borgelt.net/slides/nn.pdf) kann anders nummeriert sein. Die sieben Originalformulierungen sind ausdrücklich markiert. Weitere MC-Inhalte sind eigene oder rekonstruierte Trainingsformulierungen; die 13 überlieferten Stichworte werden nicht als vollständige Originalfragen ausgegeben.
 
 Die TLU-Konstruktion besitzt drei Schichten **einschließlich Eingabe**. Beide LVQ-Lesarten sind getrennt gerechnet. Die SOM-Gitterinterpretation wird offengelegt; alle verlangten Updates sind enthalten. RBF-Dreiecke vermeiden doppelte Randhöhen, und Hopfield berücksichtigt den Gleichheitsfall ohne falsche Behauptung strikt sinkender Energie.
 
-Es gibt keine erfundenen Einzelpunkte für Rechenaufgaben oder Notenprognosen. MC folgt Folie 2: +1/−1/0, mindestens 0 je Fünferblock.
+Es gibt keine erfundenen Einzelpunkte für Rechenaufgaben oder Notenprognosen. Die vollständigen Fünferblöcke folgen Folie 2: +1/−1/0, mindestens 0 je Block. Eigene Auswahlformate und unvollständig überlieferte Blöcke erhalten keine angeblich offizielle Punktewertung.
 
 ## Daten und alte Links
 
@@ -36,6 +37,8 @@ node tests/study.test.js
 node tests/study-browser.mjs
 python tests/mcq-source.test.py
 node tests/mcq-original.browser.mjs
+node tests/learning.test.js
+node tests/learning-browser.mjs
 ```
 
 Die Browsertests benötigen `playwright` und Microsoft Edge. Alternativ kann `PLAYWRIGHT_MODULE` eine importierbare Modul-URL nennen. `NN_TEST_URL` überschreibt die lokale Adresse. Der Wortlautvergleich benötigt Python mit `pypdf`; ein abweichender Node-Pfad kann als Argument übergeben werden. Screenshots werden in das ignorierte Verzeichnis `tmp/` geschrieben. KaTeX und Schriften kommen von jsDelivr und benötigen Internet.
@@ -48,12 +51,15 @@ Die Browsertests benötigen `playwright` und Microsoft Edge. Alternativ kann `PL
 | `study-core.js` | Berechnungen, Zahlenprüfung und Wiederholungsauswahl |
 | `study-visual.js` | Flächen, Netze, Näherungsgraphen und Hopfield-Graph |
 | `study-mc.js` | Aussagen, Formulierungsvarianten und Wiederholung |
+| `study-theory.js` | Zehn aufeinander aufbauende Kapitel mit Zahlenbeispielen und Quellen |
+| `study-questions.js` | Vollständiger Katalog, ursprüngliche Gruppierung, neue Anwendungsfragen und korrigierte Aussagen |
+| `study-learning.js` | Theorie, Lesekatalog, gespeicherter Versuchsverlauf und freie Navigation |
 | `study-app.js` | Navigation, Bedienung, Speicherung, Import/Export |
 | `study-reference.js` | Erhaltene ergänzende Folienerklärungen |
 | `study.css` | Desktop-, Mobil- und Druckdarstellung |
 
 `index.html` lädt ausschließlich diese neue Anwendung. Die älteren JS-/CSS-Dateien bleiben als bisheriger Quellstand erhalten und werden nicht mehr ausgeführt. Entsprechend gelten für den Umbau die `study-*`-Tests; die älteren Tests gehören zur vorherigen Anwendung.
 
-[Auftrag und Entscheidungen](UMBAU.md) · [Prüfbericht](VERIFICATION.md)
+[Früherer Umbau](UMBAU.md) · [Theorie- und MC-Erweiterung](THEORIE-MC.md) · [Prüfbericht](VERIFICATION.md)
 
 Veröffentlichung über GitHub Pages. Die frühere `.openai/hosting.json` wird dafür nicht verwendet.

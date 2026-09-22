@@ -1,5 +1,25 @@
 # Prüfung des Klausur-Umbaus
 
+## Aktueller Ausbau: Theorie und MC (22.09.2026)
+
+Der unten dokumentierte frühere Umbau wurde um den vollständigen Auftrag aus [THEORIE-MC.md](THEORIE-MC.md) erweitert. Die Hauptnavigation hat jetzt **vier** Bereiche. Die früheren Rechenaufgaben und Rezepte bleiben bestehen.
+
+Zusätzlich bestanden:
+
+- `tests/learning.test.js`: vollständige Katalogabdeckung, stabile Original- und Formulierungs-IDs, überlieferte Gruppierung, explizite Korrekturen aller falschen Aussagen, unabhängig berechnete Zahlenbeispiele und Antwortschlüssel aller 52 neuen Optionen, Typen und Punktewertung, Validierung gespeicherter Versuche.
+- `tests/learning-browser.mjs`: alle zehn Kapitel bei 1400 und 390 Pixeln; keine KaTeX-Fehler oder horizontale Seitenüberläufe; gespeicherte Lesestelle, Reload und Lesemarkierung; alle 110 Katalogeinträge und sämtliche Erklärungen; alle Filter; sieben Aussagen in zwei Originalgruppen; Lesen ohne Bewertungsänderung; stabile Zurück-/Weiter-Historie, explizite Wiederholung und alle 14 neuen Aufgaben bei beiden Breiten.
+- Derselbe Browserlauf prüft Nachlesen und Rückkehr zum gleichen offenen Versuch einschließlich Antworten, Rückkehr zur Katalogposition und zu einer Aufgabennotiz, Migration eines bereits bewerteten alten Versuchs ohne zusätzliche Zählung, vollständigen Export/Import und atomare Ablehnung ungültiger neuer Verlaufsdaten.
+- Frühere Prüfungsblöcke bleiben beim Start eines neuen erhalten. Der Browserlauf öffnet einen unterbrochenen archivierten Block, kontrolliert dessen ursprüngliche Antwort und gibt ihn ab, ohne den neuen offenen Block zu verändern.
+- Unbeantwortetes Weitergehen erzeugt keine Bewertung und zeigt eine andere Variante; Zurück führt exakt zur vorherigen Aufgabe.
+
+Die vorhandenen Suiten `study.test.js`, `study-browser.mjs`, `mcq-source.test.py` und `mcq-original.browser.mjs` wurden zusätzlich ausgeführt und bestanden. Damit bleiben auch alle 24 Teilaufgaben bei zwei Breiten, Quellen-PDFs, ursprünglichen mathematischen Kontrollen, alten Browserdaten und 30er-Blöcke abgedeckt.
+
+Die Theorie wurde inhaltlich Abschnitt für Abschnitt auf Begriffseinführung, nachvollziehbare Zahlenrechnungen und fehlende Voraussetzungen gelesen. Dabei wurden insbesondere affine Abbildungen, Matrixtransposition und CNN-Dilatation erläutert. Screenshots von Theorie, MC-Block und Katalog wurden auf Desktop und Handy visuell kontrolliert. Die vollständigen neuen Zahlenbeispiele stehen neben den Formeln; lange Formeln und Tabellen scrollen innerhalb ihres Bereichs.
+
+Die Anzahl der Katalogeinträge ist keine Anzahl verschiedener Originalfragen: 82 Einzelaussagen (75 Training + 7 Original), 24 Wahr/Falsch-Blöcke mit teilweise denselben Aussagen und vier neue Auswahlaufgaben. Die zehn neuen T/F-Anwendungen und vier Auswahlaufgaben enthalten zusammen 52 neue Aussage-/Optionstexte.
+
+## Frühere Prüfung des Aufgabenumbaus
+
 Stand: 22.09.2026. Ausgangspunkt: veröffentlichter Commit `b534b5a`.
 
 ## Fachliche Kontrolle

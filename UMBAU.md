@@ -1,5 +1,7 @@
 # Auftrag und Nachweise
 
+Dieser Bericht beschreibt den früheren Aufgabenumbau. Der aktuelle zusätzliche Theorie- und MC-Auftrag ist vollständig in [THEORIE-MC.md](THEORIE-MC.md) dokumentiert; er erweitert die Navigation um einen vierten Bereich.
+
 Grundlage: eingefügter Auftrag vom 22.09.2026 (11 Abschnitte). Ausgangspunkt der veröffentlichten Website: b534b5a. Lokaler Stand wurde ohne Verlust der unversionierten PDF-Dateien und tmp-Dateien vorgespult.
 
 ## Abnahmekriterien

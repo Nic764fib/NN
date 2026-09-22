@@ -11,7 +11,7 @@ try {
   await page.goto(base+'#/mc',{waitUntil:'networkidle'});
   // Previously practised concepts must still present each original wording once.
   await page.evaluate(()=>{const key='ann_exam_focus_v1',s=JSON.parse(localStorage.getItem(key));for(const c of NNMC.concepts.filter(c=>c.original))s.mc[c.id]={count:20,lastCorrect:true,at:Date.now(),seq:0};localStorage.setItem(key,JSON.stringify(s));});
-  await page.reload({waitUntil:'networkidle'});await page.getByRole('link',{name:'Wortlaut der Vorlage 2024 durchgehen'}).click();
+  await page.reload({waitUntil:'networkidle'});await page.getByRole('link',{name:'Wortlaut 2024 einmal vollständig üben'}).click();
   assert.equal(await page.locator('#mc-scope').inputValue(),'original');
   assert.ok(await page.locator('#mc-five').isHidden());
   const seen=new Set();
@@ -22,7 +22,7 @@ try {
    assert.equal(await page.locator('.mc-statement').getAttribute('lang'),'en');
    await page.locator(`[data-mc="${i===0?'skip':String(q.correct)}"]`).click();
    assert.ok(await page.locator('[data-mc="true"]').isDisabled());
-   assert.match(await page.locator('#app').innerText(),new RegExp(`${i+1} / 7 Aussagen bereits durchgegangen`));
+   assert.match(await page.locator('#app').innerText(),new RegExp(`${i+1} / 7 Originalaussagen bereits durchgegangen`));
    await page.reload({waitUntil:'networkidle'});assert.equal(await page.locator('.mc-statement').innerText(),q.text);
    assert.ok(await page.locator('#mc-next').isVisible());
    assert.equal(await page.locator('.katex-error').count(),0);
@@ -33,14 +33,14 @@ try {
   await fragmentBox.locator('summary').click();assert.equal(await fragmentBox.locator('li[lang="en"]').count(),13);
   await fs.mkdir('tmp',{recursive:true});await page.screenshot({path:`tmp/mcq-original-${width}.png`,fullPage:width===390});
   await page.locator('#mc-scope').selectOption('core');assert.equal(new URL(page.url()).hash,'#/mc');
-  assert.match(await page.locator('#app').innerText(),/Eigene \/ rekonstruierte Trainingsformulierung/);
+  assert.match(await page.locator('#app').innerText(),/Eigene (\/ rekonstruierte Trainingsformulierung|Anwendungsvariante)/);
   await page.locator('#mc-thirty').locator('..').locator('..').evaluate(e=>e.open=true);await page.locator('#mc-thirty').click();
   assert.equal(await page.locator('[data-block]').count(),90);
   const questions=await page.evaluate(()=>{const s=JSON.parse(localStorage.getItem('ann_exam_focus_v1'));return NNMC.concepts.filter(c=>c.core).map(c=>NNMC.question(c,s.mcBlock.turn));});
   assert.ok(questions.every(q=>!q.verbatim));
   for(const q of questions)await page.locator(`input[data-block="${q.id}"][value="${q.correct}"]`).check();
   await page.locator('#block-finish').click();assert.match(await page.locator('#app').innerText(),/30 \/ 30 Punkte/);
-  await page.goto(base+'#/mc/original');assert.match(await page.locator('#app').innerText(),/7 \/ 7 Aussagen bereits durchgegangen/);
+  await page.goto(base+'#/mc/original');assert.match(await page.locator('#app').innerText(),/7 \/ 7 Originalaussagen bereits durchgegangen/);
   await page.goto(base+'#/quellen');const downloading=page.waitForEvent('download');await page.locator('#export').click();const download=await downloading;const content=await fs.readFile(await download.path());
   const payload=JSON.parse(content);assert.equal(payload.state.mcScope,'original');assert.equal(payload.state.mcActive.form,'original');
   await page.locator('#import').setInputFiles({name:'original-state.json',mimeType:'application/json',buffer:content});assert.match(await page.locator('#data-message').innerText(),/Importiert/);
