@@ -37,6 +37,8 @@ Die Wahrheit der MC-Aussagen wurde zusätzlich inhaltlich anhand der angegebenen
 
 Desktop- und Mobilansichten wurden zusätzlich anhand von Screenshots visuell kontrolliert, insbesondere Startseite, eine vollständige TLU-Lösung und der Hopfield-Graph. Screenshots liegen lokal in `tmp/` und werden nicht veröffentlicht.
 
+Die vollständige Browsersuite wurde auch gegen `https://nic764fib.github.io/NN/` erfolgreich ausgeführt (Anwendungsstand `bbb49e0`). Der Pages-Deploy lief erfolgreich durch. Der Test wartet bei Netzwerklatenz ausdrücklich auf geladene Abbildungen; die erste Live-Prüfung hatte diese Wartebedingung noch nicht berücksichtigt.
+
 ## Grenzen
 
 Die Kontrollen belegen die geprüften Inhalte und Funktionen. Die kommende Klausur ist unbekannt; weder vollständige Stoffabdeckung noch eine bestimmte Note folgt daraus. Zeichnungen und freie Begründungen benötigen weiterhin den eigenen Vergleich mit den Kriterien. Die Browserprüfung benutzt getrennte Testprofile und verändert keinen persönlichen Lernstand im normalen Browser.
