@@ -1,5 +1,7 @@
 # Arbeitsauftrag: ANN-Lernplattform für den 28. September 2026
 
+Historischer Auftrag für die frühere Plattform. Für die aktive Anwendung gilt der anschließende [Umbau mit Fokus auf die Aufgaben von 2024](UMBAU.md). Die frühere Priorisierung, Navigation und Klausuruhr unten wurden dadurch ersetzt.
+
 Überarbeite die vorhandene Lernplattform als sorgfältiger Hochschuldozent für Artificial Neural Networks and Deep Learning. Ziel ist, dass Studierende eine der Aufgabenübersicht vom 10. Juli 2024 ähnliche Klausur selbstständig bearbeiten können und die dazugehörige Theorie aus den Vorlesungsfolien verstehen. Versprich keine Note und kein sicheres Bestehen. Übersetze dieses Ziel in nachprüfbare Fähigkeiten und vollständige Übungsmöglichkeiten.
 
 ## Verbindliche Quellen und Grenzen

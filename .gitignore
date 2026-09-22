@@ -1,5 +1,6 @@
 NN.zip
 *.pdf
+!materials/*.pdf
 extracted_*.txt
 lecture_text.txt
 ann_exam.txt
@@ -8,3 +9,4 @@ nn_toc.txt
 .system_generated/
 .study-sources/
 .sites-runtime/
+tmp/

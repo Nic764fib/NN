@@ -1,48 +1,42 @@
-# Prüfung der Lernplattform · 20. September 2026
+# Prüfung des Klausur-Umbaus
 
-## Fachliche Korrekturen
+Stand: 22.09.2026. Ausgangspunkt: veröffentlichter Commit `b534b5a`.
 
-- LVQ mit Klassen verwendet die Zweiprototypen-Regel aus Folie 340. Ohne Klassen bleibt es beim Winner-Update aus Folie 336. Simulator, Aufgabenvarianten und Lösungen verwenden dieselbe Konvention.
-- Die Originalzahlen ergeben ohne Klassen `(3,5)` und `(8,3)`, mit Klassen `(0,7)` und `(9.5,2.75)`.
-- SOM verwendet Gitterabstände, berücksichtigt alle 63 Neuronen der angegebenen Gitterinterpretation und schneidet die Gauß-Nachbarschaft nicht nach zwei Schritten ab.
-- Die RBF-Funktionsapproximation nutzt neun Dreiecksbasen und insgesamt elf Neuronen. Damit entstehen keine Doppelzählungen an Grenzen benachbarter Rechteckbasen. Der Simulator zählt Eingabe, Hidden-Neuronen und Ausgabe entsprechend.
-- Hopfield: nichtsteigende Energie einschließlich des Gleichheitsfalls; die endliche Konvergenz wird auch auf Energieplateaus begründet. Die Schranke `n·2^n` ist an die feste zyklische Reihenfolge gebunden. Unbelegte fehlerfreie Speicherkapazitätsgarantien wurden entfernt.
-- Voraussetzungen des Approximationssatzes, Rprop-/RMSProp-Verweise, Adam als unzentriertes zweites Moment und Unterschiede zwischen lokalem Einfluss und kompaktem Träger berichtigt.
-- Nicht belegte Klausurregeln und Notenzusagen entfernt. Originalzahlen, eigene Varianten und zusätzliche Folienthemen sind gekennzeichnet.
+## Fachliche Kontrolle
 
-## Automatische Kontrollen
+Primärquellen: `ANN_10_07_2024.pdf` und `nn(1).pdf`. Die eigenen PDF-Ausarbeitungen wurden als Vergleich, nicht als ungeprüfte Autorität verwendet.
 
-`node tests/verify.js` erfolgreich:
+`node tests/study.test.js` prüft unabhängig vom erzeugenden Lösungscode:
 
-- 750 Varianten: 50 je Aufgabenart; endliche Ergebnisse, Dezimalkomma, Zurückweisen leerer Antworten und unterschiedliche Aufgabenstellungen.
-- Regressionslösungen unabhängig über zentrierte Kovarianz-/Varianzformeln geprüft.
-- Backpropagation-Updates mit numerischen Ableitungen der Fehlerfunktion verglichen.
-- Hopfield: Einzelupdates, alle Zustände und Nachfolger sowie Energieabnahme für drei Gewichtsvarianten geprüft.
-- RBF-Interpolation und Summe der Dreiecksbasen an Stützstellen und Zwischenpunkten geprüft.
-- 90 eindeutige MC-IDs; richtige, falsche und ausgelassene Antworten sowie die Untergrenze null je Block geprüft.
-- Fünf Originalaufgaben, verfügbare Abbildungen und 14-Punkte-Trainingsraster je Rechenaufgabe geprüft.
-- Optionaler Lauf mit KaTeX 0.16.9: 7.940 Formelausdrücke ohne Parserfehler.
-- JavaScript-Syntaxprüfung aller Anwendungsskripte und `git diff --check` erfolgreich.
+- TLU: alle 16 Hidden-Kombinationen sowie die Original- und Transfergeometrie gegen einen eigenständigen Punkt-im-Polygon-Test.
+- RBF: Zielgebiete gegen geometrische Dreieckstests; Ausgabegewichte, ausgesparte Bereiche und außerhalb liegende Punkte.
+- Approximation: explizit vorgerechnete Stützwerte, Differenzen, Randpunkte und lineare Interpolation zwischen Zentren.
+- LVQ: explizite Endwerte für ohne Klassen, Gewinnerregel und Zweiprototypen-Regel, jeweils Original und Transfer.
+- SOM: sämtliche 63 Original- und neun Transferupdates durch unabhängige Koordinaten-/Gitterrechnung.
+- Hopfield: acht Zustände und 24 asynchrone Updates; explizite ursprüngliche Nachfolger sowie unabhängige Energie- und Gleichheitsprüfung für die Variante.
+- Zahlenparser: Vorzeichen, Dezimalkomma, Brüche, Rundung, positive Skalierung von Halbebenen; ungültige Eingaben werden verworfen.
+- MC: Struktur, vollständige Begründungen und blockweise Punktberechnung; richtige, falsche und ausgelassene Antworten.
+- Lernstand: keine selbstständige Beherrschung allein durch Originalbearbeitung oder Hilfen; spätere Wiederholung und Abdeckung der fünf Familien.
+
+Die Wahrheit der MC-Aussagen wurde zusätzlich inhaltlich anhand der angegebenen Folien geprüft. Schwerpunkte: TLU 17–35, Schichtzählung 80, Approximation 93–104, Optimierer 192–196, RBF 288–314, Metriken 332–333, LVQ 336/340, SOM 364–367 und Hopfield 380–390. Weitere Grundlagenaussagen verweisen auf ihre jeweilige Folienstelle. Strukturtests allein belegen keine fachliche Wahrheit.
 
 ## Browserprüfung
 
-### Ergänzung: angeleitete Experimente
+`node tests/study-browser.mjs`, Microsoft Edge mit Playwright:
 
-- `node tests/labs.test.js`: 6.782 erfolgreiche Prüfungen. Regressions-, BCE-, quadratische und Backpropagation-Ableitungen gegen numerische Differenzen; TLU-Polygon gegen unabhängigen Ray-Casting-Test; RBF-Zielgebiet über ein Punktraster; Dreiecksinterpolation für alle angebotenen Neuronenzahlen.
-- Originalwerte für LVQ und SOM reproduziert; Eingabedaten werden beim Update nicht mutiert. Alle asynchronen Hopfield-Einzelübergänge für beide angebotenen Gewichtsvarianten haben nichtsteigende Energie. Der synchrone Originalzyklus und echte Zustandswechsel bei gleicher Energie wurden geprüft.
-- c-Means-Zuordnung, Schwerpunktbildung, Fehlerabnahme und Beibehaltung leerer Cluster geprüft.
-- Alle zwölf Experimente im Browser bedient: Parameteränderungen, Beispielknöpfe, beide Fehlerschritte, Updates, Rückwärtsschritte, Reset und alle zwölf Verständnisfragen. Die Original-LVQ-Endwerte und der Hopfield-Zyklus stimmen auch in der Oberfläche.
-- Backpropagation zeigt nach Übernahme die tatsächlich aktualisierten Gewichte und Biaswerte; eine Änderung der Lernrate bewahrt diesen Parameterzustand.
-- Alle 49 vorhandenen Kapitel-Unteransichten erneut geöffnet: sichtbar und ohne KaTeX- oder Konsolenfehler. Direktsprung von der Startseite zum SOM-Experiment einschließlich Tastaturfokus geprüft.
-- Alle zwölf Experimente bei 390 Pixeln Fensterbreite kontrolliert. Regler, Zahlenbeschriftungen und SVG-Schriftgrößen für schmale Ansichten angepasst; Rechentabellen bleiben innerhalb eigener Scrollbereiche. Helles und dunkles Design visuell geprüft.
-- Die bestehende Prüfung mit 750 Aufgabenvarianten, 90 MC-Aussagen und 7.940 TeX-Ausdrücken ist weiterhin erfolgreich.
+- Alle 24 Teilaufgaben bei 1400×1000 und 390×844: 48 Ansichten, jeweils sämtliche Hinweise, Rezept, Lösung und Zahlenkontrolle.
+- Keine KaTeX-Fehler in Aufgaben, Rezepten, sämtlichen MC-Formulierungen und erhaltenen Nachschlagetexten.
+- Kein horizontaler Überlauf der Gesamtseite. Breite Tabellen und der Hopfield-Graph scrollen innerhalb ihrer Bereiche.
+- Alle Originalabbildungen geladen. Alle drei bereitgestellten PDF-Links antworten mit HTTP 200.
+- Eingaben, Notizen, Hilfen und Vergleichsansicht über Neuladen hinweg erhalten. Eine falsche Teilwerteingabe verhindert die Bewertung dieses Versuchs als vollständig ohne Hilfe.
+- 15 bisherige Hauptrouten erreichen sinnvolle neue Inhalte. Hauptnavigation besteht aus drei Bereichen.
+- MC: erste Antwort nach Feedback gesperrt, Wiederaufnahme, 30 richtige Antworten ergeben 30/30.
+- Gesamtdurchlauf: fünf vollständige Aufgabenpakete, 30 MC-Aussagen, Notizen gespeichert, Lösungen erst nach Vergleich.
+- Bestehender Altstand bleibt unter seinem ursprünglichen Schlüssel unverändert. Export/Import-Rundlauf mit alter Notiz und neuen Eingaben. Fehlerhafte verschachtelte Importdaten werden ohne Zustandsänderung abgewiesen; der Stand vor erfolgreichem Import bleibt gesichert.
+- Ein neuer selbstständiger Transferdurchlauf wird genau einmal als Verlaufseintrag gespeichert. Hopfield-Auswahl hebt die passenden Übergänge hervor; Bedienung per Tastatur geprüft.
 
-### Bestehende Funktionen (Prüfung vor der Ergänzung)
+Desktop- und Mobilansichten wurden zusätzlich anhand von Screenshots visuell kontrolliert, insbesondere Startseite, eine vollständige TLU-Lösung und der Hopfield-Graph. Screenshots liegen lokal in `tmp/` und werden nicht veröffentlicht.
 
-- Alle 59 Kapitelansichten über die tatsächliche Navigation geöffnet: keine Laufzeit- oder KaTeX-Fehler.
-- Regressionseingaben werden bewertet; LVQ-Simulator mit Klassen erreicht nach zwei Punkten die oben angegebenen Werte.
-- Klausur gestartet, Notiz und MC-Antwort eingegeben, Seite neu geladen: Bearbeitungsstand bleibt erhalten; vor Abgabe sind keine Musterlösungen sichtbar.
-- Nach Abgabe erscheinen Lösungen und Bewertung, MC-Antworten sind gesperrt. Die Eingabe oberhalb einer Teilpunktgrenze wird begrenzt.
-- Darstellung bei Desktopbreite und 390 Pixeln geprüft; mobile Navigation und Formularbreiten angepasst.
+## Grenzen
 
-Die Kontrollen prüfen konkrete Inhalte und Funktionen. Sie belegen weder Vollständigkeit für eine unbekannte kommende Prüfung noch eine bestimmte Note. Manuelle Zeichnungen und Begründungen erfordern weiterhin den Vergleich mit dem angegebenen Bewertungsraster. Der Timer wird über einen gespeicherten Endzeitpunkt berechnet; die vollen 120 Minuten wurden nicht in Echtzeit abgewartet.
+Die Kontrollen belegen die geprüften Inhalte und Funktionen. Die kommende Klausur ist unbekannt; weder vollständige Stoffabdeckung noch eine bestimmte Note folgt daraus. Zeichnungen und freie Begründungen benötigen weiterhin den eigenen Vergleich mit den Kriterien. Die Browserprüfung benutzt getrennte Testprofile und verändert keinen persönlichen Lernstand im normalen Browser.

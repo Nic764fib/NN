@@ -1,59 +1,57 @@
-# ANN & Deep Learning – Prüfungsvorbereitung
+# NN · Klausur lernen
 
-[Lernplattform öffnen](https://nic764fib.github.io/NN/)
+[Website öffnen](https://nic764fib.github.io/NN/)
 
-Deutschsprachige Lernplattform zur bereitgestellten Borgelt-Vorlesung und zur Aufgabenübersicht vom 10. Juli 2024. Schwerpunkt: Regression und Klassifikation; Arbeitsplan bis 28. September 2026.
+Praktische Vorbereitung anhand der Aufgabenübersicht vom 10. Juli 2024 und der bereitgestellten Vorlesungsfolien von Christian Borgelt.
 
-## Lernen und üben
+## Drei Einstiege
 
-- Regression: Fehlerquadrate, Normalgleichungen, Polynome, mehrere Eingaben, Logit und Gradientenschritte.
-- Klassifikation: Entscheidungsgrenzen, Wahrscheinlichkeiten, Likelihood, BCE und Softmax.
-- TLU, MLP/RBF-Approximation, Backpropagation, LVQ/SOM, Hopfield und CNN mit Erklärungen, Rechenwegen und interaktiven Darstellungen.
-- Modellwahl, Optimierer sowie ergänzende Folientheorie zu Autoencodern, EM, Boltzmann-, rekurrenten und Neuro-Fuzzy-Netzen.
-- 15 Aufgabenarten mit reproduzierbaren Zahlenvarianten, gestuften Hinweisen, Zahlenkontrolle und vollständigen Lösungen.
-- 90 MC-Trainingsaussagen in 18 Themenblöcken, mit Begründungen und Folienverweisen; 33 Lernkarten zur eigenen Wiedergabe.
-- Drei Klausurmodi: Zahlen der Aufgabenübersicht 2024, neue Zahlen derselben Aufgabenfamilien oder ein Durchlauf mit Regression/Klassifikation. Fünf Rechenaufgaben plus 30 MC-Aussagen, 120 Minuten, Wiederaufnahme nach Neuladen.
-- Notizen und Lernstand im eigenen Browser; Export und Import als JSON.
+- **Altklausur & Training:** fünf vollständige Originalpakete, je eine Transferaufgabe und sechs kurze Übungen zu häufigen Fehlern. Teilaufgaben sind einzeln wählbar. Hinweise, Rezept und vollständige Lösung erscheinen direkt an der Aufgabe.
+- **Multiple Choice:** 30 Sachverhalte zu den sechs Themenblöcken von 2024, jeweils in zwei Formulierungen; 15 ergänzende Grundlagen. Einzeltraining mit sofortiger Erklärung oder eigenständige Fünfer-/30er-Blöcke.
+- **Rechenrezepte:** sieben konkrete Schrittfolgen mit Beispielen. Weitere Folienthemen bleiben als Nachschlagebereich erreichbar.
 
-## Interaktiv verstehen
+Ein Gesamtdurchlauf enthält alle fünf Rechenpakete und 30 MC-Aussagen. Es gibt keine Pflichtuhr, Kapitelpflicht oder Freischaltung. Freie Rechnungen und Zeichnungen werden anhand vollständiger Kriterien selbst verglichen; einzelne Zahlen lassen sich zusätzlich prüfen. Lernstände unterscheiden Bearbeitung mit Hilfe, selbstständige Transferaufgaben und spätere Wiederholung.
 
-Auf der Startseite führt „Mit Veränderungen verstehen“ direkt zu zwölf angeleiteten Experimenten. Jedes nennt seinen Lernzweck, einen konkreten Versuch, die Erklärung der aktuellen Werte und eine Verständnisfrage mit begründetem Feedback:
+## Quellen und fachliche Entscheidungen
 
-- Regressionsgerade, einzelne Residuen, Optimum und Gradientenschritt.
-- Klassifikationsgrenze und Wahrscheinlichkeit bei gemeinsam skalierten Gewichten.
-- BCE und quadratischer Fehler mit getrennten Gradientenschritten.
-- Softmax mit drei Klassen und gemeinsamer Logit-Verschiebung.
-- TLU: Punkt, Schwellen und Signalweg durch die Originalgeometrie.
-- RBF: radiale Grundfläche und einzeln abschaltbare Abzüge der Originalaufgabe.
-- Funktionsapproximation: Beitrag jedes Hidden-Neurons bei MLP-Stufen und RBF-Dreiecken.
-- LVQ: Online-Updates, Klassen, Reihenfolge, Lernrate und Rückwärtsschritt.
-- SOM: altes/neues Gitter und vollständige Rechnung eines ausgewählten Nachbarneurons.
-- Hopfield: Einzelupdates, Energie, Verlauf und synchroner Vergleich mit Zyklus.
-- Backpropagation: Vorwärtspass, beide Fehlerfaktoren und gemeinsames Parameterupdate.
-- c-Means: Zuordnung und Schwerpunktbildung als getrennte Schritte.
+Die Aufgabenübersicht und die eigenen PDF-Ausarbeitungen liegen in `materials/`. Die Ausarbeitungen sind keine offiziellen Musterlösungen. Die vollständigen Vorlesungsfolien wurden lokal geprüft; die [öffentliche Fassung beim Autor](https://borgelt.net/slides/nn.pdf) kann anders nummeriert sein. MC-Aussagen sind eigene oder rekonstruierte Trainingsformulierungen, keine behaupteten Originalfragen.
 
-Die vorhandene CNN-Darstellung enthält zusätzlich eine Anleitung zum Vergleich von Fenster, Stride und Pooling. Die Experimente vertiefen vorhandene Aufgaben und Folien; veränderte Parameter und eigene Zahlenbeispiele sind gekennzeichnet.
+Die TLU-Konstruktion besitzt drei Schichten **einschließlich Eingabe**. Beide LVQ-Lesarten sind getrennt gerechnet. Die SOM-Gitterinterpretation wird offengelegt; alle verlangten Updates sind enthalten. RBF-Dreiecke vermeiden doppelte Randhöhen, und Hopfield berücksichtigt den Gleichheitsfall ohne falsche Behauptung strikt sinkender Energie.
 
-Die Rechenaufgaben werden anhand von Teilkriterien selbst bewertet; MC wird automatisch ausgewertet. Die Aufteilung von je 14 Punkten pro Rechenaufgabe ist ein Trainingsschema. MC-Formulierungen sind rekonstruierte beziehungsweise eigene Trainingsfragen. Keine Bestehens- oder Notengarantie.
+Es gibt keine erfundenen Einzelpunkte für Rechenaufgaben oder Notenprognosen. MC folgt Folie 2: +1/−1/0, mindestens 0 je Fünferblock.
 
-## Quellen
+## Daten und alte Links
 
-Fachliche Grundlage sind `nn(1).pdf` (512 Folien) und `ANN_10_07_2024.pdf` (vierseitige Aufgabenübersicht), die für die Überarbeitung lokal bereitgestellt wurden. Folienverweise beziehen sich auf diese Fassung. Die Quelldokumente werden nicht neu im Repository veröffentlicht. Eine [öffentliche Fassung beim Autor](https://borgelt.net/slides/nn.pdf) kann abweichend nummeriert sein.
+Der aktuelle Browserstand liegt unter `ann_exam_focus_v1`. Der frühere Schlüssel `ann_borgelt_state_v2` bleibt unverändert; alte Notizen und Bewertungen sind unter **Quellen & eigene Daten** einsehbar und exportierbar. Ein Import sichert vorher den aktuellen Stand. Neue Konstruktionen werden nicht anhand alter Häkchen als beherrscht eingestuft.
 
-[Arbeitsauftrag](ARBEITSAUFTRAG.md) · [Prüfbericht](VERIFICATION.md)
+Die bisherigen Hauptrouten, einschließlich `#/klausur`, `#/task1` bis `#/task6` und `#/abfragen`, führen zu passenden neuen Einstiegen. Es gibt keinen eigenständigen Satztrainer mehr.
 
 ## Lokal öffnen und prüfen
 
-Statische Website ohne Build-Schritt oder Backend. Zum lokalen Testen im Projektordner:
+Statische Website, kein Build und kein Backend:
 
 ```sh
-python -m http.server 8765
-node tests/verify.js
-node tests/labs.test.js
+python -m http.server 8766
+node tests/study.test.js
+node tests/study-browser.mjs
 ```
 
-Dann `http://localhost:8765` öffnen. Für die optionale Prüfung sämtlicher TeX-Formeln `KATEX_PATH` auf eine lokale KaTeX-0.16.9-JavaScript-Datei setzen. Die Website lädt KaTeX einschließlich Schriften von jsDelivr; dafür wird Internet benötigt.
+Der Browsertest benötigt `playwright` und Microsoft Edge. Alternativ kann `PLAYWRIGHT_MODULE` eine importierbare Modul-URL nennen. `NN_TEST_URL` überschreibt die lokale Adresse. Screenshots werden in das ignorierte Verzeichnis `tmp/` geschrieben. KaTeX und Schriften kommen von jsDelivr und benötigen Internet.
 
-Inhalte liegen in `course.js`, `theory-extra.js`, `original-exam.js` und `question-bank.js`. `corrections.js` ersetzt gezielt die überarbeiteten Abschnitte und Alteinträge beim Start. `practice.js` enthält die gemeinsamen Berechnungen für Trainer und Klausur. `lab-math.js` berechnet die Lernexperimente; `labs.js`, `labs-core.js` und `labs.css` stellen ihre Bedienung und Erklärungen bereit. `app.js` enthält Routing, Speicherung und den CNN-Simulator.
+## Aktive Dateien
 
-Die bestehende Veröffentlichung erfolgt über GitHub Pages. Die mitexportierte `.openai/hosting.json` wird dafür nicht verwendet.
+| Datei | Inhalt |
+| --- | --- |
+| `study-content.js` | Aufgaben, Hinweise, Rezepte und vollständige Lösungen |
+| `study-core.js` | Berechnungen, Zahlenprüfung und Wiederholungsauswahl |
+| `study-visual.js` | Flächen, Netze, Näherungsgraphen und Hopfield-Graph |
+| `study-mc.js` | Aussagen, Formulierungsvarianten und Wiederholung |
+| `study-app.js` | Navigation, Bedienung, Speicherung, Import/Export |
+| `study-reference.js` | Erhaltene ergänzende Folienerklärungen |
+| `study.css` | Desktop-, Mobil- und Druckdarstellung |
+
+`index.html` lädt ausschließlich diese neue Anwendung. Die älteren JS-/CSS-Dateien bleiben als bisheriger Quellstand erhalten und werden nicht mehr ausgeführt. Entsprechend gelten für den Umbau die `study-*`-Tests; die älteren Tests gehören zur vorherigen Anwendung.
+
+[Auftrag und Entscheidungen](UMBAU.md) · [Prüfbericht](VERIFICATION.md)
+
+Veröffentlichung über GitHub Pages. Die frühere `.openai/hosting.json` wird dafür nicht verwendet.
