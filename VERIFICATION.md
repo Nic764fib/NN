@@ -1,5 +1,20 @@
 # Prüfung des Klausur-Umbaus
 
+## Aktueller Stand: kompakte Lösungen und einfache Bedienung (23.09.2026)
+
+- Alle 24 Rechenteilaufgaben (Originale, Transfer und kurze Übungen) enthalten zuerst eine vollständige kompakte Klausurantwort und darunter den aufklappbaren ausführlichen Rechenweg. Die Originalaufgaben, Zahlenmodelle und ausführlichen Lösungen wurden erhalten.
+- Alle sieben Rezepte sind kurze nummerierte Rechenschritte. Separate Hinweise und Notizfelder sind aus Einzelaufgaben und Gesamtdurchlauf entfernt; historische Notizen bleiben exportierbar.
+- Multiple Choice bietet genau zwei Einstiege. Alle 110 Katalogeinträge zeigen Antworten und Erklärungen; der gemeinsame Übungsdurchlauf erreicht ebenfalls sämtliche Einträge, ohne Filter, Verlaufsansicht oder zusätzliche Blockwahl. Originalwortlaut und Gruppierung bleiben erhalten.
+- Ein Sub-Agent hat die zehn Theorie-Kapitel gegen Rechenaufgaben und MC geprüft und fehlende Übergänge ergänzt. Der neue Klausurüberblick umfasst rund 1.100 Wörter; alle 34 ausführlichen Abschnitte bleiben zugänglich.
+
+Bestanden: `study.test.js`, `learning.test.js`, `mcq-source.test.py`, `study-browser.mjs`, `learning-browser.mjs` und `mcq-original.browser.mjs`.
+
+Die Browserprüfungen erfassen alle 24 Rechenteilaufgaben sowie alle 110 MC-Fragen einschließlich Antwortauswertung bei 1400 und 390 Pixeln Breite, außerdem Theorieüberblick, alle zehn Kapitel, Formelsatz, Auf-/Zuklappen, numerische Eingaben, Navigation, Reload, Altstandmigration, Gesamtdurchlauf und Export/Import. Die sieben Originalaussagen und 13 Quellenstichworte stimmen mit der bereitgestellten PDF überein.
+
+Visuell geprüft: kompakte TLU-, RBF-, MLP-, LVQ-, SOM- und Hopfield-Lösungen, MC-Einstieg und Originalblock sowie Theorieüberblick auf Desktop/Smartphone. Die LVQ-Updates stehen für schmale Ansichten als einzelne Rechenschritte statt in einer breiten Tabelle. Breite Parametertabellen und der vollständige Hopfield-Graph bleiben innerhalb ihrer Bereiche horizontal verschiebbar.
+
+Die folgenden Abschnitte dokumentieren frühere Ausbaustände; deren entfernte Menüs und Hinweise gehören nicht mehr zur aktuellen Oberfläche.
+
 ## Aktueller Ausbau: Theorie und MC (22.09.2026)
 
 Der unten dokumentierte frühere Umbau wurde um den vollständigen Auftrag aus [THEORIE-MC.md](THEORIE-MC.md) erweitert. Die Hauptnavigation hat jetzt **vier** Bereiche. Die früheren Rechenaufgaben und Rezepte bleiben bestehen.

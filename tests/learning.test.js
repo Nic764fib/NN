@@ -2,6 +2,7 @@ const assert=require('node:assert/strict');
 const T=require('../study-theory'),Q=require('../study-questions'),M=require('../study-mc');
 require('../study-learning');
 assert.equal(T.chapters.length,10);assert.equal(T.chapters.flatMap(c=>c.sections).length,34);
+assert.deepEqual(T.overview.map(o=>o.chapter),T.chapters.map(c=>c.id));
 assert.equal(new Set(Q.all.map(q=>q.id)).size,Q.all.length);
 assert.equal(Q.singles.length,82);assert.equal(Q.all.filter(q=>q.provenance==='variant').length,14);
 for(const c of M.concepts){for(let i=0;i<c.forms.length;i++){const q=Q.get(c.id+'-'+i);assert.equal(q.text,c.forms[i].text);assert.equal(q.correct,c.forms[i].correct);}if(c.original)assert.equal(Q.get(c.id+'-original').text,c.original.text);}

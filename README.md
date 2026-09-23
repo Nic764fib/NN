@@ -6,14 +6,14 @@ Praktische Vorbereitung anhand der Aufgabenübersicht vom 10. Juli 2024 und der 
 
 ## Vier Einstiege
 
-- **Theorie:** zehn verständliche Kapitel mit 34 Abschnitten, Zahlenbeispielen, erklärten Formeln, Zeichnungen, Inhaltsübersicht und gespeicherter Lesestelle. Direkte Verbindungen zu Aufgaben und Fragen.
-- **Altklausur & Training:** fünf vollständige Originalpakete, je eine Transferaufgabe und sechs kurze Übungen zu häufigen Fehlern. Teilaufgaben sind einzeln wählbar. Hinweise, Rezept und vollständige Lösung erscheinen direkt an der Aufgabe.
-- **Multiple Choice:** vollständiger Lesekatalog, Einzelaussagen, Wahr/Falsch-Blöcke und eigene Auswahlfragen. Alle sieben Originalaussagen bleiben unverändert; ihre Gruppierung ist ebenfalls erhalten (TLU: zwei überlieferte Aussagen; Hopfield: fünf). 75 bisherige Trainingsformulierungen bleiben bestehen. Hinzu kommen zehn Anwendungsblöcke und vier Auswahlaufgaben mit zusammen 52 neuen Aussagen/Optionen. Jede falsche Aussage hat eine Erklärung und eine korrigierte Fassung. Zurück/Weiter, eigener Versuchsverlauf und Wiederaufnahme; Lesen erzeugt keine Leistungsbewertung.
-- **Rechenrezepte:** sieben konkrete Schrittfolgen mit Beispielen. Weitere Folienthemen bleiben als Nachschlagebereich erreichbar.
+- **Theorie:** ein kurzer Klausurüberblick, danach zehn verständliche Kapitel mit 34 Abschnitten, Zahlenbeispielen, erklärten Formeln, Zeichnungen, Inhaltsübersicht und gespeicherter Lesestelle. Direkte Verbindungen zu Aufgaben und Fragen.
+- **Altklausur & Training:** fünf vollständige Originalpakete, je eine Transferaufgabe und sechs kurze Übungen zu häufigen Fehlern. Teilaufgaben sind einzeln wählbar. Ein einfaches Rezept lässt sich direkt an der Aufgabe aufklappen. Beim Lösungsvergleich steht zuerst die kompakte Klausur-Musterlösung, darunter der aufklappbare ausführliche Rechenweg. Hinweise und Notizfelder entfallen.
+- **Multiple Choice:** vollständiger Lesekatalog, Einzelaussagen, Wahr/Falsch-Blöcke und eigene Auswahlfragen. Alle sieben Originalaussagen bleiben unverändert; ihre Gruppierung ist ebenfalls erhalten (TLU: zwei überlieferte Aussagen; Hopfield: fünf). 75 bisherige Trainingsformulierungen bleiben bestehen. Hinzu kommen zehn Anwendungsblöcke und vier Auswahlaufgaben mit zusammen 52 neuen Aussagen/Optionen. Jede falsche Aussage hat eine Erklärung und eine korrigierte Fassung. Genau zwei Einstiege: „Alle Fragen ansehen“ und „Üben“. Im Üben sind alle 110 Einträge ohne Filter erreichbar; Vor/Zurück und Reload erhalten die Antworten. Keine Verlaufsansicht oder zusätzliche Blockauswahl; Lesen erzeugt keine Leistungsbewertung.
+- **Rechenrezepte:** sieben kurze, nummerierte Schrittfolgen mit den nötigen Formeln. Vollständige Zahlenbeispiele stehen in den zugehörigen Aufgaben. Weitere Folienthemen bleiben als Nachschlagebereich erreichbar.
 
 Ein Gesamtdurchlauf enthält alle fünf Rechenpakete und 30 MC-Aussagen. Es gibt keine Pflichtuhr, Kapitelpflicht oder Freischaltung. Freie Rechnungen und Zeichnungen werden anhand vollständiger Kriterien selbst verglichen; einzelne Zahlen lassen sich zusätzlich prüfen. Lernstände unterscheiden Bearbeitung mit Hilfe, selbstständige Transferaufgaben und spätere Wiederholung.
 
-Die Rechenwege führen vom Gegebenen zur Formel, zum Einsetzen und erst danach zum Ergebnis. Bei TLU werden alle vier Kanten beider Aufgaben aus ihren Eckpunkten hergeleitet: Steigung, Punktform der Geraden, gewünschte Seite, Gewichte und Schwelle. Die Ausgangslogik der eingedellten Fläche wird gesondert erklärt. Die übrigen Rezepte enthalten ebenfalls konkrete Zwischenrechnungen; RBF-Zentren, die Wahl der Stützstellen, LVQ-Updates und erste SOM-/Hopfield-Rechnungen stehen vor den Ergebnistabellen.
+Die Rechenwege führen vom Gegebenen zur Formel, zum Einsetzen und erst danach zum Ergebnis. Bei TLU werden alle vier Kanten beider Aufgaben aus ihren Eckpunkten hergeleitet: Steigung, Punktform der Geraden, gewünschte Seite, Gewichte und Schwelle. Die Ausgangslogik der eingedellten Fläche wird gesondert erklärt. Die übrigen ausführlichen Lösungen enthalten ebenfalls konkrete Zwischenrechnungen; RBF-Zentren, die Wahl der Stützstellen, LVQ-Updates und erste SOM-/Hopfield-Rechnungen stehen vor den Ergebnistabellen.
 
 ## Quellen und fachliche Entscheidungen
 
@@ -49,13 +49,14 @@ Die Browsertests benötigen `playwright` und Microsoft Edge. Alternativ kann `PL
 
 | Datei | Inhalt |
 | --- | --- |
-| `study-content.js` | Aufgaben, Hinweise, Rezepte und vollständige Lösungen |
+| `study-content.js` | Aufgaben, Rezepte und ausführliche Lösungen |
+| `study-exam-solutions.js` | Kompakte vollständige Klausurantworten für alle 24 Teilaufgaben |
 | `study-core.js` | Berechnungen, Zahlenprüfung und Wiederholungsauswahl |
 | `study-visual.js` | Flächen, Netze, Näherungsgraphen und Hopfield-Graph |
 | `study-mc.js` | Aussagen, Formulierungsvarianten und Wiederholung |
 | `study-theory.js` | Zehn aufeinander aufbauende Kapitel mit Zahlenbeispielen und Quellen |
 | `study-questions.js` | Vollständiger Katalog, ursprüngliche Gruppierung, neue Anwendungsfragen und korrigierte Aussagen |
-| `study-learning.js` | Theorie, Lesekatalog, gespeicherter Versuchsverlauf und freie Navigation |
+| `study-learning.js` | Theorieüberblick, Kapitel, vollständiger Lesekatalog und gemeinsamer Übungsdurchlauf |
 | `study-app.js` | Navigation, Bedienung, Speicherung, Import/Export |
 | `study-reference.js` | Erhaltene ergänzende Folienerklärungen |
 | `study.css` | Desktop-, Mobil- und Druckdarstellung |

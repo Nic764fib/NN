@@ -1,11 +1,11 @@
 'use strict';
 const assert=require('node:assert/strict'),fs=require('node:fs');
 global.NNCore=require('../study-core.js');global.NNVisual=require('../study-visual.js');
-const C=NNCore,D=require('../study-content.js'),MC=require('../study-mc.js');
+const C=NNCore,D=require('../study-content.js'),MC=require('../study-mc.js'),S=require('../study-exam-solutions.js');
 const close=(a,b,tol=1e-9)=>assert.ok(Math.abs(a-b)<tol,`${a} != ${b}`);
 assert.equal(D.tasks.filter(t=>t.kind==='original').length,5);assert.equal(D.tasks.filter(t=>t.kind==='transfer').length,5);assert.equal(Object.keys(D.recipes).length,7);
 assert.equal(new Set(D.tasks.map(t=>t.id)).size,D.tasks.length);
-for(const t of D.tasks)for(const p of t.parts){assert.ok(p.solution&&p.checks.length&&p.hints.length&&p.recipes.length);p.recipes.forEach(r=>assert.ok(D.recipes[r]));if(p.image)assert.ok(fs.existsSync(require('node:path').join(__dirname,'..',p.image)));}
+for(const t of D.tasks)for(const p of t.parts){assert.ok(p.solution&&p.checks.length&&p.recipes.length);assert.ok(S.compact(t,p)?.trim(),t.id+'/'+p.id+' compact answer');assert.equal(p.hints,undefined);p.recipes.forEach(r=>assert.ok(D.recipes[r]));if(p.image)assert.ok(fs.existsSync(require('node:path').join(__dirname,'..',p.image)));}
 // Parsing cannot accept a correct numerical prefix followed by a different expression.
 for(const [s,n] of [['−3/2',-1.5],['1,25',1.25],['(-3)/2',-1.5],['1e-3',.001],['0',0]])assert.equal(C.number(s),n);
 for(const s of ['', '1/0','1foo','1+2','NaN','Infinity','2/3/4','1;2','--2'])assert.equal(C.number(s),null,s);
