@@ -18,6 +18,8 @@ for(const viewport of [{width:1400,height:1000},{width:390,height:844}]){
   while(await page.locator('#hint').isEnabled())await page.locator('#hint').click();
   if(p.fields.length){await page.locator('#numbers').evaluate(e=>e.open=true);for(const q of p.fields){await page.locator('#answer-'+q.id).fill(Array.isArray(q.answer)?'('+q.answer.join('; ')+')':String(q.answer));}await page.locator('#answer-form button').click();assert.match(await page.locator('#number-result').innerText(),/Diese Teilwerte stimmen/);}
   const tex=await page.locator('.katex-error').allTextContents();assert.deepEqual(tex,[],`${t.id}/${p.id}`);
+  // Valid TeX can still contain accidentally escaped JS commands as plain letters.
+  for(const formula of await page.locator('.katex annotation').allTextContents())assert.ok(!/(?<!\\)cdot|(?<![\\a-z])(?:ge|le)(?![a-z])/.test(formula),`Lost math command ${t.id}/${p.id}: ${formula}`);
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`Overflow ${viewport.width} ${t.id}/${p.id}`);
   await page.waitForFunction(()=>Array.from(document.images).every(e=>e.complete));
   const imgs=await page.locator('img').evaluateAll(es=>es.every(e=>e.naturalWidth>0));assert.ok(imgs,`Images ${t.id}/${p.id}`);

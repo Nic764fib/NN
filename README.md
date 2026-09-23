@@ -13,6 +13,8 @@ Praktische Vorbereitung anhand der Aufgabenübersicht vom 10. Juli 2024 und der 
 
 Ein Gesamtdurchlauf enthält alle fünf Rechenpakete und 30 MC-Aussagen. Es gibt keine Pflichtuhr, Kapitelpflicht oder Freischaltung. Freie Rechnungen und Zeichnungen werden anhand vollständiger Kriterien selbst verglichen; einzelne Zahlen lassen sich zusätzlich prüfen. Lernstände unterscheiden Bearbeitung mit Hilfe, selbstständige Transferaufgaben und spätere Wiederholung.
 
+Die Rechenwege führen vom Gegebenen zur Formel, zum Einsetzen und erst danach zum Ergebnis. Bei TLU werden alle vier Kanten beider Aufgaben aus ihren Eckpunkten hergeleitet: Steigung, Punktform der Geraden, gewünschte Seite, Gewichte und Schwelle. Die Ausgangslogik der eingedellten Fläche wird gesondert erklärt. Die übrigen Rezepte enthalten ebenfalls konkrete Zwischenrechnungen; RBF-Zentren, die Wahl der Stützstellen, LVQ-Updates und erste SOM-/Hopfield-Rechnungen stehen vor den Ergebnistabellen.
+
 ## Quellen und fachliche Entscheidungen
 
 Die Aufgabenübersicht und die eigenen PDF-Ausarbeitungen liegen in `materials/`. Die Ausarbeitungen sind keine offiziellen Musterlösungen. Die vollständigen Vorlesungsfolien wurden lokal geprüft; die [öffentliche Fassung beim Autor](https://borgelt.net/slides/nn.pdf) kann anders nummeriert sein. Die sieben Originalformulierungen sind ausdrücklich markiert. Weitere MC-Inhalte sind eigene oder rekonstruierte Trainingsformulierungen; die 13 überlieferten Stichworte werden nicht als vollständige Originalfragen ausgegeben.

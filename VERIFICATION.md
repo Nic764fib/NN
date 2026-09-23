@@ -49,7 +49,7 @@ Die Wahrheit der MC-Aussagen wurde zusätzlich inhaltlich anhand der angegebenen
 - Kein horizontaler Überlauf der Gesamtseite. Breite Tabellen und der Hopfield-Graph scrollen innerhalb ihrer Bereiche.
 - Alle Originalabbildungen geladen. Alle drei bereitgestellten PDF-Links antworten mit HTTP 200.
 - Eingaben, Notizen, Hilfen und Vergleichsansicht über Neuladen hinweg erhalten. Eine falsche Teilwerteingabe verhindert die Bewertung dieses Versuchs als vollständig ohne Hilfe.
-- 15 bisherige Hauptrouten erreichen sinnvolle neue Inhalte. Hauptnavigation besteht aus drei Bereichen.
+- 15 bisherige Hauptrouten erreichen sinnvolle neue Inhalte. Hauptnavigation besteht aus vier Bereichen.
 - MC: erste Antwort nach Feedback gesperrt, Wiederaufnahme, 30 richtige Antworten ergeben 30/30.
 - Gesamtdurchlauf: fünf vollständige Aufgabenpakete, 30 MC-Aussagen, Notizen gespeichert, Lösungen erst nach Vergleich.
 - Bestehender Altstand bleibt unter seinem ursprünglichen Schlüssel unverändert. Export/Import-Rundlauf mit alter Notiz und neuen Eingaben. Fehlerhafte verschachtelte Importdaten werden ohne Zustandsänderung abgewiesen; der Stand vor erfolgreichem Import bleibt gesichert.
@@ -64,6 +64,14 @@ Die vollständige Browsersuite wurde auch gegen `https://nic764fib.github.io/NN/
 Die sieben ausformulierten Aussagen und 13 Stichworte auf Seite 4 wurden visuell geprüft und mit `tests/mcq-source.test.py` direkt gegen den Text der bereitgestellten PDF abgeglichen. Schreibweise und Groß-/Kleinschreibung bleiben erhalten; nur Druckzeilenumbrüche werden entfernt. Mehrdeutiges „replaced“ wird im Erklärungstext als Lesart erläutert und im Zitat nicht umgeschrieben.
 
 `tests/mcq-original.browser.mjs` prüft bei Desktop- und Mobilbreite: alle sieben Wortlaute zuerst einmal trotz früherem Lernstand, keine Wiederholung vor vollständiger Abdeckung, Antwortsperre, Wiederaufnahme, Fortschritt 7/7, alle 13 Stichworte, unveränderte 30er-Trainingsblöcke sowie Export und Import. Die neuen Wortlaute liegen getrennt von den bisherigen Formulierungsindizes; gespeicherte Blockantworten behalten deshalb ihre Bedeutung.
+
+## Ergänzung vom 23. September 2026: Herleitungen
+
+TLU-Theorie, die sieben Rezepte, Hinweise und Musterlösungen wurden um die zuvor übersprungenen Rechenschritte ergänzt. Beide TLU-Flächen behalten ihre unabhängig geprüften Parameter; alle acht Kanten werden jetzt über die Geradengleichung hergeleitet. Die beiden Alternativen CD/DA werden von den Pflichttests AB/BC getrennt.
+
+RBF-Zentren und Radien werden aus den Begrenzungen berechnet; ein Innenpunkt wird durch alle Neuronen gerechnet. Stützstellenabstände werden aus Intervall und Neuronenbudget begründet. LVQ zeigt die Differenz, ihre Skalierung und das klassenabhängige Vorzeichen vor der Ergebnistabelle. SOM zeigt Winner und Nachbar vollständig. Hopfield erklärt alle drei Einzelupdates eines Ausgangszustands vor der Übersicht. Auch die Ableitungsfaktoren der Lernbeispiele stehen im Theorietext.
+
+Geprüft mit `tests/study.test.js`, `tests/learning.test.js`, `tests/study-browser.mjs` und `tests/learning-browser.mjs`. Die Browserprüfungen umfassen alle 48 Aufgabenansichten und alle zehn Theorie-Kapitel auf Desktop und Mobilgerät. Zusätzlich wurden die neuen TLU-Herleitungen visuell kontrolliert. Ein neuer Rendercheck erkennt verlorene LaTeX-Befehle, die JavaScript sonst zu gewöhnlichen Buchstaben macht; damit wurden auch die bisherigen Hopfield-Detailrechnungen korrigiert. Zustandsspeicherung und Aufgabenkennungen bleiben erhalten.
 
 ## Grenzen der Prüfung
 
