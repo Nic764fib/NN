@@ -8,7 +8,7 @@ Praktische Vorbereitung anhand der Aufgabenübersicht vom 10. Juli 2024 und der 
 
 - **Theorie:** ein kurzer Klausurüberblick, danach zehn verständliche Kapitel mit 34 Abschnitten, Zahlenbeispielen, erklärten Formeln, Zeichnungen, Inhaltsübersicht und gespeicherter Lesestelle. Direkte Verbindungen zu Aufgaben und Fragen.
 - **Altklausur & Training:** fünf vollständige Originalpakete, je eine Transferaufgabe und sechs kurze Übungen zu häufigen Fehlern. Teilaufgaben sind einzeln wählbar. Ein einfaches Rezept lässt sich direkt an der Aufgabe aufklappen. Beim Lösungsvergleich steht zuerst die kompakte Klausur-Musterlösung, darunter der aufklappbare ausführliche Rechenweg. Hinweise und Notizfelder entfallen.
-- **Multiple Choice:** vollständiger Lesekatalog, Einzelaussagen, Wahr/Falsch-Blöcke und eigene Auswahlfragen. Alle sieben Originalaussagen bleiben unverändert; ihre Gruppierung ist ebenfalls erhalten (TLU: zwei überlieferte Aussagen; Hopfield: fünf). 75 bisherige Trainingsformulierungen bleiben bestehen. Hinzu kommen zehn Anwendungsblöcke und vier Auswahlaufgaben mit zusammen 52 neuen Aussagen/Optionen. Jede falsche Aussage hat eine Erklärung und eine korrigierte Fassung. Genau zwei Einstiege: „Alle Fragen ansehen“ und „Üben“. Im Üben sind alle 110 Einträge ohne Filter erreichbar; Vor/Zurück und Reload erhalten die Antworten. Keine Verlaufsansicht oder zusätzliche Blockauswahl; Lesen erzeugt keine Leistungsbewertung.
+- **Multiple Choice:** vollständiger Lesekatalog, Einzelaussagen, Wahr/Falsch-Blöcke und eigene Auswahlfragen. Alle sieben Originalaussagen bleiben unverändert; ihre Gruppierung ist ebenfalls erhalten (TLU: zwei überlieferte Aussagen; Hopfield: fünf). 75 bisherige Trainingsformulierungen bleiben bestehen. Hinzu kommen zehn Anwendungsblöcke und vier Auswahlaufgaben mit zusammen 52 neuen Aussagen/Optionen. Jede falsche Aussage hat eine Erklärung und eine korrigierte Fassung. Zusätzlich bietet **„Klausurfragen üben“** ausschließlich die sieben ausformulierten Originalaussagen in zwei Blöcken (TLU und Hopfield). Dort schaltet ein Button zwischen dem unveränderten englischen Wortlaut und einer deutschen Übersetzung um. Antworten, Auswertung und Blockposition bleiben beim Sprachwechsel und Neuladen erhalten. Die 13 überlieferten Stichworte sind separat aufklappbar. Die bisherigen Einstiege „Alle Fragen ansehen“ und „Üben“ bleiben bestehen. Im Üben sind alle 110 Einträge ohne Filter erreichbar; Vor/Zurück und Reload erhalten die Antworten. Keine Verlaufsansicht oder zusätzliche Blockauswahl; Lesen erzeugt keine Leistungsbewertung.
 - **Rechenrezepte:** sieben kurze, nummerierte Schrittfolgen mit den nötigen Formeln. Vollständige Zahlenbeispiele stehen in den zugehörigen Aufgaben. Weitere Folienthemen bleiben als Nachschlagebereich erreichbar.
 
 Ein Gesamtdurchlauf enthält alle fünf Rechenpakete und 30 MC-Aussagen. Es gibt keine Pflichtuhr, Kapitelpflicht oder Freischaltung. Freie Rechnungen und Zeichnungen werden anhand vollständiger Kriterien selbst verglichen; einzelne Zahlen lassen sich zusätzlich prüfen. Lernstände unterscheiden Bearbeitung mit Hilfe, selbstständige Transferaufgaben und spätere Wiederholung.
@@ -41,6 +41,8 @@ python tests/mcq-source.test.py
 node tests/mcq-original.browser.mjs
 node tests/learning.test.js
 node tests/learning-browser.mjs
+node tests/exam-mc.test.js
+node tests/exam-mc.browser.mjs
 ```
 
 Die Browsertests benötigen `playwright` und Microsoft Edge. Alternativ kann `PLAYWRIGHT_MODULE` eine importierbare Modul-URL nennen. `NN_TEST_URL` überschreibt die lokale Adresse. Der Wortlautvergleich benötigt Python mit `pypdf`; ein abweichender Node-Pfad kann als Argument übergeben werden. Screenshots werden in das ignorierte Verzeichnis `tmp/` geschrieben. KaTeX und Schriften kommen von jsDelivr und benötigen Internet.
@@ -56,6 +58,7 @@ Die Browsertests benötigen `playwright` und Microsoft Edge. Alternativ kann `PL
 | `study-mc.js` | Aussagen, Formulierungsvarianten und Wiederholung |
 | `study-theory.js` | Zehn aufeinander aufbauende Kapitel mit Zahlenbeispielen und Quellen |
 | `study-questions.js` | Vollständiger Katalog, ursprüngliche Gruppierung, neue Anwendungsfragen und korrigierte Aussagen |
+| `study-exam-mc.js` | Deutsche Übersetzungen und englische Erklärungen für den Originaltrainer |
 | `study-learning.js` | Theorieüberblick, Kapitel, vollständiger Lesekatalog und gemeinsamer Übungsdurchlauf |
 | `study-app.js` | Navigation, Bedienung, Speicherung, Import/Export |
 | `study-reference.js` | Erhaltene ergänzende Folienerklärungen |

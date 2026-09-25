@@ -17,9 +17,9 @@ try{
  await page.setViewportSize({width:1400,height:1000});await go('theorie/netze/schwelle');await page.waitForTimeout(300);
  assert.equal((await stored()).learning.reading.positions.netze.section,'schwelle');await page.locator('#chapter-read').check();
  await page.reload({waitUntil:'networkidle'});await page.waitForTimeout(250);assert.ok(await page.locator('#chapter-read').isChecked());assert.ok(Math.abs(await page.locator('#read-schwelle').evaluate(el=>el.getBoundingClientRect().top)-24)<8);
- // Exactly two entries; catalog exposes the complete bank, without filters or grading.
- await go('mc');assert.equal(await page.locator('#app .button').count(),2);assert.equal(await page.locator('#app select').count(),0);
- assert.deepEqual(await page.locator('#app .button').allTextContents(),['Alle Fragen ansehen','Üben']);
+ // Three entries including dedicated originals; catalog still exposes the complete bank.
+ await go('mc');assert.equal(await page.locator('#app .button').count(),3);assert.equal(await page.locator('#app select').count(),0);
+ assert.deepEqual(await page.locator('#app .button').allTextContents(),['Originalfragen starten →','Alle Fragen ansehen','Üben']);
  const before=await stored();await page.getByRole('link',{name:'Alle Fragen ansehen',exact:true}).click();
  assert.equal(await page.locator('.catalog-question').count(),110);assert.equal(await page.locator('.catalog-option details').count(),0);
  assert.equal(await page.locator('#app select').count(),0);assert.equal(await page.locator('.katex-error').count(),0);
@@ -74,5 +74,5 @@ try{
  await p.reload({waitUntil:'networkidle'});await p.goto(base+'#/mc/ueben');assert.ok(await p.locator('[data-mc="true"]').isDisabled());assert.equal(await p.evaluate(()=>JSON.parse(localStorage.getItem('ann_exam_focus_v1')).mc.b2.count),19);await ctx.close();
  await page.setViewportSize({width:1400,height:1000});await go('theorie/tlu/halbebene');await page.screenshot({path:'tmp/theory-reading-desktop.png'});await go('mc');await page.screenshot({path:'tmp/mc-landing-desktop.png'});
  await page.setViewportSize({width:390,height:844});await go('mc/frage/original-block-b');await page.screenshot({path:'tmp/mc-practice-mobile.png',fullPage:true});await go('fragen');await page.screenshot({path:'tmp/catalog-mobile.png'});
- assert.deepEqual(errors,[]);console.log('PASS: theory overview and 10 chapters, all 110 catalog/practice entries at desktop/mobile, two entries, no filters/history, navigation, persistence, theory detours and export/import.');
+ assert.deepEqual(errors,[]);console.log('PASS: theory overview and 10 chapters, all 110 catalog/practice entries at desktop/mobile, three entries, no filters/history, navigation, persistence, theory detours and export/import.');
 }finally{await browser.close();}

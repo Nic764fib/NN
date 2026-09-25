@@ -13,3 +13,6 @@
 @media(max-width:440px){.exam-answer{padding:14px 12px}.exam-answer h2{font-size:1.18rem}.detailed-solution{padding:12px}.exam-answer th,.exam-answer td{padding:7px 9px}}
 /* Separate derivations; each result follows its calculation. */
 .worked-step{max-width:780px;margin:38px 0;padding-top:8px;border-top:1px solid var(--line);line-height:1.8}.worked-step p{margin:1rem 0 1.25rem}.worked-step .katex-display{margin:1.2rem 0}.worked-step h3{line-height:1.4}.solution>p{max-width:780px}.solution .calculation p{line-height:1.8}
+
+/* Dedicated bilingual original exam training. */
+.exam-mc-entry{display:flex;gap:24px;align-items:center;justify-content:space-between;border-left:3px solid var(--accent)}.exam-mc-entry h2{margin:0 0 .5rem}.exam-mc-entry p{margin:0;max-width:610px}.exam-mc-entry .button{flex-shrink:0}.exam-language{display:flex;gap:6px;flex-wrap:wrap;margin:1.5rem 0 .5rem}.exam-language button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:white}.exam-fragments{margin-top:2rem}.exam-fragments h3{margin-top:1.3rem}@media(max-width:650px){.exam-mc-entry{align-items:flex-start;flex-direction:column;gap:16px}}
