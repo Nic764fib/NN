@@ -29,6 +29,18 @@ for(const kind of ['original','transfer']){const m=D.tasks.find(t=>t.id===kind+'
 const originalNext=['+--,-+-,--+','+-+,-++,--+','-+-,-+-,-+-','-++,-++,-+-','+--,++-,+-+','+-+,+-+,+-+','-+-,++-,++-','-++,+-+,++-'];
 let tie=false;
 for(const kind of ['original','transfer']){const m=D.tasks.find(t=>t.id===kind+'-hopfield').parts[0].model,rows=C.hopfield(m.W,m.theta),energy=s=>-m.W[0][1]*s[0]*s[1]-m.W[0][2]*s[0]*s[2]-m.W[1][2]*s[1]*s[2]+m.theta.reduce((a,t,i)=>a+t*s[i],0);rows.forEach((r,index)=>{close(r.energy,energy(r.s));if(kind==='original')assert.equal(r.next.map(s=>s.map(x=>x===1?'+':'-').join('')).join(','),originalNext[index]);r.next.forEach((next,i)=>{assert.ok(next.every((v,j)=>i===j||v===r.s[j]));const field=m.W[i].reduce((sum,w,j)=>sum+w*r.s[j],0)-m.theta[i];assert.equal(next[i],field>=0?1:-1);assert.ok(energy(next)<=energy(r.s));if(field===0&&r.s[i]!==next[i])tie=true;});});}assert.ok(tie,'Transfer includes a real state change at equal energy');
+// The exam drawing must represent every asynchronous update, including unchanged states.
+const hopTask=D.tasks.find(t=>t.id==='original-hopfield'),hopPart=hopTask.parts[0],hopHtml=S.compact(hopTask,hopPart);
+const drawn=Array.from({length:8},()=>Array(3));
+for(const edge of hopHtml.matchAll(/data-edge-source="(\d+)" data-edge-target="(\d+)" data-updates="([\d,]+)"/g)){
+ const [,from,to,updates]=edge;
+ for(const update of updates.split(',').map(Number)){
+  assert.equal(drawn[Number(from)][update-1],undefined,'Each single-neuron update appears once in the graph');
+  drawn[Number(from)][update-1]=Number(to);
+ }
+}
+const states=['---','--+','-+-','-++','+--','+-+','++-','+++'];
+assert.deepEqual(drawn.map(row=>row.map(i=>states[i]).join(',')),originalNext);
 // MC truth values explicitly audited against cited lecture sections (manual audit in UMBAU.md).
 assert.equal(MC.concepts.filter(c=>c.core).length,30);assert.equal(new Set(MC.concepts.map(c=>c.id)).size,MC.concepts.length);MC.groups.forEach(([id])=>assert.equal(MC.concepts.filter(c=>c.group===id).length,5));MC.concepts.forEach(c=>{assert.ok(c.source&&c.forms.every(q=>typeof q.correct==='boolean'&&q.explanation.trim().length>0));});
 const questions=MC.concepts.filter(c=>c.group==='a').map(c=>MC.question(c,0)),answers=Object.fromEntries(questions.map(q=>[q.id,String(q.correct)]));assert.equal(C.scoreBlock(questions,answers),5);assert.equal(C.scoreBlock(questions,{}),0);assert.equal(C.scoreBlock(questions,Object.fromEntries(questions.map(q=>[q.id,String(!q.correct)]))),0);

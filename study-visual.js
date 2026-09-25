@@ -26,7 +26,40 @@
   return `<figure>${plane({range:[a.start,a.end,lo,hi],curves:[truth,stair,linear],axes:['x','y'],title:'Zielfunktion, MLP-Stufen und stückweise lineare RBF-Näherung'})}<figcaption><span class="legend truth">Zielfunktion</span> · <span class="legend stair">MLP-Stufen</span> · <span class="legend linear">RBF-Dreiecke</span></figcaption></figure>`;
  }
  const sign=s=>s.map(x=>x>0?'+':'−').join('');
- function graph(rows,markerId='hop-arrow'){const w=760,h=540,positions=[[100,90],[290,90],[100,440],[670,240],[480,90],[670,440],[100,240],[480,240]],index=s=>rows.findIndex(r=>r.s.every((v,i)=>v===s[i]));let body='';
+ function examOriginalGraph(rows,markerId){
+  const positions=[[75,75],[245,375],[620,615],[555,375],[245,215],[180,615],[555,215],[725,75]];
+  const curves={
+   '0-2':['M60 101 C5 390 240 690 591 628',85,503],
+   '7-5':['M740 101 C795 390 560 690 209 628',715,503],
+   '6-2':['M578 235 C700 330 735 510 641 591',668,409],
+   '4-5':['M222 235 C100 330 65 510 159 591',131,409]
+  };
+  const labels={'0-4':[149,131],'0-1':[155,290],'1-5':[202,496],'1-3':[400,363],'3-2':[600,496],'4-6':[400,203],'7-3':[645,290],'7-6':[650,131]};
+  const loops={
+   4:['M224 194 C184 118 306 118 266 194',245,143],
+   1:['M216 363 C128 323 128 427 216 387',145,380],
+   6:['M534 194 C494 118 616 118 576 194',555,143],
+   3:['M584 363 C672 323 672 427 584 387',654,380],
+   5:['M157 635 C122 714 238 714 203 635',180,698],
+   2:['M597 635 C562 714 678 714 643 635',620,698]
+  };
+  const edge=(i,j,ks,[path,x,y])=>`<g data-edge-source="${i}" data-edge-target="${j}" data-updates="${ks.join(',')}"><path d="${path}" class="hopedge" marker-end="url(#${esc(markerId)})"/><text x="${x}" y="${y}" text-anchor="middle" class="edgelabel">${ks.map(k=>'u'+k).join(', ')}</text></g>`;
+  let body='';
+  rows.forEach((r,i)=>{
+   const same=[];
+   r.next.forEach((next,k)=>{
+    const j=rows.findIndex(r=>r.s.every((x,n)=>x===next[n]));
+    if(i===j){same.push(k+1);return;}
+    const [x,y]=positions[i],[xx,yy]=positions[j],dx=xx-x,dy=yy-y,len=Math.hypot(dx,dy);
+    const straight=[`M${x+dx/len*31} ${y+dy/len*31} L${xx-dx/len*34} ${yy-dy/len*34}`,...(labels[`${i}-${j}`]||[(x+xx)/2,(y+yy)/2-10])];
+    body+=edge(i,j,[k+1],curves[`${i}-${j}`]||straight);
+   });
+   if(same.length)body+=edge(i,i,same,loops[i]);
+  });
+  body+=rows.map((r,i)=>{const [x,y]=positions[i];return `<g data-node="${i}"><circle cx="${x}" cy="${y}" r="30" class="node ${r.stable?'stable':''}"/>${r.stable?`<circle cx="${x}" cy="${y}" r="25" fill="none" stroke="currentColor"/>`:''}<text x="${x}" y="${y+6}" text-anchor="middle">${sign(r.s)}</text></g>`;}).join('');
+  return `<figure class="hopgraph exam-hopgraph"><div class="diagram-scroll" tabindex="0" role="region" aria-label="Zustandsgraph, bei Bedarf horizontal verschieben"><svg class="math-figure" viewBox="0 0 800 725" role="img" aria-label="Vollständiger Hopfield-Graph mit allen 24 Einzelupdates einschließlich Selbstschleifen"><title>Alle Zustände, Übergänge und unveränderten Updates</title><defs><marker id="${esc(markerId)}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>${body}</svg></div><figcaption>Doppelkreis = stabil. Schleifen = Zustand bleibt bei den genannten Updates unverändert. Bei schmaler Ansicht horizontal verschieben.</figcaption><label>Übergänge hervorheben <select data-hop-focus><option value="all">Alle Zustände</option>${rows.map((r,i)=>`<option value="${i}">${sign(r.s)}</option>`).join('')}</select></label></figure>`;
+ }
+ function graph(rows,markerId='hop-arrow',options={}){if(options.layout==='exam-original')return examOriginalGraph(rows,markerId);const w=760,h=540,positions=[[100,90],[290,90],[100,440],[670,240],[480,90],[670,440],[100,240],[480,240]],index=s=>rows.findIndex(r=>r.s.every((v,i)=>v===s[i]));let body='';
   rows.forEach((r,i)=>r.next.forEach((t,k)=>{const j=index(t);if(j===i)return;const [x,y]=positions[i],[xx,yy]=positions[j],dx=xx-x,dy=yy-y,len=Math.hypot(dx,dy),sx=x+dx/len*29,sy=y+dy/len*29,ex=xx-dx/len*31,ey=yy-dy/len*31;body+=`<g data-edge-source="${i}"><path d="M${sx} ${sy}L${ex} ${ey}" class="hopedge" marker-end="url(#${esc(markerId)})"/><text x="${(sx+ex)/2+6}" y="${(sy+ey)/2-6}" class="edgelabel">u${k+1}</text></g>`;}));
   rows.forEach((r,i)=>{const [x,y]=positions[i];body+=`<g data-node="${i}"><circle cx="${x}" cy="${y}" r="28" class="node ${r.stable?'stable':''}"/>${r.stable?`<circle cx="${x}" cy="${y}" r="23" fill="none" stroke="currentColor"/>`:''}<text x="${x}" y="${y+5}" text-anchor="middle">${sign(r.s)}</text></g>`;});
   return `<figure class="hopgraph"><div class="diagram-scroll" tabindex="0" role="region" aria-label="Zustandsgraph, bei Bedarf horizontal verschieben"><svg class="math-figure" viewBox="0 0 ${w} ${h}" role="img" aria-label="Vollständiger Hopfield-Graph: alle echten Zustandsänderungen mit Neuronennummer"><defs><marker id="${esc(markerId)}" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="currentColor"/></marker></defs>${body}</svg></div><figcaption>Bei schmaler Ansicht horizontal verschieben. Alle echten Zustandsänderungen. Doppelkreis = stabil. Unveränderte Updates stehen vollständig in der Tabelle.</figcaption><label>Übergänge hervorheben <select data-hop-focus><option value="all">Alle Zustände</option>${rows.map((r,i)=>`<option value="${i}">${sign(r.s)}</option>`).join('')}</select></label></figure>`;
