@@ -13,7 +13,7 @@ Praktische Vorbereitung anhand der Aufgabenübersicht vom 10. Juli 2024 und der 
 
 Ein Gesamtdurchlauf enthält alle fünf Rechenpakete und 30 MC-Aussagen. Es gibt keine Pflichtuhr, Kapitelpflicht oder Freischaltung. Freie Rechnungen und Zeichnungen werden anhand vollständiger Kriterien selbst verglichen; einzelne Zahlen lassen sich zusätzlich prüfen. Lernstände unterscheiden Bearbeitung mit Hilfe, selbstständige Transferaufgaben und spätere Wiederholung.
 
-Die Rechenwege führen vom Gegebenen zur Formel, zum Einsetzen und erst danach zum Ergebnis. Bei TLU werden alle vier Kanten beider Aufgaben aus ihren Eckpunkten hergeleitet: Steigung, Punktform der Geraden, gewünschte Seite, Gewichte und Schwelle. Die Ausgangslogik der eingedellten Fläche wird gesondert erklärt. Die übrigen ausführlichen Lösungen enthalten ebenfalls konkrete Zwischenrechnungen; RBF-Zentren, die Wahl der Stützstellen, LVQ-Updates und erste SOM-/Hopfield-Rechnungen stehen vor den Ergebnistabellen.
+Die ausführlichen Rechenwege aller zehn Aufgaben sind als Einsetzrechnungen aufgebaut: **Formel → welche Zahl wohin → einsetzen und rechnen → Ergebnis**. TLU ordnet jedem Eckpunkt ausdrücklich die Koordinaten P und Q zu und zeigt beide möglichen Stützpunkte für die Geradengleichung. RBF rechnet jedes Zentrum und jeden Radius aus den beschrifteten Flächengrenzen. MLP/RBF zeigen Stützstellen, sämtliche Funktionswerte, Gewichte und einen eingesetzten Testpunkt. LVQ rechnet jede Koordinate mit dem aktuellen Prototyp; SOM trennt Datenkoordinaten und Gitterindizes und enthält alle 63 bzw. 9 Updates. Hopfield zeigt für alle 24 Einzelupdates die eingesetzten Gewichte, Zustände und Schwellen. Wiederholte Einzelrechnungen sind gezielt aufklappbar; die kompakten Klausurantworten bleiben unverändert.
 
 Die kompakten Klausurantworten für alle fünf Rechentypen und ihre Transferaufgaben verwenden konkrete Parameter, kurze Nebenrechnungen und direkte Zeichenanweisungen. MLP-Schwellen und Ausgangsgewichte stehen gemeinsam in einer Tabelle; bei RBF sind die Zentren in die Distanzformeln eingesetzt. LVQ zeigt beide Punkte nacheinander mit den jeweils aktuellen Prototypen. SOM beginnt beim Gewinner und einem Nachbarn, anschließend erfasst eine eingesetzte Formel das gesamte Gitter. Der originale Hopfield-Graph zeigt alle 24 Einzelupdates einschließlich beschrifteter Selbstschleifen. Ausführliche Herleitungen bleiben separat aufklappbar.
 
@@ -53,7 +53,8 @@ Die Browsertests benötigen `playwright` und Microsoft Edge. Alternativ kann `PL
 
 | Datei | Inhalt |
 | --- | --- |
-| `study-content.js` | Aufgaben, Rezepte und ausführliche Lösungen |
+| `study-content.js` | Aufgabendaten, Rezepte und Verknüpfung mit den Rechenwegen |
+| `study-worked-solutions.js` | Praktische Einsetzrechnungen für alle zehn Aufgaben |
 | `study-exam-solutions.js` | Kompakte vollständige Klausurantworten für alle 24 Teilaufgaben |
 | `study-core.js` | Berechnungen, Zahlenprüfung und Wiederholungsauswahl |
 | `study-visual.js` | Flächen, Netze, Näherungsgraphen und Hopfield-Graph |

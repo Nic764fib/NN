@@ -24,6 +24,10 @@ for(const viewport of [{width:1400,height:1000},{width:390,height:844}]){
   const tex=await page.locator('.katex-error').allTextContents();assert.deepEqual(tex,[],`${t.id}/${p.id}`);
   // Valid TeX can still contain accidentally escaped JS commands as plain letters.
   for(const formula of await page.locator('.katex annotation').allTextContents())assert.ok(!/(?<!\\)cdot|(?<![\\a-z])(?:ge|le)(?![a-z])/.test(formula),`Lost math command ${t.id}/${p.id}: ${formula}`);
+  for(const formula of await page.locator('.practice-worked .katex annotation').allTextContents()){
+   assert.ok(!/[\t\r\x00-\x08\x0b\x0c\x0e-\x1f]/.test(formula),`Escaped control character ${t.id}/${p.id}: ${formula}`);
+   assert.ok(!/(?<![\\a-z])(?:eta|sigma|theta|alpha|Delta|ldots|ext|heta)(?![a-z])/.test(formula),`Lost variable or text command ${t.id}/${p.id}: ${formula}`);
+  }
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),`Overflow ${viewport.width} ${t.id}/${p.id}`);
   await page.waitForFunction(()=>Array.from(document.images).every(e=>e.complete));
   const imgs=await page.locator('img').evaluateAll(es=>es.every(e=>e.naturalWidth>0));assert.ok(imgs,`Images ${t.id}/${p.id}`);
