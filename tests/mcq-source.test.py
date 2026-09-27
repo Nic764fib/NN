@@ -22,4 +22,17 @@ assert [q['correct'] for q in data['statements']] == [True, False, False, False,
 assert len(data['fragments']) == 13
 for text in [q['text'] for q in data['statements']] + data['fragments']:
     assert normalize(text) in source, f'Wording differs from the PDF: {text}'
-print('PASS: all 7 verbatim statements and all 13 fragments match page 4 of the supplied PDF.')
+exam = json.loads(subprocess.check_output([
+    node, '-e', "const x=require('./study-exam-mc');console.log(JSON.stringify(x.blocks.map(q=>({title:q.title,entries:q.options.map(o=>o.text)}))));"
+], cwd=root, encoding='utf-8'))
+assert [len(g['entries']) for g in exam] == [5, 3, 1, 2, 4, 5]
+last = -1
+for group in exam:
+    pos = source.index(normalize(group['title']), last + 1)
+    assert pos > last
+    last = pos
+    for text in group['entries']:
+        pos = source.index(normalize(text), last + 1)
+        assert pos > last
+        last = pos
+print('PASS: all 20 trainer entries and six headings match page 4 verbatim and in order.')
