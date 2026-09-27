@@ -5,12 +5,6 @@
  const math=s=>`$${s}$`,sign=s=>s.map(x=>x>0?'+':'−').join('');
  const difference=(name,n)=>n===0?name:n>0?`${name}-${f(n)}`:`${name}+${f(-n)}`;
  const distanceCalculation=(point,center)=>point.map((x,i)=>`(${f(x)}-(${f(center[i])}))^2`).join('+');
- const weightedTerms=(weights,start=1)=>weights.map((w,i)=>`${w<0?'-':i?'+':''}${Math.abs(w)===1?'':f(Math.abs(w))}h_${i+start}`).join('');
- const outputFormula=(weights,start=1,bias=null)=>{
-  const lines=[];
-  for(let i=0;i<weights.length;i+=3){const terms=weightedTerms(weights.slice(i,i+3),start+i),plus=weights[i]>=0?'+':'';lines.push(i?`&${plus}${terms}`:T`\widehat f(x)&=${bias===null?'':f(bias)+plus}${terms}`);}
-  return T`\begin{aligned}${lines.join(T`\\`)}\end{aligned}`;
- };
 
  function tlu(t,p){
   const o=t.kind==='original',m=p.model;
@@ -41,15 +35,14 @@
   if(p.id==='verbessern')return T`<ol><li><strong>Mehr Hidden-Neuronen und zusätzliche Stützstellen</strong> verwenden, soweit die erlaubte Neuronenzahl das zulässt.</li><li><strong>Die Parameter gezielt anpassen:</strong> beim MLP Schwellen und Gewichte, beim RBF Zentren, Breiten und Gewichte. Danach den Näherungsfehler vergleichen.</li></ol>`;
   const m=t.parts.find(p=>p.model?.coeff).model,a=C.approximation(m.coeff,m.start,m.end,m.step),mlp=p.id==='mlp';
   const values=mlp?table(['x','f(x)','Änderung zum vorherigen Wert'],a.xs.map((x,i)=>[f(x),f(a.ys[i]),i?f(a.deltas[i-1]):'Startwert'])):table(['Neuron','Zentrum cᵢ','Ausgangsgewicht f(cᵢ)'],a.xs.map((x,i)=>['h'+i,f(x),f(a.ys[i])]));
-  if(mlp){const calculation=x=>T`${a.coeff[0]===1?'':f(a.coeff[0])+T`\cdot`}(${f(x)})^2+(${f(a.coeff[1])})\cdot(${f(x)})+${f(a.coeff[2])}`;
-   return T`<p>Ich wähle Stützstellen im Abstand $${a.step}$, von $${a.start}$ bis $${a.end}$, und berechne:</p>`+values+
-    T`<h3>Kurze Nebenrechnung</h3>$$f(${a.xs[0]})=${calculation(a.xs[0])}=${a.ys[0]},$$$$f(${a.xs[1]})=${calculation(a.xs[1])}=${a.ys[1]}.$$<p>Erstes Ausgangsgewicht: $${a.ys[1]}-${a.ys[0]}=${a.deltas[0]}$.</p><h3>Netzparameter</h3><p>Ich verwende <strong>1 Eingabe, 8 Hidden-TLUs und 1 linearen Ausgang</strong>, insgesamt <strong>10 Neuronen</strong>. Alle Eingangsgewichte der Hidden-TLUs sind $1$.</p>`+
+  if(mlp){
+   return T`<p>Stützstellen von $${a.start}$ bis $${a.end}$ im Abstand $${a.step}$:</p>`+values+
+    T`<p>Ich verwende <strong>1 Eingabe, 8 Hidden-TLUs und 1 linearen Ausgang</strong>, insgesamt <strong>10 Neuronen</strong>. Alle Eingangsgewichte der Hidden-TLUs sind $1$.</p>`+
     table(['Hidden-Neuron','Schwelle','Gewicht zum Ausgang'],a.deltas.map((d,i)=>['h'+(i+1),f(a.xs[i+1]),f(d)]))+
-    T`<p>Jede Hidden-TLU liefert $1$, sobald $x$ ihre Schwelle erreicht, sonst $0$.</p><p>Der lineare Ausgang addiert den Startwert und die gewichteten Hidden-Ausgaben:</p>$$${outputFormula(a.deltas,1,a.ys[0])}$$<p>Der Startwert $${a.ys[0]}$ wird durch den <strong>Ausgangsbias $+${a.ys[0]}$</strong> erzeugt. Bei der Schreibweise „Netzeingabe minus Schwelle“ ist die <strong>Ausgangsschwelle $${-a.ys[0]}$</strong>. Alle Ausgabefunktionen sind Identitäten.</p><h3>So zeichne ich die Näherung</h3><p>Ab $${a.start}$ auf Höhe $${a.ys[0]}$ beginnen. Bei jeder Schwelle auf den nächsten Tabellenwert springen. An der Sprungstelle gilt bereits die neue Höhe; bei $x=${a.end}$ ist die Ausgabe $${a.ys.at(-1)}$.</p>`+approximationSketch(a,true);
+    T`<p>Jede Hidden-TLU liefert $1$, sobald $x$ ihre Schwelle erreicht, sonst $0$.</p><p>Der Startwert $${a.ys[0]}$ wird durch den <strong>Ausgangsbias $+${a.ys[0]}$</strong> erzeugt.</p>`+approximationSketch(a,true);
   }
-  const mid=a.start+a.step/2;
-  return T`<p>Ich verwende <strong>1 Eingabe, 9 RBF-Neuronen und 1 linearen Ausgang</strong>, insgesamt <strong>11 Neuronen</strong>.</p><p>Die Zentren sind die Stützstellen. Die Ausgangsgewichte sind direkt die zugehörigen Funktionswerte:</p>`+values+
-   T`<p><strong>Alle Radien: $${a.step}$.</strong> Ausgangsschwelle: $0$.</p><p>Für jedes RBF-Neuron mit Zentrum $c_i$ gilt:</p>$$d_i=|x-c_i|,\qquad h_i=\max\left(0,1-${a.step===1?'d_i':T`\frac{d_i}{${a.step}}`}\right).$$<p>Der lineare Ausgang addiert die gewichteten Hidden-Ausgaben:</p>$$${outputFormula(a.ys,0)}$$<p>Alle Ausgabefunktionen sind Identitäten. Die Eingabe geht in jedes RBF-Neuron; jedes Hidden-Neuron ist mit seinem Tabellengewicht mit dem Ausgang verbunden.</p><h3>So zeichne ich die Näherung</h3><p>Die neun Punkte aus Zentrum und Funktionswert einzeichnen und jeweils mit einer <strong>geraden Linie</strong> verbinden.</p><p>Kontrolle zwischen den ersten beiden Zentren:</p>$$\widehat f(${mid})=0.5\cdot${a.ys[0]}+0.5\cdot${a.ys[1]}=${a.rbf(mid)}.$$`+approximationSketch(a,false);
+  return T`<p>Ich verwende <strong>1 Eingabe, 9 RBF-Neuronen und 1 linearen Ausgang</strong>, insgesamt <strong>11 Neuronen</strong>.</p>`+values+
+   T`<p><strong>Alle Radien: $${a.step}$.</strong> Ausgangsschwelle: $0$.</p>$$d_i=|x-c_i|,\qquad h_i=\max\left(0,1-${a.step===1?'d_i':T`\frac{d_i}{${a.step}}`}\right).$$`+approximationSketch(a,false);
  }
 
  function lvq(p){
@@ -99,10 +92,10 @@
  }
  function memory(t,p){
   if(t.kind==='repair')return '';
-  const text=t.family==='tlu'?'Jede Begrenzung als Ungleichung schreiben. Die Zahlen vor x₁ und x₂ werden zu Gewichten, die Zahl rechts zur Schwelle. Anschließend die Teilbedingungen am Ausgang verknüpfen.':t.family==='rbf'?'Die Distanzformel prüft jeden beliebigen Eingabepunkt. Einen einzelnen Abstandswert berechnest du erst, wenn ein konkreter Punkt eingesetzt wird.':t.family==='approx'&&p.id!=='verbessern'?'MLP: Startwert plus Änderungen. RBF mit diesen Dreiecksfunktionen: Zentren plus Funktionswerte.':'';
+  const text=t.family==='tlu'?'Jede Begrenzung als Ungleichung schreiben. Die Zahlen vor x₁ und x₂ werden zu Gewichten, die Zahl rechts zur Schwelle. Anschließend die Teilbedingungen am Ausgang verknüpfen.':t.family==='rbf'?'Die Distanzformel prüft jeden beliebigen Eingabepunkt. Einen einzelnen Abstandswert berechnest du erst, wenn ein konkreter Punkt eingesetzt wird.':'';
   return text?`<aside class="exam-memory"><strong>Zum Merken</strong><p>${text}</p></aside>`:'';
  }
- function html(t,p,{expanded=false,extra=''}={}){return `<section class="exam-answer"><h2>Kompakte Klausur-Musterlösung</h2>${compact(t,p)}${memory(t,p)}</section><details class="detailed-solution" data-explanation ${expanded?'open':''}><summary>Ausführlicher Rechenweg</summary>${p.solution}${extra}</details>`;}
+ function html(t,p,{expanded=false,extra=''}={}){return `<section class="exam-answer"><h2>${t.kind!=='repair'&&t.family==='approx'&&p.id!=='verbessern'?'Minimale':'Kompakte'} Klausur-Musterlösung</h2>${compact(t,p)}${memory(t,p)}</section><details class="detailed-solution" data-explanation ${expanded?'open':''}><summary>Ausführlicher Rechenweg</summary>${p.solution}${extra}</details>`;}
  root.NNExamSolutions={compact,html};
  if(typeof module!=='undefined'&&module.exports)module.exports=root.NNExamSolutions;
 })(typeof globalThis!=='undefined'?globalThis:this);
