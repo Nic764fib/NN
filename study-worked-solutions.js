@@ -49,7 +49,7 @@
  }
 
  function rbf(t,p){
-  const {centers,r,polys}=p.model,c=centers[0];
+  const {centers,r}=p.model,c=centers[0];
   const diamond=[[c[0]-r,c[1]],[c[0],c[1]+r],[c[0]+r,c[1]],[c[0],c[1]-r]];
   const square=q=>[[q[0]-r/2,q[1]-r/2],[q[0]+r/2,q[1]-r/2],[q[0]+r/2,q[1]+r/2],[q[0]-r/2,q[1]+r/2]];
   let html=group('1. Bausteine einzeichnen',`<p>Grundraute: Gewicht +1. Zwei unerwünschte Teile mit Quadraten abdecken: jeweils Gewicht −1.</p>`+V.plane({polygons:[diamond,...centers.slice(1).map(square)],points:centers.map((q,i)=>({x:q[0],y:q[1],label:'c'+(i+1)})),range:[c[0]-r-1,c[0]+r+1,c[1]-r-1,c[1]+r+1],title:'Raute, Abzugsquadrate und ihre Zentren'})+`<p>$c=(c_x;c_y)$: waagrechte und senkrechte Koordinate <strong>desselben</strong> Zentrums.</p>`);
@@ -60,12 +60,13 @@
    else body+=work('b. Manhattan-Radius zur rechten Spitze berechnen',T`r=|P_1-c_x|+|P_2-c_y|`,[[T`P`,`${v([q[0]+r,q[1]])} — rechte Rautenspitze`],[T`c_x,c_y`,`${q[0]}; ${q[1]} — gerade berechnetes Zentrum`]],[T`r=|${q[0]+r}-${q[0]}|+|${q[1]}-${q[1]}|`,T`r=${r}+0`],`r_1=${r}`);
    html+=group(`${i+2}. ${i?'Abzugsquadrat '+(i===1?'oben':'unten'):'Grundraute'}`,body);
   });
-  const x=[c[0]+(polys[0][1][0]-c[0])/4,c[1]+r/4];
-  html+=group('5. Einen Eingabepunkt in alle drei Neuronen einsetzen',`<p>Testpunkt aus der gewünschten Fläche: $x=${v(x)}$. Für jedes Neuron dessen eigenes Zentrum und dessen Radius verwenden.</p>`+centers.map((q,i)=>{
-   const ds=x.map((z,k)=>Math.abs(z-q[k])),d=i?Math.max(...ds):ds[0]+ds[1],radius=i?r/2:r;
-   return work('Neuron h'+(i+1),i?T`d=\max(|x_1-c_x|,|x_2-c_y|)`:T`d=|x_1-c_x|+|x_2-c_y|`,[[T`x_1,x_2`,`${f(x[0])}; ${f(x[1])} — Eingabepunkt`],[T`c_x,c_y`,`${q[0]}; ${q[1]} — Zentrum dieses Neurons`],[T`r`,radius]],[i?T`d=\max(|${x[0]}-(${q[0]})|,|${x[1]}-(${q[1]})|)` : T`d=|${x[0]}-(${q[0]})|+|${x[1]}-(${q[1]})|`,i?T`d=\max(${ds[0]},${ds[1]})=${d}`:T`d=${ds[0]}+${ds[1]}=${d}`,T`${d}${d<=radius?'\\le':'>'}${radius}`],`h_${i+1}=${d<=radius?1:0}`,'Abstand ≤ Radius → 1; Abstand > Radius → 0.');
-  }).join(''));
-  return html+group('6. Ausgang berechnen',work('Ausgangsgewichte bestimmen',T`y=v_1h_1+v_2h_2+v_3h_3`,[[T`(h_1;h_2;h_3)`, 'nur Raute: (1; 0; 0); Raute und Abzug: (1; 1; 0) bzw. (1; 0; 1)'],[T`y`, 'gewünschte Fläche: 1; abgezogener Teil: 0']],[T`1=v_1\cdot1\quad\Rightarrow\quad v_1=1`,T`0=1+v_2\quad\Rightarrow\quad v_2=-1`,T`0=1+v_3\quad\Rightarrow\quad v_3=-1`],T`(v_1;v_2;v_3)=(1;-1;-1)`)+work('Beiträge mit ihren Gewichten multiplizieren',T`y=v_1h_1+v_2h_2+v_3h_3`,[[T`v_1,v_2,v_3`,'+1; −1; −1'],[T`h_1,h_2,h_3`,'1; 0; 0 — aus Schritt 5']],[T`y=1\cdot1+(-1)\cdot0+(-1)\cdot0`],T`y=1`)+`<p>Linearer Ausgang, Schwelle 0. Beide Koordinaten gehen in jedes RBF-Neuron; Ausgabefunktionen sind Identitäten.</p>`+table([T`Fall`,'Rechnung','Ausgabe'],[[T`Gewünschte Fläche`,'1 − 0 − 0',1],[T`Raute und ein Abzug`,'1 − 1 − 0',0],[T`Außerhalb der Raute`,tex('0-h_2-h_3'),tex('\\le0')]])+`<p>Ränder sind laut Aufgabe egal.</p>`);
+  html+=group('5. Netzeingaben und Aktivierungen angeben',T`<p>Manhattan $L_1$ für die Raute, Maximum $L_\infty$ für beide Quadrate. Beide gehören zur Minkowski-Familie. Die Netzeingabe ist jeweils der Abstand:</p>`+
+   centers.map((q,i)=>eq(i?T`d_${i+1}(x)=\max\bigl(|x_1-${q[0]}|,|x_2-${q[1]}|\bigr)`:T`d_1(x)=|x_1-${q[0]}|+|x_2-${q[1]}|`)).join('')+
+   `<p>Für alle drei Hidden-Neuronen gilt mit den oben bestimmten Radien:</p>`+
+   eq(T`h_i(x)=\begin{cases}1,&d_i(x)\le r_i,\\0,&d_i(x)>r_i,\end{cases}\qquad i=1,2,3.`));
+  return html+group('6. Ausgangsgewichte und Ausgabe angeben',work('Ausgangsgewichte bestimmen',T`y=v_1h_1+v_2h_2+v_3h_3`,[[T`(h_1;h_2;h_3)`, 'nur Raute: (1; 0; 0); Raute und Abzug: (1; 1; 0) bzw. (1; 0; 1)'],[T`y`, 'gewünschte Fläche: 1; abgezogener Teil: 0']],[T`1=v_1\cdot1\quad\Rightarrow\quad v_1=1`,T`0=1+v_2\quad\Rightarrow\quad v_2=-1`,T`0=1+v_3\quad\Rightarrow\quad v_3=-1`],T`(v_1;v_2;v_3)=(1;-1;-1)`)+
+   eq(T`\boxed{y=h_1-h_2-h_3}`)+
+   `<p>Netz: 2 Eingaben → 3 RBF-Neuronen → 1 linearer Ausgang mit Schwelle 0. Beide Eingaben gehen in jedes RBF-Neuron; die Hidden-Ausgaben führen mit den Gewichten (1; −1; −1) zum Ausgang. Alle Ausgabefunktionen sind Identitäten. Ränder sind laut Aufgabe egal.</p>`);
  }
 
  function approximationPlot(a,mlp){
