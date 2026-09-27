@@ -18,7 +18,7 @@
  function tlu(t,p){
   const m=p.model,o=t.kind==='original',names=[T`A`,'B','C','D'],edges=[T`AB`,'BC','CD','DA'];
   const pointTable=table([T`Eckpunkt`,'Erste Koordinate: waagrecht','Zweite Koordinate: Höhe'],m.points.map((q,i)=>[names[i],q[0],q[1]]));
-  let html=group('1. Punkte aus der Zeichnung übernehmen',pointTable+`<p><strong>Für jede Kante:</strong> P = erster Buchstabe, Q = zweiter Buchstabe. Bei BC also P = B und Q = C.</p><p>Für die Geradengleichung verwende ich P. Mit Q erhältst du dieselbe Gerade. Beide Koordinaten müssen aus dem gewählten Punkt stammen. $x_1,x_2$ bleiben dabei die freien Koordinaten auf der Geraden.</p>`);
+  let html=group('1. Punkte aus der Zeichnung übernehmen',pointTable+`<p><strong>Für jede schräge Kante:</strong> P = erster Buchstabe, Q = zweiter Buchstabe. Steigung: Q minus P. Danach Q in die Geradengleichung einsetzen. Bei BC also C minus B, danach Punkt C einsetzen.</p>`);
   edges.forEach((edge,i)=>{
    const P=m.points[i],Q=m.points[(i+1)%4],params=m.params[i],horizontal=P[1]===Q[1],vertical=P[0]===Q[0];
    const bindings=[[T`P`,`${names[i]} = ${v(P)}`],[T`Q`,`${names[(i+1)%4]} = ${v(Q)}`],[T`p_1,p_2`,`${P[0]}; ${P[1]} — aus ${names[i]}`],[T`q_1,q_2`,`${Q[0]}; ${Q[1]} — aus ${names[(i+1)%4]}`]];
@@ -26,25 +26,18 @@
    if(horizontal||vertical){const coord=horizontal?2:1,value=P[coord-1];body+=work(horizontal?'Waagrechte Gerade':'Senkrechte Gerade',`x_${coord}=p_${coord}`,bindings,[`p_${coord}=q_${coord}=${value}`],`x_${coord}=${value}`,horizontal?'Gleiche Höhe → waagrechte Gerade.':'Gleiche erste Koordinate → senkrechte Gerade; keine Steigung berechnen.');}
    else{
     body+=work('a. Steigung berechnen',T`m=\frac{q_2-p_2}{q_1-p_1}`,bindings,[T`m=\frac{${Q[1]}-${P[1]}}{${Q[0]}-${P[0]}}`,T`m=\frac{${Q[1]-P[1]}}{${Q[0]-P[0]}}`],`m=${fraction(slope)}`,'Oben und unten dieselbe Reihenfolge: Q minus P.');
-    body+=work('b. Einen Punkt in die Geradenformel einsetzen',T`x_2=p_2+m(x_1-p_1)`,[[T`P`,`${names[i]} = ${v(P)}`],[T`p_1`,`${P[0]} — erste Koordinate von ${names[i]}`],[T`p_2`,`${P[1]} — zweite Koordinate von ${names[i]}`],[T`m`,tex(fraction(slope))]],[T`x_2=${P[1]}+(${fraction(slope)})(x_1-${P[0]})`,T`x_2=${P[1]}${signedFraction(slope,'x_1')}${signedFraction(-slope*P[0])}`],`x_2=${fraction(slope)}x_1${signedFraction(b)}`,
-     `Auch ${names[(i+1)%4]} geht: ${tex(T`x_2=${Q[1]}+(${fraction(slope)})(x_1-${Q[0]})=${fraction(slope)}x_1${signedFraction(b)}`)}.`);
+    body+=work('b. Punkt '+names[(i+1)%4]+' in die Geradenformel einsetzen',T`x_2=q_2+m(x_1-q_1)`,[[T`Q`,`${names[(i+1)%4]} = ${v(Q)}`],[T`q_1`,`${Q[0]} — erste Koordinate von ${names[(i+1)%4]}`],[T`q_2`,`${Q[1]} — zweite Koordinate von ${names[(i+1)%4]}`],[T`m`,tex(fraction(slope))]],[T`x_2=${Q[1]}+(${fraction(slope)})(x_1-${Q[0]})`,T`x_2=${Q[1]}${signedFraction(slope,'x_1')}${signedFraction(-slope*Q[0])}`],`x_2=${fraction(slope)}x_1${signedFraction(b)}`);
    }
-   const test=i===2?m.tests[1]:m.tests[0],rule=horizontal?T`x_2\le${P[1]}`:vertical?`x_1${o?'\\ge':'\\le'}${P[0]}`:`x_2\\ge${fraction(slope)}x_1${signedFraction(b)}`;
-   const numericTest=horizontal?`${test[1]}\\le${P[1]}`:vertical?`${test[0]}${o?'\\ge':'\\le'}${P[0]}`:`${test[1]}\\ge${fraction(slope)}\\cdot${test[0]}${signedFraction(b)}=${f(slope*test[0]+b)}`;
+   const rule=horizontal?T`x_2\le${P[1]}`:vertical?`x_1${o?'\\ge':'\\le'}${P[0]}`:`x_2\\ge${fraction(slope)}x_1${signedFraction(b)}`;
    const changes=horizontal?[T`x_2\le${P[1]}\quad|\cdot(-1)`,`-x_2\\ge${-P[1]}`]:vertical?(o?[`x_1\\ge${P[0]}`]:[T`x_1\le${P[0]}\quad|\cdot(-1)`,`-x_1\\ge${-P[0]}`]):i===1?[rule+T`\quad|${signedTerm(-slope,'x_1')}`,`${params[0]}x_1+x_2\\ge${params[2]}`]:[rule+T`\quad|\cdot2`,T`2x_2\ge${2*b}${signedTerm(2*slope,'x_1')}\quad|${signedTerm(-2*slope,'x_1')}`,`${params[0]}x_1+2x_2\\ge${params[2]}`];
-   body+=work('c. Gewünschte Seite prüfen und Gewichte ablesen',T`w_1x_1+w_2x_2\ge\theta`,[[T`(x_1;x_2)`,`${v(test)} — frei gewählter Testpunkt im gewünschten Teil`],[T`\text{Seite}`,horizontal?'unterhalb':vertical?(o?'rechts von CD':'links von CD'):'oberhalb']],[numericTest,...changes,T`(${params[0]})x_1+(${params[1]})x_2\ge${params[2]}`],T`(w_1;w_2;\theta)=${v(params)}`,
+   body+=work('c. Gewünschte Seite wählen und Gewichte ablesen',T`w_1x_1+w_2x_2\ge\theta`,[[T`\text{Seite aus der Zeichnung}`,horizontal?'unterhalb → ≤':vertical?(o?'rechts von CD → ≥':'links von CD → ≤'):'oberhalb → ≥']],[...changes,T`(${params[0]})x_1+(${params[1]})x_2\ge${params[2]}`],T`(w_1;w_2;\theta)=${v(params)}`,
     (horizontal||(!o&&vertical))?'Beim Multiplizieren mit −1 dreht sich das Ungleichheitszeichen um.':(i===3?'Mit 2 multiplizieren beseitigt hier den Nenner 2. Danach die x₁-Terme nach links bringen.':'Gewichte = Zahlen vor x₁ und x₂; Schwelle = Zahl rechts.'));
    html+=group(`${i+2}. Kante ${edge}`,body);
   });
-  const trace=x=>m.params.map(([a,b,theta])=>a*x[0]+b*x[1]>=theta?1:0);
   html+=group('6. Die vier Tests am Ausgang verbinden',`<p>In dieser Zeichnung gelten AB und BC immer. Zusätzlich genügt CD <strong>oder</strong> DA.</p>`+
-   table([T`Innenpunkt`,'h₁: AB','h₂: BC','h₃: CD','h₄: DA'],m.tests.slice(0,2).map(x=>[v(x),...trace(x)]))+
    work('Ausgangsschwelle bestimmen',T`S=2h_1+2h_2+h_3+h_4`,[[T`h_1,h_2`,'Pflichttests: jeweils Gewicht 2'],[T`h_3,h_4`,'Alternativen: jeweils Gewicht 1']],[T`\text{beide Pflichttests + eine Alternative: }2+2+1=5`,T`\text{ein Pflichttest fehlt: maximal }2+1+1=4`,T`\text{beide Alternativen fehlen: }2+2=4`],T`\theta_{out}=5,\qquad (v_1;v_2;v_3;v_4)=(2;2;1;1)`)+
    eq(T`y=\begin{cases}1,&S\ge5,\\0,&S<5.\end{cases}`));
-  const x=m.tests[0],hs=trace(x);
-  html+=group('7. Einen Punkt vollständig durch das Netz rechnen',table([T`Test`,'Punkt einsetzen','Vergleich','Ausgabe'],m.params.map(([a,b,th],i)=>['h'+(i+1),tex(T`(${a})\cdot${x[0]}+(${b})\cdot${x[1]}=${f(a*x[0]+b*x[1])}`),tex(`${f(a*x[0]+b*x[1])}${hs[i]?'\\ge':'<'}${th}`),hs[i]]))+
-   eq(T`S=2\cdot${hs[0]}+2\cdot${hs[1]}+${hs[2]}+${hs[3]}=5\quad\Rightarrow\quad y=1`)+
-   `<p>Netz: 2 Eingaben → 4 Hidden-TLUs → 1 Ausgabe-TLU. Alle Ausgabefunktionen sind Identitäten.</p>`);
+  html+=`<p>Netz: 2 Eingaben → 4 Hidden-TLUs → 1 Ausgabe-TLU. Jede TLU liefert bei gewichteter Summe ≥ Schwelle den Wert 1, sonst 0.</p>`;
   return html;
  }
 
@@ -131,7 +124,6 @@
   const m=p.model;
   let html=m.rule==='winner'?`<p><strong>Neu starten.</strong> Richtige Gewinnerklasse → Pluszeichen; falsche Gewinnerklasse → Minuszeichen.</p>`:'';
   html+=lvqCalculation(m,m.rule);
-  if(m.rule==='winner'&&t.kind==='original')html+=fold('Alternative: Zweiprototypen-Regel aus Folie 340',`<p>Getrennter Durchlauf mit den Startwerten. Beide Prototypen haben verschiedene Klassen; genau einer passt zum Datenpunkt. Richtigen anziehen, falschen abstoßen.</p>`+lvqCalculation(m,'two'));
   return html;
  }
 
@@ -141,7 +133,7 @@
   const nearest=k=>[...new Set(m.grid.map(r=>r.v[k]))].sort((a,b)=>Math.abs(a-m.x[k])-Math.abs(b-m.x[k])).slice(0,3).sort((a,b)=>a-b);
   let html=group('1. Gewinner im Datenraum finden',T`<p>Datenpunkt $x=${v(m.x)}$, Lernrate $\eta=${m.eta}$, Gaußbreite $\sigma=${m.sigma}$. Im vorgegebenen rechteckigen Startgitter liegen die Koordinaten im Abstand 5.</p>`+
    table([T`Koordinate des Datenpunkts`,'Nahe Gitterkoordinaten vergleichen','Nächste Koordinate'],[0,1].map(k=>[tex(`x_${k+1}=${m.x[k]}`),nearest(k).map(n=>tex(`|${m.x[k]}-${n}|=${Math.abs(m.x[k]-n)}`)).join('<br>'),winner.v[k]]))+
-   work('Gewinner-Abstand kontrollieren',T`d_D^2=(x_1-r_1)^2+(x_2-r_2)^2`,[[T`x_1,x_2`,`${m.x[0]}; ${m.x[1]} — Datenpunkt`],[T`r_1,r_2`,`${winner.v[0]}; ${winner.v[1]} — nächster Startprototyp`]],[`d_D^2=${distance(m.x,winner.v)}`,`d_D^2=${(m.x[0]-winner.v[0])**2}+${(m.x[1]-winner.v[1])**2}=${C.dist(m.x,winner.v)}`],`r_*=${v(winner.v)}`));
+   eq(T`r_*=${v(winner.v)}`));
   html+=group('2. Datenkoordinaten in Gitterindizes umrechnen',work('Jede Startkoordinate durch den Gitterabstand teilen',T`i=\frac{r_1}{5},\qquad j=\frac{r_2}{5}`,[[T`r_*`,v(winner.v)],[T`5`,'Abstand der Startkoordinaten: 0, 5, 10, …']],[T`i_*=${winner.v[0]}/5=${winner.g[0]}`,T`j_*=${winner.v[1]}/5=${winner.g[1]}`],T`(i_*;j_*)=${v(winner.g)}`,'Für die Nachbarschaft die Gitterindizes einsetzen. Für die Vektoränderung die Datenkoordinaten einsetzen.'));
   const workedNeuron=r=>{
    const delta=m.x.map((z,k)=>z-r.v[k]);
@@ -149,17 +141,13 @@
     work('b. Gaußfaktor und wirksame Lernrate',T`h=e^{-d_G^2/(2\sigma^2)},\qquad\alpha=\eta h`,[[T`d_G^2`,r.d2],[T`\sigma`,`${m.sigma} — Breite aus der Aufgabe`],[T`\eta`,`${m.eta} — Lernrate aus der Aufgabe`]],[T`2\sigma^2=2\cdot${m.sigma}^2=${den}`,T`h=e^{-${r.d2}/${den}}\approx${f(r.h)}`,T`\alpha=${m.eta}\cdot e^{-${r.d2}/${den}}`],T`\alpha\approx${f(r.alpha)}`,'Im Taschenrechner: exp(−d² / (2·σ²)). Mit dem ungerundeten Wert weiterrechnen.')+
     work('c. Beide Vektorkoordinaten verändern',T`\Delta r_k=\alpha(x_k-r_k),\quad r_k^{neu}=r_k+\Delta r_k`,[[T`x`,`${v(m.x)} — Datenpunkt`],[T`r`,`${v(r.v)} — alter Prototyp dieses Neurons`],[T`\alpha`,`${f(r.alpha)} (gerundet) — aus b`]],delta.flatMap((d,k)=>[T`x_${k+1}-r_${k+1}=${m.x[k]}-(${r.v[k]})=${d}`,T`\Delta r_${k+1}=\alpha\cdot(${d})\approx${f(r.alpha)}\cdot(${d})\approx${f(r.delta[k])}`,T`r_${k+1}^{neu}=${r.v[k]}+\Delta r_${k+1}\approx${r.v[k]}+(${f(r.delta[k])})\approx${f(r.next[k])}`]),T`\Delta r\approx${v(r.delta)},\quad r_{neu}\approx${v(r.next)}`);
   };
-  html+=group('3. Gewinner '+v(winner.v)+' aktualisieren',workedNeuron(winner));
+  html+=group('3. Gewinner '+v(winner.v)+' aktualisieren',eq(T`d_G^2=0\quad\Rightarrow\quad h=1`)+
+   work('Gewinner zum Datenpunkt bewegen',T`r_k^{neu}=r_k+\eta(x_k-r_k),\quad k=1,2`,[[T`r`,v(winner.v)],[T`x`,v(m.x)],[T`\eta`,m.eta]],[0,1].map(k=>T`r_${k+1}^{neu}=${winner.v[k]}+${m.eta}(${m.x[k]}-${winner.v[k]})=${f(winner.next[k])}`),T`\Delta r=${v(winner.delta)},\quad r_{neu}=${v(winner.next)}`));
   html+=group('4. Linken Nachbarn '+v(left.v)+' aktualisieren',workedNeuron(left));
   const allResults=table([T`Gitterindex (i; j)`,'Alter Vektor','d² im Gitter','α ≈','Änderung Δr ≈','Neuer Vektor ≈'],data.rows.map(r=>[v(r.g),v(r.v),r.d2,f(r.alpha),v(r.delta),v(r.next)]));
-  const rows=data.rows.map(r=>{
-   const delta=m.x.map((z,k)=>z-r.v[k]);
-   return fold(`Index ${v(r.g)} · alter Vektor ${v(r.v)}`,T`<p>Einsetzen: $(i;j)=${v(r.g)}$, Gewinnerindex $${v(winner.g)}$, $\eta=${m.eta}$, $\sigma=${m.sigma}$, $x=${v(m.x)}$.</p>`+
-    eq(T`d_G^2=(${r.g[0]}-${winner.g[0]})^2+(${r.g[1]}-${winner.g[1]})^2=${r.d2}`)+
-    eq(T`h=e^{-\frac{${r.d2}}{2\cdot${m.sigma}^2}}\approx${f(r.h)}`)+eq(T`\alpha=${m.eta}\,h\approx${f(r.alpha)}`)+
-    [0,1].map(k=>eq(T`\Delta r_${k+1}=\alpha(${m.x[k]}-(${r.v[k]}))=\alpha\cdot(${delta[k]})\approx${f(r.alpha)}\cdot(${delta[k]})\approx${f(r.delta[k])}`)+eq(T`r_${k+1}^{neu}=${r.v[k]}+\Delta r_${k+1}\approx${r.v[k]}+(${f(r.delta[k])})\approx${f(r.next[k])}`)).join(''));
-  }).join('');
-  html+=group('5. Dasselbe für alle '+data.rows.length+' Neuronen rechnen',`<p>Immer die alten Vektoren verwenden. Nur Index $(i;j)$ und alter Vektor $r$ wechseln; Datenpunkt, Gewinnerindex, Lernrate und Breite bleiben fest.</p>`+fold(`Alle ${data.rows.length} Ergebnisse als Tabelle`,allResults)+fold('Eine bestimmte Zeile vollständig nachrechnen',rows));
+  html+=group('5. Änderungen aller '+data.rows.length+' Neuronen angeben',`<p>Für jeden alten Vektor $r=(5i;5j)$ dessen Gitterindex $(i;j)$ einsetzen:</p>`+
+   eq(T`\Delta r=${m.eta}\,e^{-\frac{(i-${winner.g[0]})^2+(j-${winner.g[1]})^2}{${den}}}\begin{pmatrix}${m.x[0]}-5i\\${m.x[1]}-5j\end{pmatrix}`)+
+   fold(`Alle ${data.rows.length} Ergebnisse als Tabelle`,allResults));
   return html;
  }
 
@@ -175,16 +163,16 @@
    ],`s'=${v(r.next[i])}`,'Nur diese eine Stelle ersetzen. Die beiden anderen Stellen bleiben wie im Ausgangszustand.');
   };
   let html=group('1. Gewichte, Schwellen und Zustandszeichen übernehmen',table([T`Neuron`,'Gewichte zu den anderen Neuronen','Eigene Schwelle'],m.W.map((w,i)=>['u'+(i+1),w.map((z,j)=>i===j?'':tex(`w_{${i+1}${j+1}}=${z}`)).filter(Boolean).join(', '),m.theta[i]]))+
-   `<p>Zustandsreihenfolge: $(s_1;s_2;s_3)$. Zeichen + bedeutet +1, Zeichen − bedeutet −1.</p>`+eq(T`s_i'=\begin{cases}+1,&net_i\ge\theta_i,\\-1,&net_i<\theta_i.\end{cases}`)+`<p>Bei Gleichheit gilt also +1. Die Schwelle wird mit der fertigen Netzeingabe verglichen.</p>`);
+   `<p>Zustandsreihenfolge: $(s_1;s_2;s_3)$. Zeichen + bedeutet +1, Zeichen − bedeutet −1.</p>`+eq(T`s_i'=\begin{cases}+1,&net_i\ge\theta_i,\\-1,&net_i<\theta_i.\end{cases}`));
   html+=group('2. Ausgangszustand −−−: alle drei Möglichkeiten rechnen',`<p>Einsetzen: $s_1=-1$, $s_2=-1$, $s_3=-1$. <strong>Jedes der drei Updates beginnt wieder bei −−−.</strong></p>`+[0,1,2].map(i=>update(rows[0],i)).join(''));
   html+=group('3. Alle acht Zustände prüfen',table([T`Ausgang`,'(net₁; net₂; net₃)','Nur u₁','Nur u₂','Nur u₃','Stabil?'],rows.map(r=>[sign(r.s),v(r.net),...r.next.map(sign),r.stable?'ja':'nein']))+
    fold('Die übrigen sieben Zustände mit allen Einsetzungen',rows.slice(1).map(r=>fold('Ausgang '+sign(r.s),`<p>Bei jedem Update erneut $s=${v(r.s)}$ einsetzen.</p>`+[0,1,2].map(i=>update(r,i)).join(''))).join('')));
   html+=group('4. Tabelle in Pfeile übertragen',table([T`Schritt`,'Hier ausführen'],[
    [T`Kreise`,'Alle acht Zustände aus der ersten Tabellenspalte einzeichnen.'],
-   [T`Pfeil`,'Beispiel: −−− → '+sign(rows[0].next[1])+'; mit u₂ beschriften, weil nur Neuron 2 aktualisiert wird.'],
+   [T`Pfeile`,'Für jede Nachfolgerzelle: Ausgang → Nachfolger zeichnen und mit der Neuronennummer der Spalte beschriften.'],
    [T`Schleife`,'Ist der Nachfolger derselbe Zustand, eine Schleife zeichnen oder das unveränderte Update ausdrücklich in der Tabelle angeben.'],
    [T`Stabil`,'Alle drei Nachfolger stimmen mit dem Ausgang überein: '+rows.filter(r=>r.stable).map(r=>sign(r.s)).join(', ')+'.']
-  ])+V.graph(rows,'worked-hop-'+t.id,t.kind==='original'?{layout:'exam-original'}:{})+eq(T`8\text{ Zustände}\cdot3\text{ Einzelupdates}=24\text{ Nachfolger}`));
+  ]));
   return html;
  }
 

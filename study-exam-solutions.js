@@ -4,24 +4,21 @@
  const C=NNCore,V=NNVisual,T=String.raw,f=C.fmt,v=C.vec,table=NNContent.table;
  const math=s=>`$${s}$`,sign=s=>s.map(x=>x>0?'+':'−').join('');
  const difference=(name,n)=>n===0?name:n>0?`${name}-${f(n)}`:`${name}+${f(-n)}`;
- const distanceCalculation=(point,center)=>point.map((x,i)=>`(${f(x)}-(${f(center[i])}))^2`).join('+');
 
  function tlu(t,p){
   const o=t.kind==='original',m=p.model;
-  const borders=o?[T`m_{BC}=\frac{4-1}{4-3}=3\quad\Rightarrow\quad x_2=3x_1-8`,T`m_{DA}=\frac{4-3}{1-3}=-\frac12\quad\Rightarrow\quad x_2=-\frac12x_1+\frac92`]:[T`m_{BC}=\frac{2-5}{3-2}=-3\quad\Rightarrow\quad x_2=11-3x_1`,T`m_{DA}=\frac{5-4}{5-3}=\frac12\quad\Rightarrow\quad x_2=\frac12x_1+\frac52`];
   const conditions=o?[T`-x_2\ge-4`,T`-3x_1+x_2\ge-8`,T`x_1\ge3`,T`x_1+2x_2\ge9`]:[T`-x_2\ge-5`,T`3x_1+x_2\ge11`,T`-x_1\ge-3`,T`-x_1+2x_2\ge5`];
-  return T`<p>Ich wähle <strong>2 Eingabeneuronen, 4 verdeckte TLUs und 1 Ausgabe-TLU</strong>.</p><p>Für jede TLU gilt: <strong>Gewichtete Summe ≥ Schwelle → Ausgabe 1, sonst 0.</strong></p><h3>Kurze Nebenrechnung</h3><p>Die beiden schrägen Begrenzungen berechne ich aus den Eckpunkten:</p>`+
-   borders.map(b=>`$$${b}$$`).join('')+
-   `<h3>Netzparameter</h3>`+table(['Neuron','Bedingung für Ausgabe 1','Eingangsgewichte (w₁; w₂)','Schwelle'],m.params.map((r,i)=>['h'+(i+1),math(conditions[i]),v(r.slice(0,2)),f(r[2])]))+
-   T`<p>Am Ausgang verwende ich die Gewichte <strong>(2; 2; 1; 1)</strong> und die <strong>Schwelle 5</strong>:</p>$$y=\begin{cases}1,&2h_1+2h_2+h_3+h_4\ge5,\\0,&\text{sonst}.\end{cases}$$<p>Damit müssen $h_1$ und $h_2$ aktiv sein sowie mindestens eines von $h_3,h_4$.</p><p>Die Eingaben sind gemäß Tabelle mit den Hidden-Neuronen verbunden. Diese führen mit den angegebenen Ausgangsgewichten zum Ausgabe-Neuron. Alle Ausgabefunktionen sind Identitäten.</p><p><strong>Kontrolle:</strong> Beide Pflichttests und eine Alternative ergeben $2+2+1=5$. Fehlt ein Pflichttest oder fehlen beide Alternativen, ist die Summe höchstens $4$.</p>`;
+  return T`<p>Drei Schichten: <strong>2 Eingaben $x_1,x_2$, 4 Hidden-TLUs und 1 Ausgabe-TLU</strong>.</p><p>Jede TLU liefert bei <strong>gewichteter Summe ≥ Schwelle den Wert 1, sonst 0</strong>.</p>`+
+   table(['Neuron / Kante','Bedingung für Ausgabe 1','Eingangsgewichte (w₁; w₂)','Schwelle'],m.params.map((r,i)=>['h'+(i+1)+' / '+['AB','BC','CD','DA'][i],math(conditions[i]),v(r.slice(0,2)),f(r[2])]))+
+   T`<p>Beide Eingaben gehen mit den Tabellengewichten in jedes Hidden-Neuron. Die Verbindungen $h_1,h_2,h_3,h_4$ zum Ausgang haben die Gewichte <strong>(2; 2; 1; 1)</strong>; Ausgangsschwelle: <strong>5</strong>.</p>$$y=\begin{cases}1,&2h_1+2h_2+h_3+h_4\ge5,\\0,&\text{sonst}.\end{cases}$$`;
  }
 
- function rbf(p){const {centers,r}=p.model,q=centers[1],left=q[0]<centers[0][0];
-  return T`<p>Ich verwende <strong>2 Eingaben, 3 RBF-Neuronen und einen linearen Ausgang</strong>.</p><p>Die gewünschte Fläche entsteht aus einer <strong>Raute</strong>, von der ich das <strong>obere ${left?'linke':'rechte'} und das untere ${left?'rechte':'linke'} Quadrat</strong> abziehe.</p>`+
+ function rbf(p){const {centers,r}=p.model;
+  return T`<p>Ich verwende <strong>2 Eingaben, 3 RBF-Neuronen und einen linearen Ausgang</strong>.</p>`+
    table(['Neuron','Zentrum','Distanz','Radius','Ausgangsgewicht'],centers.map((c,i)=>[`h${i+1}: ${i?'Quadrat '+(i===1?'oben':'unten'):'Raute'}`,v(c),i?'Maximum (L∞)':'Manhattan (L₁)',f(i?r/2:r),i?'−1':'+1']))+
-   T`<h3>Kurze Nebenrechnung</h3><p>Für das obere Abzugsquadrat:</p>$$c_2=\left(\frac{${q[0]-r/2}+${q[0]+r/2}}2;\frac{${q[1]-r/2}+${q[1]+r/2}}2\right)=${v(q)},$$$$r_2=\frac{${q[0]+r/2}-(${q[0]-r/2})}2=${r/2}.$$<h3>Netzeingaben und Aktivierung</h3>`+
+   T`<p>Netzeingaben mit Manhattan- und Maximumdistanz aus der Minkowski-Familie:</p>`+
    centers.map((c,i)=>`$$d_${i+1}=`+(i?T`\max\bigl(|${difference('x_1',c[0])}|,|${difference('x_2',c[1])}|\bigr)`:T`|${difference('x_1',c[0])}|+|${difference('x_2',c[1])}|`)+'$$').join('')+
-   T`<p>Für jedes Hidden-Neuron gilt:</p><ul><li><strong>Abstand höchstens Radius → Ausgabe 1.</strong></li><li><strong>Abstand größer als Radius → Ausgabe 0.</strong></li></ul><p>Der Ausgang ist linear, mit Schwelle $0$:</p>$$\boxed{y=h_1-h_2-h_3}$$<p>Alle Ausgabefunktionen sind Identitäten. Beide Eingabekoordinaten gehen in jedes RBF-Neuron ein; die Hidden-Ausgaben werden mit den Tabellengewichten zum Ausgang geführt.</p><h3>Kurze Kontrolle</h3><ul><li>Gewünschte Fläche: $1-0-0=1$.</li><li>Abgezogenes Dreieck: $1-1-0=0$.</li><li>Außerhalb der Raute: $0-h_2-h_3\le0$.</li></ul><p>Ränder sind laut Aufgabe egal.</p>`;
+   T`<p>Jedes Hidden-Neuron liefert <strong>1 bei Abstand ≤ Radius, sonst 0</strong>. Beide Eingaben gehen in jedes RBF-Neuron; die Hidden-Ausgaben mit den Tabellengewichten zum Ausgang.</p><p>Linearer Ausgang, Schwelle $0$; alle Ausgabefunktionen sind Identitäten:</p>$$\boxed{y=h_1-h_2-h_3}$$`;
  }
 
  function approximationSketch(a,mlp){
@@ -47,30 +44,27 @@
 
  function lvq(p){
   const m=p.model,data=C.lvq(m.initial,m.points,m.eta,m.rule),supervised=m.rule==='winner';
-  const update=r=>{const i=r.win,old=r.old[i],other=r.old[1-i];return T`<p>Also gewinnt $${old.label}$${supervised?`, ${r.signs[i]>0?'richtige':'falsche'} Klasse → ${r.signs[i]>0?'anziehen':'abstoßen'}`:''}:</p>$$\begin{aligned}${old.label}_{neu}&=${v(old.v)}${r.signs[i]>0?'+':'-'}${m.eta}\bigl(${v(r.point.v)}-${v(old.v)}\bigr)\\&=\boxed{${v(r.centers[i].v)}}.\end{aligned}$$<p>$${other.label}$ bleibt bei $${v(other.v)}$.</p>`;};
-  return T`<p>Ich verwende die <strong>Gewinnerregel: Nur der nächstgelegene Prototyp wird verändert.</strong></p>`+
-   (supervised?T`<p>Ich beginne erneut mit den ursprünglichen Prototypen.</p><ul><li>Richtige Klasse: Gewinner zum Datenpunkt hinbewegen.</li><li>Falsche Klasse: Gewinner vom Datenpunkt wegbewegen.</li></ul>`:'')+
-   T`<p>Start: $A=${v(m.initial[0].v)}$, $B=${v(m.initial[1].v)}$, Lernrate $\eta=${m.eta}$.</p>`+
-   data.rows.map((r,i)=>T`<h3>${i+1}. Punkt $${r.point.name}=${v(r.point.v)}$</h3><p>${i?'Jetzt verwende ich bereits die nach dem ersten Punkt veränderten Prototypen.':'Zum Vergleichen reichen die quadrierten Abstände.'}</p>`+r.old.map((old,k)=>T`$$d_${old.label}^2=${distanceCalculation(r.point.v,old.v)}=${f(r.ds[k])}.$$`).join('')+update(r)).join('')+
-   T`<h3>Gesamtänderungen gegenüber dem Start</h3>$$\Delta A=${v(data.centers[0].v)}-${v(m.initial[0].v)}=\boxed{${v(data.changes[0])}},$$$$\Delta B=${v(data.centers[1].v)}-${v(m.initial[1].v)}=\boxed{${v(data.changes[1])}}.$$`;
+  return T`<p><strong>Gewinnerregel:</strong> Nur der nächstgelegene Prototyp wird verändert. ${supervised?'Richtige Klasse: +; falsche Klasse: −.':'Ohne Klassen: immer +.'}</p>`+
+   T`$$r_{neu}=r${supervised?'\\pm':'+'}${m.eta}(x-r).$$<p>Start: $A=${v(m.initial[0].v)}$, $B=${v(m.initial[1].v)}$. Reihenfolge: $p$, dann $q$ mit den bereits aktualisierten Vektoren.</p>`+
+   table(['Punkt','(d² zu A; d² zu B)','Gewinner / Änderung','A danach','B danach'],data.rows.map(row=>[math(`${row.point.name}=${v(row.point.v)}`),v(row.ds),row.old[row.win].label+' / '+(row.signs[row.win]>0?'anziehen':'abstoßen'),v(row.centers[0].v),v(row.centers[1].v)]))+
+   T`<p>Gesamtänderungen gegenüber dem Start:</p>$$\Delta A=\boxed{${v(data.changes[0])}},\qquad\Delta B=\boxed{${v(data.changes[1])}}.$$`;
  }
 
  function som(p){
-  const m=p.model,data=C.som(m.grid,m.x,m.eta,m.sigma),winner=m.grid[data.winner],maxI=Math.max(...m.grid.map(r=>r.g[0])),maxJ=Math.max(...m.grid.map(r=>r.g[1])),den=2*m.sigma*m.sigma,w=data.rows[data.winner];
-  const left=data.rows.find(r=>r.g[0]===winner.g[0]-1&&r.g[1]===winner.g[1]);
-  const answer=T`<p>Gegeben: $x=${v(m.x)}$, Lernrate $\eta=${m.eta}$, Breite $\sigma=${m.sigma}$.</p><p>Ich lese jede Gitterkreuzung als Prototyp. Der Abstand zwischen benachbarten Gitterknoten zählt als <strong>ein Gitterschritt</strong>.</p><h3>Gewinner aktualisieren</h3><p>Der nächste Prototyp und damit der Gewinner ist $r_*=${v(winner.v)}$. Beim Gewinner ist der Nachbarschaftsfaktor $1$:</p>$$\Delta r_*=${m.eta}\bigl(${v(m.x)}-${v(winner.v)}\bigr)=\boxed{${v(w.delta)}}.$$$$r_{*,neu}=\boxed{${v(w.next)}}.$$<h3>Einen Nachbarn berechnen</h3><p>Der linke Nachbar $${v(left.v)}$ liegt einen Gitterschritt entfernt:</p>$$h=e^{-1/(2\cdot${m.sigma}^2)}=e^{-1/${den}}.$$$$\Delta r=${m.eta}e^{-1/${den}}${v(m.x.map((x,k)=>x-left.v[k]))}\approx${v(left.delta)}.$$$$r_{neu}\approx\boxed{${v(left.next)}}.$$<h3>Alle Gitterpunkte angeben</h3><p>Für jeden alten Prototyp $r=(a;b)$ mit $a=0,5,\ldots,${5*maxI}$ und $b=0,5,\ldots,${5*maxJ}$ gilt:</p>$$\boxed{\Delta r=${m.eta}\,e^{-\frac{((a-${winner.v[0]})/5)^2+((b-${winner.v[1]})/5)^2}{${den}}}\begin{pmatrix}${m.x[0]}-a\\${m.x[1]}-b\end{pmatrix}}$$$$r_{neu}=(a;b)+\Delta r.$$<p>Die Division durch $5$ wandelt die Koordinatenabstände in Gitterschritte um. Alle Änderungen werden aus dem <strong>alten Gitter</strong> berechnet. Die Formel erfasst alle <strong>${data.rows.length} Änderungen</strong>; ohne Abschneideregel lernen auch weiter entfernte Neuronen.</p>`;
-  return answer+(data.rows.length<=9?table(['Alter Prototyp','Änderung Δr ≈','Neuer Prototyp ≈'],data.rows.map(r=>[v(r.v),v(r.delta),v(r.next)])):'');
+  const m=p.model,data=C.som(m.grid,m.x,m.eta,m.sigma),winner=m.grid[data.winner],maxI=Math.max(...m.grid.map(r=>r.g[0])),maxJ=Math.max(...m.grid.map(r=>r.g[1])),den=2*m.sigma*m.sigma;
+  return T`<p>Gitterannahme: $r_{ij}=(5i;5j)$, $i=0,\ldots,${maxI}$, $j=0,\ldots,${maxJ}$. Ein Gitterschritt zählt als Abstand 1.</p><p><strong>Gewinner:</strong> $r_*=${v(winner.v)}$, Gitterindex $${v(winner.g)}$.</p><p>Alle <strong>${data.rows.length} Änderungen</strong> werden gleichzeitig aus dem alten Gitter berechnet:</p>`+
+   T`$$\boxed{\Delta r_{ij}=${m.eta}\,e^{-\frac{(i-${winner.g[0]})^2+(j-${winner.g[1]})^2}{${den}}}\begin{pmatrix}${m.x[0]}-5i\\${m.x[1]}-5j\end{pmatrix}}$$$$r_{ij}^{neu}=(5i;5j)+\Delta r_{ij}.$$`+
+   table(['Alter Prototyp','Änderung Δr ≈','Neuer Prototyp ≈'],(data.rows.length<=9?data.rows:[data.rows[data.winner]]).map(row=>[v(row.v),v(row.delta),v(row.next)]));
  }
 
  function hopfield(t,p){
   const m=p.model,rows=C.hopfield(m.W,m.theta),o=t.kind==='original';
   const nets=o?T`net_1=-2s_2,\quad net_2=-2s_1-2s_3,\quad net_3=-2s_2`:T`net_1=s_2-s_3,\quad net_2=s_1+2s_3,\quad net_3=-s_1+2s_2`;
-  const example=rows[0],update=m.W[1].filter((_,j)=>j!==1).map(w=>T`(${w})\cdot(-1)`).join('+');
   return T`<p>Ich schreibe $+$ für $+1$ und $-$ für $-1$. Die Reihenfolge ist immer $(s_1,s_2,s_3)$.</p><p>Aus den Gewichten ergeben sich:</p>$$${nets}.$$<p>Die Schwellen sind $\theta=${v(m.theta)}$.</p><p>Bei einem Update gilt: <strong>Netzeingabe ≥ Schwelle → +1, sonst −1.</strong> Die beiden anderen Neuronen bleiben unverändert.</p>`+
    table(['Alter Zustand','(net₁; net₂; net₃)','Nur Neuron 1','Nur Neuron 2','Nur Neuron 3'],rows.map(r=>[r.stable?`<strong>${sign(r.s)} ★</strong>`:sign(r.s),v(r.net),...r.next.map(sign)]))+
-   T`<h3>Eine Beispielrechnung</h3><p>Bei $---$ und Update von Neuron 2:</p>$$net_2=${update}=${example.net[1]}${example.net[1]>=m.theta[1]?'\\ge':'<'}${m.theta[1]}.$$<p>Nur die zweite Stelle wird aktualisiert: <strong>−−− → ${sign(example.next[1])}</strong>.</p><h3>Zustandsgraph zeichnen</h3><p>Die acht Zustände als Kreise zeichnen und die drei Nachfolger jeder Tabellenzeile als Pfeile übertragen. $u_1,u_2,u_3$ bezeichnen das jeweils aktualisierte Neuron.</p>`+
+   T`<p>$u_1,u_2,u_3$ an den Pfeilen bezeichnen das jeweils aktualisierte Neuron.</p>`+
    V.graph(rows,'exam-hop-'+t.id,o?{layout:'exam-original'}:{})+
-   `<p><strong>Stabile Zustände: ${rows.filter(r=>r.stable).map(r=>sign(r.s)).join(' und ')}.</strong> Bei ihnen bleibt der Zustand bei jedem der drei Einzelupdates unverändert.</p>`;
+   `<p><strong>Stabile Zustände: ${rows.filter(r=>r.stable).map(r=>sign(r.s)).join(' und ')}.</strong></p>`;
  }
 
  const repairs=[
@@ -90,12 +84,7 @@
   if(t.family==='hopfield')return hopfield(t,p);
   throw new Error('Missing compact exam answer: '+t.id+'/'+p.id);
  }
- function memory(t,p){
-  if(t.kind==='repair')return '';
-  const text=t.family==='tlu'?'Jede Begrenzung als Ungleichung schreiben. Die Zahlen vor x₁ und x₂ werden zu Gewichten, die Zahl rechts zur Schwelle. Anschließend die Teilbedingungen am Ausgang verknüpfen.':t.family==='rbf'?'Die Distanzformel prüft jeden beliebigen Eingabepunkt. Einen einzelnen Abstandswert berechnest du erst, wenn ein konkreter Punkt eingesetzt wird.':'';
-  return text?`<aside class="exam-memory"><strong>Zum Merken</strong><p>${text}</p></aside>`:'';
- }
- function html(t,p,{expanded=false,extra=''}={}){return `<section class="exam-answer"><h2>${t.kind!=='repair'&&t.family==='approx'&&p.id!=='verbessern'?'Minimale':'Kompakte'} Klausur-Musterlösung</h2>${compact(t,p)}${memory(t,p)}</section><details class="detailed-solution" data-explanation ${expanded?'open':''}><summary>Ausführlicher Rechenweg</summary>${p.solution}${extra}</details>`;}
+ function html(t,p,{expanded=false,extra=''}={}){return `<section class="exam-answer"><h2>${t.kind!=='repair'&&p.id!=='verbessern'?'Minimale':'Kompakte'} Klausur-Musterlösung</h2>${compact(t,p)}</section><details class="detailed-solution" data-explanation ${expanded?'open':''}><summary>Ausführlicher Rechenweg</summary>${p.solution}${extra}</details>`;}
  root.NNExamSolutions={compact,html};
  if(typeof module!=='undefined'&&module.exports)module.exports=root.NNExamSolutions;
 })(typeof globalThis!=='undefined'?globalThis:this);
